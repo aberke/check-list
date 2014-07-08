@@ -31,14 +31,14 @@ DEBUG= False if ENVIRONMENT == 'PRODUCTION' else True
 # if TESTING: db is 'testing'
 
 MONGODB_HOST 	= "mongodb://localhost:27017"
-MONGODB_DB 		= "house-cleaners"
+MONGODB_DB 		= "check-list"
 
 if ENVIRONMENT == 'PRODUCTION':
 	MONGODB_HOST=os.environ.get("MONGOHQ_URL", None)
-	MONGODB_DB  = 'app26701254'
+	MONGODB_DB  = 'app27214918'
 
 elif ENVIRONMENT == 'TESTING':
-	MONGODB_DB 	= "house-cleaners-testing"
+	MONGODB_DB 	= "check-list-testing"
 
 # ---------------------------------- MONGO -
 
