@@ -1,0 +1,37 @@
+<div class='view' id='new-view'>
+
+
+<section class='sign-in' ng-show="stage==0||showAll" id='create-username'>
+	<p class='error'>{{error.message}}</p>
+
+    <input ng-model="cleaner.name" type='text' class='text-field' placeholder="What's your name?" >
+    <input ng-model="cleaner.phonenumber" ng-class="{'error':error.phonenumber}" type='text' class='text-field' placeholder="Your phone number?" >
+    <button ng-show='!waiting' ng-click="submitPhonenumber()" ng-disabled="!(cleaner.name&&cleaner.phonenumber)" class='btn'>NEXT</button>
+    <p ng-show='waiting'>verifying phonenumber...</p>
+
+</section>
+<section class='sign-in' ng-show="stage==1||showAll" id='create-password'>
+
+	<h2 class='name'>{{cleaner.name}}</h2>
+	<p class='error'>{{error.message}}</p>
+
+    <input ng-model="cleaner.password" ng-class="{'error':error.password}" type='text' class='text-field' placeholder="create a password" >
+    <input ng-model="cleaner.confirmPassword" ng-class="{'error':error.confirmPassword}" type='text' class='text-field' placeholder="confirm password" >
+    <button ng-click="submitPassword()" ng-disabled="!(cleaner.password&&cleaner.confirmPassword)" class='btn'>NEXT</button>
+
+</section>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

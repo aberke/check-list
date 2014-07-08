@@ -1,0 +1,373 @@
+/***************************************************
+	Significance Labs
+	Brooklyn, NYC
+
+ 	Author: Alexandra Berke (aberke)
+ 	Written: June 2014
+
+
+ 	base CSS styles 
+
+****************************************************/
+
+/* - colors ------------- */
+.blue-1 { color: #a0e4f9; }
+.blue-2 { color: #54c0dd; }
+.blue-3 { color: #29abe2; }
+.orange { color: #ef7625; }
+.purple { color: #1b1464; }
+/* ------------- colors - */
+
+@font-face {
+    font-family: Montserrat-Regular;
+    src: url(/static/fonts/Montserrat-Regular.ttf);
+}
+
+
+html,body {
+	margin: 0;
+	padding: 0;
+	background-color: #a0e4f9;
+}
+html,body, #view, .view {
+	height: 100%;
+}
+a, button { cursor: pointer; }
+button:disabled { cursor: initial; }
+
+h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
+	font-family: Montserrat-Regular;
+	margin: 0;
+}
+textarea {
+	background-color: white;
+	border: none;
+	margin: 0;
+	padding: 1em;
+	font-size: 1em;
+	min-height: 100px;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.icon {
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	background-position: center !important;
+	border-radius: 6px;
+}
+
+.icon.logo {
+	border: 2px solid white;
+	border-radius: 50%;
+}
+.icon.bathroom {
+	background: url(/static/icon/BATHROOM.png);
+}
+.icon.bedroom {
+	background: url(/static/icon/BEDROOM.png);
+}
+.icon.add {
+	background: url(/static/icon/ADD.png);
+}
+.icon.etc {
+	background: url(/static/icon/ETC.png);
+}
+.icon.blue-home {
+	background: url(/static/icon/BLUE_HOME.png);
+}
+.icon.orange-home {
+	background: url(/static/icon/ORANGE_HOME.png);
+}
+.icon.livingroom {
+	background: url(/static/icon/LIVINGROOM.png);
+}
+.icon.kitchen {
+	background: url(/static/icon/KITCHEN.png);
+}
+
+.list-item-container .icon {
+	background: url(/static/icon/BLUE_HOME.png);
+}
+.list-item-container:hover .icon {
+	background: url(/static/icon/ORANGE_HOME.png);
+}
+.list-item-container.add .icon {
+	background: url(/static/icon/ADD.png);
+}
+
+
+.text-field, .btn {
+	cursor: pointer;
+	box-sizing: border-box;
+	border-radius: 10px;
+	text-align: center;
+	font-size: 15px;
+	padding: 10px;
+	width: 300px;
+	border-width: 3px;
+	border-style: solid;
+}
+.text-field.short,
+.btn.short {
+	width: 250px;
+}
+input,
+.text-field {
+	background-color: transparent;
+	border-color: white;
+	color: #29abe2;
+}
+::-webkit-input-placeholder { color: #29abe2; }
+:-moz-placeholder { color: #29abe2; }
+::-moz-placeholder { color: #29abe2; }
+:-ms-input-placeholder { color: #29abe2; }
+
+.btn {
+	color: #a0e4f9;
+	background-color: #29abe2;
+	border-color: #29abe2;
+}
+.btn:hover, .btn.hover,
+.btn:disabled {
+	background-color: #54c0dd;
+	border-color: #54c0dd;
+}
+.btn:disabled {
+	cursor: default;
+}
+a.btn {
+	text-decoration: none;
+}
+.next {
+	text-align: right;
+}
+.next .btn {
+	width: 100px;
+	border-color: #a0e4f9;
+	text-align: center;
+}
+.banner{
+	background-color: #ef7625;
+	color: white;
+	font-size: 4em;
+	padding: 0.1em;
+	text-align: center;
+}
+
+.panel {
+	max-width: 750px;
+	vertical-align: top;
+}
+.panel .panel-title {
+	color: white;
+	background-color: #1b1464;
+	font-size: 1.5em;
+	padding: 0.5em 0;
+	text-align: center;
+}
+.panel.orange .panel-title {
+	background-color: #ef7625;
+}
+.panel.blue-3 .panel-title {
+	background-color: #29abe2;
+}
+.panel.info .panel-title {
+	text-align: left;
+}
+.panel .panel-body {
+	background-color: white;
+	padding: 1.5em;
+	color: #29abe2;
+}
+.panel.info .panel-body {
+	background-color: transparent;
+	padding: 1em 0;
+	color: #1b1464;
+	font-size: 1.2em;
+	height: 130px;
+}
+.panel img.panel-body {
+	width: 100%;
+	padding: 0;
+}
+
+.panel input {
+  margin: 0;
+  border: none;
+  outline: 1px solid #29abe2;
+  padding: 0.25em;
+}
+
+.panel ::-webkit-input-placeholder { color: #a0e4f9; }
+.panel :-moz-placeholder { color: #a0e4f9; }
+.panel ::-moz-placeholder { color: #a0e4f9; }
+.panel :-ms-input-placeholder { color: #a0e4f9; }
+
+/*- .panel.two-sides ----------------*/
+.panel.two-sides .side {
+	width: 45%;
+	display: inline-block;
+	vertical-align: top;
+}
+.panel.two-sides .side p {
+	font-weight: bold;
+	height: 50px;
+}
+.panel.two-sides input[type=number] {
+	display: block;
+	margin: 5px 0;
+}
+
+/*---------------- .panel.two-sides -*/
+
+
+section .panel {
+	margin: auto;
+}
+
+
+.clear {
+  clear: both;
+}
+
+
+textarea.panel-body {
+	height: 200px;
+}
+p.error {
+	margin: auto;
+	color: red;
+	text-align: center;
+}
+
+input.error {
+	border: 2px solid red;
+}
+.action-bubble {
+	border: 4px solid #29abe2;
+	border-radius: 50%;
+	background-color: #a0e4f9;
+	width: 100px;
+	height: 100px;
+	color: white;
+	text-align: center;
+	position: relative;
+}
+.action-bubble h3 {
+	font-size: 18px;
+}
+
+/*- titles --------------------*/
+.bedroom .title {
+	color: #1b1464;
+}
+.livingroom .title,
+.etc .title {
+	color: #54c0dd;
+}
+.bathroom .title {
+	color: #29abe2;
+}
+.kitchen .title {
+	color: #ef7625;
+}
+
+/*- view ----------------------*/
+
+.view {
+	margin: 0;
+}
+
+/*
+container-bar
+special case is the .heading
+*/
+.container-bar {
+	height: 50px; /*.icon has height 50px*/
+	padding: 10px;
+	width: 100%;
+	border-bottom: 1px solid white;
+}
+.container-bar.touchable:hover{
+	background-color: white;
+}
+.container-bar .icon,
+.container-bar .title {
+	float: left;
+}
+.view .heading {
+	background-color: #ef7625;
+}
+.container-bar .title {
+	margin: 5px;
+}
+.view .heading .title {
+	color: white;
+}
+
+
+/*---------------------- view -*/
+
+
+
+
+/* ------- index-view ---------- */
+#index-view .banner{
+	margin: 1em 0 0 0;
+	font-size: 4em;
+	color: #a0e4f9;
+}
+#index-view section {
+	max-width: 600px;
+	margin: auto;
+	padding: 1em;
+}
+#index-view #welcome-copy {
+	font-size: 18px;
+	color: #1b1464;
+	margin: 2em auto;
+}
+@media (min-width: 500px) {
+	#index-view .btn.left {
+		float: left;
+	}
+	#index-view .btn.right {
+		float: right;
+	}
+}
+@media (max-width: 499px) {
+	#index-view .btn {
+		display: block;
+		margin: 10px auto;
+	}
+}
+/* ---------------- index-view - */
+
+/* - style-guide ---------------- */
+
+/* need space between everything */
+#style-guide >* {
+	margin: 30px;
+}
+
+#style-guide #colors{
+	background-color: white;
+	padding: 10px;
+}
+#style-guide #colors span{
+	padding: 5px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+
+
+
+
+/* ---------------- style-guide - */
+
+
+
+

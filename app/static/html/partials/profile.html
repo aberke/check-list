@@ -1,0 +1,283 @@
+<link href="/static/css/profile.css" rel="stylesheet">
+
+<div id='nav-bar'>
+    <img width="40px" class='logo' src="/static/img/sl_logo_100px.png">
+	<h1 class='title'>CLEAN SLATE</h1>
+    <div class='right-nav'>
+        <a href="/">HOME</a>
+        <a ng-show="!user" href="/sign-in">SIGN-IN</a>
+        <a ng-show="user" ng-click="logout()">SIGN-OUT</a>
+        <a ng-show="user&&!editEnabled" ng-click="enableEdit()">EDIT</a>
+        <a ng-show="user&&editEnabled" ng-click="save()">SAVE</a>
+    </div>
+</div>
+
+<div id='profile-view'>
+
+<p class='error'>{{error.message}}</p>
+
+<section id='personal'>
+	<div class='container'>
+		<div class='pic-container'>
+			<img height="250px" width='250px' ng-src="{{cleaner.pic_url || '/static/img/user_icon.png'}}">
+		</div>
+		<div class='info-container'>
+            <span ng-show="!editEnabled">
+                <h2 class='name'>{{cleaner.name || 'Name'}}</h2>
+                <p>{{cleaner.blurb || 'This is where they wrote something nice about themselves, this textfield is 24px, bold 500px X 150px'}}</p>
+            </span>
+
+            <span ng-show="editEnabled">
+                <input ng-model="cleaner.name" type='text' class='text-field' placeholder="NAME" >
+                <textarea maxlength=200 ng-model='cleaner.blurb' class='blurb' placeholder="Tell us something nice about yourself! Where are you from? What do you like to do? What is your super power?"></textarea>
+            </span>
+		</div>
+	</div>
+</section>
+
+<section ng-show="stage==0" id='get-quote'>
+    <div class='panel'>
+        <h3 class='panel-title'>Get a quote!</h3>
+        <div class='panel-body'>
+
+            <div class='get-quote-section' id='space'>
+                <h3>SPACE</h3>
+                <div class='input-group'>
+                    <input type='number'>
+                    <label>Bedrooms</label>
+                </div>
+                <div class='input-group'>
+                    <input type='number'>
+                    <label>Bathrooms</label>
+                </div>
+                <div class='input-group'>
+                    <input type='number'>
+                    <label>Additional rooms</label>
+                </div>
+            </div>
+
+            <div class='get-quote-section' id='location'>
+                <h3>LOCATION</h3>
+                <input type='text' placeholder='ZIPCODE'>
+            </div>
+
+            <div class='get-quote-section' id='extras'>
+                <h3>EXTRAS</h3>
+                <div>
+                    <p>The following services can be performed at an additional charge.</p>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Laundry</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                </div>
+                <div class='conditions'>
+                    <p>The following conditions incure additional fees:</p>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                    <div class='input-group'>
+                        <input type='checkbox'>
+                        <label>Ironing</label>
+                    </div>
+                </div>
+            </div>
+
+            <button ng-click="next()" class='action-bubble'>
+                <h3>GET QUOTE</h3>
+            </button>
+
+        </div>
+    </div>
+</section>
+
+<section ng-show="stage==1" id='book-apt'>
+    <div id='book-apt-panel' class='panel'>
+        <h3 class='panel-title'>Book Appointment</h3>
+        <div class='panel-body'>
+
+            <div class='left'>
+                <input ng-model="booking.address" class='short' type="text" placeholder="Address" />
+                <input ng-model="booking.name" class='short' type="text" placeholder="Name" />
+                <input class='short' type="text" placeholder="Address" />
+                <input ng-model="booking.phonenumber" class='short' type="text" placeholder="PHONE #" />
+                <input ng-model="booking.zipcode" class='short' type="text" placeholder="Zipcode" />
+                <input class='short' type="text" placeholder="EMAIL" />
+                <input type="text" placeholder="Additional message:" />
+            </div>
+            <div class='right'>
+                <button ng-disabled="!(booking.address&&booking.name&&booking.phonenumber)" ng-click="next()" class='action-bubble'>
+                    <h3>GET QUOTE</h3>
+                </button>
+            </div>
+            <div class='clear'></div>
+        </div>
+    </div>
+</section>
+
+<section ng-show="stage==2" id='availability'>
+    <div class='panel'>
+        <h3 class='panel-title'>￼AVAILABILITY week of: &lt; 07/07-07/09 &gt; </h3>
+        <table id='schedule'>
+            <thead>
+                <tr>
+                    <th>MON</th>
+                    <th>TUE</th>
+                    <th>WED</th>
+                    <th>THU</th>
+                    <th>FRI</th>
+                    <th>SAT</th>
+                    <th>SUN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td onclick="activate(this)">8-12<span class='small'>pm</span></td>
+                    <td onclick="activate(this)"></td>
+                    <td class='busy' onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                </tr>
+                <tr>
+                    <td onclick="activate(this)">12-4<span class='small'>pm</span></td>
+                    <td onclick="activate(this)"></td>
+                    <td class='busy' onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                </tr>
+                <tr>
+                    <td onclick="activate(this)">4-8<span class='small'>pm</span></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                    <td class="busy" onclick="activate(this)"></td>
+                    <td onclick="activate(this)"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <button ng-click="next()" class='action-bubble'>
+                <h3>GET QUOTE</h3>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section ng-show="stage==3" id='show-quote'>
+
+    <div id='quote-container'>
+        <span class='x-close'>x</span>
+        <h4 class='text'>{{cleaner.name || 'NAME'}} can clean your place for $XX.00*.
+It will take about XX hours.</h4>
+        <button ng-click="next()" class='btn'>BOOK NOW!</button>
+        <p class='disclaimer-text'>*Quotes are approximate and subject to a 20% +/- adjustment.</p>
+    </div>
+
+</section>
+
+<section ng-show="stage==4" id='confirmation'>
+    <h2>Confirmation sent via SMS message to {{booking.phonenumber || 'YOUR PHONENUMBER'}}</h2>
+</section>
+
+
+<!-- <section id='work-info'>
+
+    <div class='panel info orange'>
+        <h3 class='panel-title'>SERVICES</h3>
+        <p ng-show="!editEnabled" class='panel-body'>{{cleaner.services_text}}</p>
+        <textarea ng-show="editEnabled" ng-model="cleaner.services_text" class='panel-body' placeholder="IE: PARK SLOPE"></textarea>
+    </div>
+
+    <div class='panel info blue-3'>
+        <h3 class='panel-title'>LOCATIONS</h3>
+        <p ng-show="!editEnabled" class='panel-body'>{{cleaner.locations_text}}</p>
+        <textarea ng-show="editEnabled" ng-model="cleaner.locations_text" class='panel-body' placeholder="IE: PARK SLOPE"></textarea>
+    </div>
+
+    <div class='panel info blue-3'>
+        <h3 class='panel-title'>CONDITIONS</h3>
+        <p ng-show="!editEnabled" class='panel-body'>{{cleaner.conditions_text}}</p>
+        <textarea ng-show="editEnabled" ng-model="cleaner.conditions_text" class='panel-body' placeholder="IE: PARK SLOPE"></textarea>
+    </div>
+
+    <div class='panel info orange'>
+        <h3 class='panel-title'>RATES</h3>
+        <p ng-show="!editEnabled" class='panel-body'>{{cleaner.rates_text}}</p>
+        <textarea ng-show="editEnabled" ng-model="cleaner.rates_text" class='panel-body' placeholder="IE: PARK SLOPE"></textarea>
+    </div>
+</section> -->
+
+
+<div id='footer-bar'>
+	<img height="30px" src="/static/img/sl_logo_100px.png">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

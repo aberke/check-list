@@ -1,0 +1,11 @@
+Flask==0.10.1
+Flask-Compress==1.0.2
+Jinja2==2.7.3
+MarkupSafe==0.23
+Werkzeug==0.9.6
+boto==2.29.1
+gunicorn==19.0.0
+itsdangerous==0.24
+pymongo==2.7.1
+wsgiref==0.1.2
+twilio==3.6.6

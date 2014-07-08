@@ -1,0 +1,97 @@
+/***************************************************
+	Significance Labs
+	Brooklyn, NYC
+
+ 	Author: Alexandra Berke (aberke)
+ 	Written: June 2014
+
+
+
+	styles for sign-in/create user flow
+
+	the following views have the .sign-in class
+		sign-in.html
+		reset-password.html
+
+
+ 	
+****************************************************/
+
+/* - colors ------------- */
+.blue-1 { color: #a0e4f9; }
+.blue-2 { color: #54c0dd; }
+.blue-3 { color: #29abe2; }
+.orange { color: #ef7625; }
+.purple { color: #1b1464; }
+/* ------------- colors - */
+
+
+.sign-in {
+	background-color: #a0e4f9;
+	text-align: center;
+	color: #29abe2;
+	max-width: 250px;
+	margin: auto;
+}
+.sign-in .logo,
+.sign-in .title,
+.sign-in input,
+.sign-in button,
+.sign-in .other-options {
+	margin: 20px auto;
+	display: block;
+}
+.sign-in .text-field,
+.sign-in .btn {
+	width: 100%;
+}
+
+.sign-in .title {
+	color: white;
+	max-width: 300px;
+}
+
+.other-options {
+	width: 300px;
+}
+.other-options a {
+	text-decoration: none;
+	color: #29abe2;
+	margin: 0 10px;
+}
+.other-options .left {
+	float: left;
+}
+.other-options .right {
+	float: right;
+}
+
+/* side bubble on reset-password */
+.bubble {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	background-color: #29abe2;
+	color: white;
+	margin: 15px auto;
+}
+.bubble .text {
+	padding: 30% 0;
+}
+
+
+
+/* ------- new-view ---------- */
+#new-view section {
+	height: 100%;
+	border-bottom: 3px solid white;
+	padding: 2.5em 0;
+	overflow: auto;
+}
+/* ------- new-view ---------- */
+
+
+
+
+
+
