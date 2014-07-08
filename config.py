@@ -5,7 +5,7 @@
 #	Brooklyn, NYC
 #
 # 	Author: Alexandra Berke (aberke)
-# 	Written: June 2014
+# 	Written: Summer 2014
 #
 #
 #--------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ DEBUG= False if ENVIRONMENT == 'PRODUCTION' else True
 # - MONGO ----------------------------------
 # if development: host is "mongodb://localhost:27017"
 # if production: db is set in host URI, host is in "MONGOHQ_URL" env variable found in '$ heroku config' command
-# if TESTING: db is 'testing'
+# if TESTING: db is testing specific db
 
 MONGODB_HOST 	= "mongodb://localhost:27017"
 MONGODB_DB 		= "check-list"

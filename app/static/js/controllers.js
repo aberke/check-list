@@ -23,7 +23,7 @@ function MainCntl($scope, $window, $location, APIservice, AuthService) {
 		// log every new page view in production
 		console.log('domain', $scope.domain)
 
-		if ($scope.domain == "http://clean-slate.herokuapp.com") {
+		if ($scope.domain == "http://clean-slate2.herokuapp.com") {
 			$scope.$on('$routeChangeSuccess', function(event) {
 				console.log('pushing to google-analytics')
 				$window.ga('send', 'pageview', { page: $location.path() });
