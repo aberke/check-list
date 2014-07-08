@@ -5,7 +5,7 @@
 #	Brooklyn, NYC
 #
 # 	Author: Alexandra Berke (aberke)
-# 	Written: June 2014
+# 	Written: Summer 2014
 #
 #
 #

@@ -34,9 +34,10 @@ Running The Tests
 From the base directory ```python test.py```
 
 
+Analytics
+---
 
-
-
+<https://www.google.com/analytics/web/?authuser=2#report/visitors-overview/a52152670w85170631p88292434/>
 
 
 
@@ -45,11 +46,6 @@ TODO
 
 - set cache TTL to 0 for /auth/user ?
 
-- write tests for sign-in flow
-	- /verify-phonenumber
-	- POST /cleaner
-	- /login
-	- /logout
 	
 
 

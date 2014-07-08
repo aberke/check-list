@@ -5,7 +5,7 @@
 #	Brooklyn, NYC
 #
 # 	Author: Alexandra Berke (aberke)
-# 	Written: June 2014
+# 	Written: Summer 2014
 #
 #
 #
@@ -34,6 +34,7 @@ GET			/cleaner/<id>
 PUT 	 	/cleaner/<id>
 POST 		/cleaner/<id>/booking 		
 GET			/cleaner/lookup/phonenumber/<phonenumber>
+GET 		/cleaner/validate-new-phonenumber/<phonenumber>
 
 GET 		/cleaner/auth 			-> return current-user
 POST 		/cleaner/auth/login 	-> login(user)
