@@ -24,12 +24,10 @@
 }
 
 
-html,body {
+html,body, #view, .view {
 	margin: 0;
 	padding: 0;
 	background-color: #a0e4f9;
-}
-html,body, #view, .view {
 	height: 100%;
 }
 a, button { cursor: pointer; }
@@ -38,16 +36,6 @@ button:disabled { cursor: initial; }
 h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	font-family: Montserrat-Regular;
 	margin: 0;
-}
-textarea {
-	background-color: white;
-	border: none;
-	margin: 0;
-	padding: 1em;
-	font-size: 1em;
-	min-height: 100px;
-	box-sizing: border-box;
-	width: 100%;
 }
 
 .icon {
@@ -157,86 +145,17 @@ a.btn {
 	text-align: center;
 }
 
-.panel {
-	max-width: 750px;
-	vertical-align: top;
-}
-.panel .panel-title {
-	color: white;
-	background-color: #1b1464;
-	font-size: 1.5em;
-	padding: 0.5em 0;
-	text-align: center;
-}
-.panel.orange .panel-title {
-	background-color: #ef7625;
-}
-.panel.blue-3 .panel-title {
-	background-color: #29abe2;
-}
-.panel.info .panel-title {
-	text-align: left;
-}
-.panel .panel-body {
-	background-color: white;
-	padding: 1.5em;
-	color: #29abe2;
-}
-.panel.info .panel-body {
-	background-color: transparent;
-	padding: 1em 0;
-	color: #1b1464;
-	font-size: 1.2em;
-	height: 130px;
-}
-.panel img.panel-body {
-	width: 100%;
-	padding: 0;
-}
+.textarea,input ::-webkit-input-placeholder { color: #a0e4f9; }
+.textarea,input :-moz-placeholder { color: #a0e4f9; }
+.textarea,input ::-moz-placeholder { color: #a0e4f9; }
+.textarea,input :-ms-input-placeholder { color: #a0e4f9; }
 
-.panel input {
-  margin: 0;
-  border: none;
-  outline: 1px solid #29abe2;
-  padding: 0.25em;
-}
-
-.panel ::-webkit-input-placeholder { color: #a0e4f9; }
-.panel :-moz-placeholder { color: #a0e4f9; }
-.panel ::-moz-placeholder { color: #a0e4f9; }
-.panel :-ms-input-placeholder { color: #a0e4f9; }
-
-/*- .panel.two-sides ----------------*/
-.panel.two-sides .side {
-	width: 45%;
-	display: inline-block;
-	vertical-align: top;
-}
-.panel.two-sides .side p {
-	font-weight: bold;
-	height: 50px;
-}
-.panel.two-sides input[type=number] {
-	display: block;
-	margin: 5px 0;
-}
-
-/*---------------- .panel.two-sides -*/
-
-
-section .panel {
-	margin: auto;
-}
 
 
 .clear {
   clear: both;
 }
 
-
-textarea.panel-body {
-	height: 200px;
-}
 p.error {
 	margin: auto;
 	color: red;
@@ -262,8 +181,9 @@ input.error {
 
 .hamburger-control {
 	position: absolute;
-	top: 15px;
-	right: 15px;
+	top: 0;
+	right: 0;
+	padding: 15px;
 }
 img.hamburger {
 	width: 25px;
@@ -290,10 +210,25 @@ img.hamburger {
 	color: #ef7625;
 }
 
+#control-view {
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	width: 150px;
+	background-color: white;
+	height: 100%;
+}
+
 /*- view ----------------------*/
 
-.view {
-	margin: 0;
+#view {
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+	right: 0;
+}
+#view.collapsed {
+	right: 150px;
 }
 
 /*
@@ -302,10 +237,14 @@ special case is the .heading
 */
 .container-bar {
 	height: 50px; /*.icon has height 50px*/
-	padding: 10px 0;
+	padding: 7px 0;
 	border-bottom: 1px solid white;
 }
-.container-bar.touchable:hover{
+.container-bar.active {
+	height: auto;
+	background-color: white;
+}
+.container-bar.touchable.hover{
 	background-color: white;
 }
 .container-bar .icon {
@@ -322,6 +261,9 @@ special case is the .heading
 .container-bar .name,
 .container-bar .task-count {
 	font-size: 20px;
+}
+.heading p {
+	font-size: 10px;
 }
 .heading .title {
 	color: white;
@@ -348,10 +290,36 @@ special case is the .heading
 
 
 /* list view -------------------*/
-.room-container.active {
-	height: auto;
-	background-color: white;
+
+.list-main-info {
+	height: 50px;
 }
+#list-info label, 
+#list-info input, 
+#list-info textarea {
+	font-size: 12px;
+	vertical-align: top;
+}
+#list-info .label-container {
+	width: 50px;
+	display: inline-block;
+	margin: 8px;
+	text-align: right;
+}
+#list-info label {
+	color: #54c0dd;
+}
+#list-info input,
+#list-info textarea {
+	border: 1px solid gray;
+	margin: 8px;
+	width: 180px;
+	box-sizing: content-box;
+	border-radius: 0;
+}
+
+
+
 .room-main-info {
 	float: left;
 	width: 100%;
@@ -365,7 +333,7 @@ special case is the .heading
 	padding: 2px;
 	color: #1b1464;
 }
-.task:hover,
+.task.hover,
 .task.selected {
 	background-color: #1b1464;
 	color: white;
@@ -377,7 +345,7 @@ special case is the .heading
 
 /* ------- index-view ---------- */
 #index-view .banner{
-	margin: 1em 0 0 0;
+	margin: 0.5em 0 0 0;
 	font-size: 4em;
 	color: #a0e4f9;
 }

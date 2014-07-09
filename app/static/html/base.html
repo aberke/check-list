@@ -4,7 +4,7 @@
     <base href="/">
     <meta charset="utf-8">
     <title>Clean Slate | Significance Labs</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="description" content="TODO">
     <meta name="author" content="Alexandra Berke at Significance Labs">
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
@@ -52,9 +52,11 @@
 </head>
 <body ng-controller="MainCntl">
 
-    <div id='temp' ng-show="user">
-        {{user.name}}
-        <a ng-click="logout()">SIGN-OUT</a>
+    <div id='control-view'>
+        <p>{{user.name}}</p>
+        <span ng-click="logout()">Sign-Out</span>
+        <a href="/dashboard">Dashboard</a>
+
     </div>
 
     <!-- header --><!-- 

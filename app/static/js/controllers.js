@@ -18,10 +18,29 @@ function MainCntl($scope, $window, $location, APIservice, AuthService) {
 	/* This controller's scope spans over all views */
 	$scope.domain = $window.location.origin;
 	$scope.user = null;
+	var showingControls;
+	var view;
+
+	var resetControls = function() {
+		showingControls = false;
+		if (view) { view.className = ""; }
+	}
+
+	$scope.clickHamburger = function() {
+		// DO get view again each time to ensure controls work
+
+		view = document.getElementById('view');
+		if (showingControls) {
+			view.className = "";
+			showingControls = false;
+		} else {
+			view.className = "collapsed";
+			showingControls = true;
+		}
+	}
 
 	var setupGoogleAnalytics = function() {
 		// log every new page view in production
-		console.log('domain', $scope.domain)
 
 		if ($scope.domain == "http://clean-slate2.herokuapp.com") {
 			$scope.$on('$routeChangeSuccess', function(event) {
@@ -47,7 +66,9 @@ function MainCntl($scope, $window, $location, APIservice, AuthService) {
 		setupGoogleAnalytics();
 		$scope.$on('$routeChangeSuccess', function(event) {
 			resetUser();
+			resetControls();
 		});
+		showingControls = false;
 	}
 	init();
 }
@@ -222,10 +243,19 @@ function DashboardCntl($scope, $location) {
 	init();
 }
 
-function ListCntl($scope, TaskFactory) {
+function ListCntl($scope, $location, $anchorScroll, TaskFactory) {
 
 	$scope.rooms;
 	$scope.list;
+
+	$scope.editingListInfo = false;
+	$scope.clickListInfo = function() {
+		if ($scope.editingListInfo) {
+			$scope.editingListInfo = false;
+		} else {
+			$scope.editingListInfo = true;
+		}
+	}
 
 	$scope.clickRoom = function(room) {
 		room.active = room.active ? false : true;
@@ -246,6 +276,16 @@ function ListCntl($scope, TaskFactory) {
 			'custom': true,
 		});
 		room.taskCount += 1;
+	}
+	$scope.sendList = function() {
+		// if still need to edit list info, force them to do so
+		if (!($scope.list.phonenumber && $scope.list.location && $scope.list.name)) {
+			$scope.editingListInfo = true;
+			$location.hash('list-info');
+			$anchorScroll();
+			return false;
+		}
+		console.log('TODO: sendList')
 	}
 	
 

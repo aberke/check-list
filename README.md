@@ -44,7 +44,9 @@ Analytics
 TODO
 ---
 
-- move hamburger-control to control directive?
+- move hamburger-control and control to directives?
+	- pro: modularity
+	- con: extra files to request
 
 
 - set cache TTL to 0 for /auth/user ?

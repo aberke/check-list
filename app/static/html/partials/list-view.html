@@ -1,9 +1,32 @@
 <div class='view' id='list-view'>
 
-	<div class='heading container-bar'>
-		<img class='icon house-blue'>
-		<h1 class='name'>AIR BNB#1</h1>
-		<p>LOCATION</p>
+	<div ng-click="clickHamburger()" class='hamburger-control'>
+		<img src="/static/icon/hamburger.png" class='hamburger'>
+	</div>
+
+	<div id="list-info" ng-class="{'active': editingListInfo}" class='heading container-bar touchable'>
+		<div class='list-main-info' ng-click="clickListInfo()">
+			<img class='icon house-blue'>
+			<h1 class='name'>{{list.name || 'NEW CLIENT'}}</h1>
+			<div ng-show="!editingListInfo">
+				<p>{{list.location || 'LOCATION'}}</p>
+				<p>{{list.phonenumber || 'PHONENUMBER'}}</p>
+			</div>
+		</div>
+		<div ng-show="editingListInfo">
+			<div class='input-group'>
+				<div class='label-container'><label>Name:</label></div>
+				<input ng-model="list.name" type="text">
+			</div>
+			<div class='input-group'>
+				<div class='label-container'><label>Address:</label></div>
+				<textarea ng-model="list.location"></textarea>
+			</div>
+			<div class='input-group'>
+				<div class='label-container'><label>Phone:</label></div>
+				<input ng-model="list.phonenumber" type="number">
+			</div>
+		</div>
 	</div>
 
 	<div ng-repeat="room in rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
@@ -27,7 +50,7 @@
 		</div>
 	</div>
 
-	<button id='send-btn' class='btn'>SEND</button>
+	<button ng-click="sendList()" id='send-btn' class='btn'>SEND</button>
 
 </div>
 
