@@ -74,28 +74,29 @@ textarea {
 .icon.etc {
 	background: url(/static/icon/ETC.png);
 }
-.icon.blue-home {
-	background: url(/static/icon/BLUE_HOME.png);
-}
-.icon.orange-home {
-	background: url(/static/icon/ORANGE_HOME.png);
-}
 .icon.livingroom {
 	background: url(/static/icon/LIVINGROOM.png);
 }
 .icon.kitchen {
 	background: url(/static/icon/KITCHEN.png);
 }
+.icon.house-blue{
+	background: url(/static/icon/house/house-blue2.png);
+}
+.icon.house-1 {
+	background: url(/static/icon/house/house-blue3.png);
+}
+.icon.house-orange,
+.icon.house-2 {
+	background: url(/static/icon/house/house-orange.png);
+} 
+.icon.house-0 {
+	background: url(/static/icon/house/house-purple.png);
+}
+.icon.house-3 {
+	background: url(/static/icon/house/house-blue2.png);
+}
 
-.list-item-container .icon {
-	background: url(/static/icon/BLUE_HOME.png);
-}
-.list-item-container:hover .icon {
-	background: url(/static/icon/ORANGE_HOME.png);
-}
-.list-item-container.add .icon {
-	background: url(/static/icon/ADD.png);
-}
 
 
 .text-field, .btn {
@@ -259,18 +260,33 @@ input.error {
 	font-size: 18px;
 }
 
+.hamburger-control {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+}
+img.hamburger {
+	width: 25px;
+	height: 25px;
+}
+
 /*- titles --------------------*/
-.bedroom .title {
+.title.bedroom,
+.bedroom {
 	color: #1b1464;
 }
-.livingroom .title,
-.etc .title {
+.livingroom,
+.etc,
+.title.livingroom,
+.title.etc {
 	color: #54c0dd;
 }
-.bathroom .title {
+.bathroom,
+.title.bathroom  {
 	color: #29abe2;
 }
-.kitchen .title {
+.kitchen,
+.title.kitchen  {
 	color: #ef7625;
 }
 
@@ -286,32 +302,78 @@ special case is the .heading
 */
 .container-bar {
 	height: 50px; /*.icon has height 50px*/
-	padding: 10px;
-	width: 100%;
+	padding: 10px 0;
 	border-bottom: 1px solid white;
 }
 .container-bar.touchable:hover{
 	background-color: white;
 }
+.container-bar .icon {
+	margin: 0 10px;
+}
 .container-bar .icon,
 .container-bar .title {
 	float: left;
 }
-.view .heading {
-	background-color: #ef7625;
-}
 .container-bar .title {
-	margin: 5px;
+	margin: 12px 0 0 0;
 }
-.view .heading .title {
+.container-bar .title,
+.container-bar .name,
+.container-bar .task-count {
+	font-size: 20px;
+}
+.heading .title {
 	color: white;
 }
+.heading .name {
+	color: #ef7625;
+}
 
+.list-item {
+	float: left;
+	color: #1b1464;
+}
+.container-bar .task-count {
+	float: right;
+	margin: 10px 15px;
+}
+#send-btn {
+	width: auto;
+	float: right;
+	margin: 15px;
+}
 
 /*---------------------- view -*/
 
 
-
+/* list view -------------------*/
+.room-container.active {
+	height: auto;
+	background-color: white;
+}
+.room-main-info {
+	float: left;
+	width: 100%;
+}
+.tasks-container {
+	clear: both;
+	padding: 10px;
+}
+.task {
+	font-size: 18px;
+	padding: 2px;
+	color: #1b1464;
+}
+.task:hover,
+.task.selected {
+	background-color: #1b1464;
+	color: white;
+}
+.task.add-custom-task {
+	background-color: white;
+	color: #1b1464;
+}
 
 /* ------- index-view ---------- */
 #index-view .banner{
@@ -344,6 +406,11 @@ special case is the .heading
 	}
 }
 /* ---------------- index-view - */
+
+
+#temp {
+	position: absolute;
+}
 
 /* - style-guide ---------------- */
 

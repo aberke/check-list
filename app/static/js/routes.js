@@ -33,16 +33,26 @@ App.config(function($routeProvider) {
 			templateUrl: '/static/html/partials/reset-password.html',
 			controller: ResetPasswordCntl,
 		})
-		.when('/lists', {
-			templateUrl: '/static/html/partials/lists-view.html',
-			controller: ListsCntl,
+		.when('/dashboard', {
+			templateUrl: '/static/html/partials/dashboard-view.html',
+			controller: DashboardCntl,
 		})
-		.when('/rooms', {
-			templateUrl: '/static/html/partials/rooms-view.html',
-			controller: RoomsCntl,
+		.when('/list/new', {
+			templateUrl: '/static/html/partials/list-view.html',
+			controller: ListCntl,
+		})
+		.when('/list/:id', {
+			templateUrl: '/static/html/partials/list-view.html',
+			controller: ListCntl,
 		})
 		.otherwise({
 			redirectTo: '/'
 		});
 });
+
+
+
+
+
+
 

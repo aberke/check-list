@@ -44,6 +44,9 @@ Analytics
 TODO
 ---
 
+- move hamburger-control to control directive?
+
+
 - set cache TTL to 0 for /auth/user ?
 
 	

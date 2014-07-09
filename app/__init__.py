@@ -44,16 +44,16 @@ def style_guide():
 @app.route('/reset-password')
 def no_user_views():
 	"""
-	Redirect to '/lists' if user is signed in 
+	Redirect to '/dashboard' if user is signed in 
 	"""
 	if auth.get_user():
-		return redirect('/lists')
+		return redirect('/dashboard')
 	return base()
 
 
-@app.route('/lists')
-@app.route('/rooms')
-def user_views():
+@app.route('/dashboard')
+@app.route('/list/<id>')
+def user_views(id=None):
 	""" 
 	Redirect to '/' if no user signed in
 	"""

@@ -11,6 +11,37 @@
 ****************************************************/
 
 
+var TaskFactory = function() {
+	/* used by the ListCntl to get tasks lists for the rooms */
+
+	var defaultTasks = [
+		'Vacuuming',
+		'Fluff the pillows',
+		'Polish something',
+		'Arrange the things',
+	];
+	var tasks = [{
+		'name': 'taskname',
+		'selected': false,
+		'custom': true,
+	}];
+
+	return {
+		defaultTaskObjs: function() {
+			var tasks = [];
+			for (t in defaultTasks) {
+				tasks.push({
+					name: defaultTasks[t],
+					selected: false,
+					custom: false,
+				});
+			}
+			return tasks;
+		}
+	}
+}
+
+
 // NOT USED
 var UserFactory = function($http, $q, $rootScope, $location, APIservice) {
 	console.log('UserFactory')

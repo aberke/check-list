@@ -107,7 +107,7 @@ function NewCntl($scope, $location, APIservice) {
 		}
 		var successCallback = function(data) {
 			console.log('new cleaner', data)
-			$location.path('/lists');
+			$location.path('/dashboard');
 		}
 		var errorCallback = function(message) {
 			$scope.error.message = message;
@@ -136,7 +136,7 @@ function LoginCntl($scope, $rootScope, $location, APIservice, AuthService) {
 		}
 		var successCallback = function(data) {
 			$rootScope.user = data;
-			$location.path('/lists'); 
+			$location.path('/dashboard'); 
 		}
 		AuthService.login($scope.cleaner).then(successCallback, errorCallback);
 	}
@@ -193,16 +193,17 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 	}
 }
 
-function ListsCntl($scope) {
+function DashboardCntl($scope, $location) {
 
 	$scope.lists;
 
 	$scope.newList = function() {
 		console.log('newList')
+		$location.path('/list/new');
 	}
 
-	$scope.viewList = function() {
-		console.log('viewList')
+	$scope.selectList = function(list) {
+		console.log('selectList', list)
 	}
 
 	var init = function() {
@@ -221,30 +222,74 @@ function ListsCntl($scope) {
 	init();
 }
 
-function RoomsCntl($scope) {
+function ListCntl($scope, TaskFactory) {
 
 	$scope.rooms;
+	$scope.list;
 
-
+	$scope.clickRoom = function(room) {
+		room.active = room.active ? false : true;
+	}
+	$scope.clickTask = function(room, task) {
+		if (task.selected) {
+			task.selected = false;
+			room.taskCount -= 1;
+		} else {
+			task.selected = true;
+			room.taskCount += 1;
+		}
+	}
+	$scope.addCustomTask = function(room, newCustomTask) {
+		room.taskObjs.push({
+			'name': newCustomTask,
+			'selected': true,
+			'custom': true,
+		});
+		room.taskCount += 1;
+	}
 	
 
 	var init = function() {
 
+		$scope.list = {
+			'_id': null,
+			'name': null,
+			'phonenumber': null,
+			'location': null,
+			'notes': null,
+			'rooms': [],
+		};
+
 		$scope.rooms = [{
 			'name': 'LIVING ROOM',
 			'type': 'livingroom',
+			'taskCount': 0,
+			'taskObjs': TaskFactory.defaultTaskObjs(),
+			'tasks': [],
 		},{
 			'name': 'BED ROOM',
 			'type': 'bedroom',
+			'taskCount': 0,
+			'taskObjs': TaskFactory.defaultTaskObjs(),
+			'tasks': [],
 		},{
 			'name': 'BATH ROOM',
 			'type': 'bathroom',
+			'taskCount': 0,
+			'taskObjs': TaskFactory.defaultTaskObjs(),
+			'tasks': [],
 		},{
 			'name': 'KITCHEN',
 			'type': 'kitchen',
+			'taskCount': 0,
+			'taskObjs': TaskFactory.defaultTaskObjs(),
+			'tasks': [],
 		},{
 			'name': 'EXTRA',
 			'type': 'etc',
+			'taskCount': 0,
+			'taskObjs': TaskFactory.defaultTaskObjs(),
+			'tasks': [],
 		},];
 	}
 	init();

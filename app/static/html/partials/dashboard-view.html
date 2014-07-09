@@ -1,0 +1,31 @@
+<div class='view' id='dashboard-view'>
+
+	<div class='hamburger-control'>
+		<img src="/static/icon/hamburger.png" class='hamburger'>
+	</div>
+
+	<div class='heading container-bar'>
+		<img class='icon logo'>
+		<h1 class='title'>DASHBOARD</h1>
+	</div>
+
+
+	<div ng-click="newList()" class='touchable list-item-container container-bar'>
+		<img class='icon add'>
+
+		<div class='list-item'>
+			<h2 class='title'>CREATE NEW LIST</h2>
+		</div>
+	</div>
+
+	<div ng-click="selectList(list)" ng-repeat="list in lists" class='touchable list-item-container container-bar'>
+		<img class='icon house-{{$index}}'>
+
+		<div class='list-item'>
+			<h2 class='name'>{{list.name}}</h2>
+			<p>modified {{list.last_modified}}</p>
+		</div>
+	</div>
+
+
+</div>

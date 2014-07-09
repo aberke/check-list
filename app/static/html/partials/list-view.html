@@ -1,0 +1,40 @@
+<div class='view' id='list-view'>
+
+	<div class='heading container-bar'>
+		<img class='icon house-blue'>
+		<h1 class='name'>AIR BNB#1</h1>
+		<p>LOCATION</p>
+	</div>
+
+	<div ng-repeat="room in rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
+		<div ng-click="clickRoom(room)" class='room-main-info'>
+			<img ng-class="room.type" class='icon' ng-class="room.type">
+			<h1 ng-class="room.type" class='title'>{{room.name}}</h1>
+			<span ng-class="room.type" class='task-count'>{{room.taskCount}}</span>
+		</div>
+
+		<div ng-show="room.active" class='tasks-container'>
+			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.taskObjs">
+				<span ng-show="task.selected">-</span>
+				<span ng-show="!task.selected">+</span>
+				<span>{{task.name}}</span>
+			</div>
+			<div ng-model="newCustomTask" class='task add-custom-task'>
+				<span>+</span>
+				<input ng-model="newCustomTask" type="text">
+				<button ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">SAVE</button>
+			</div>
+		</div>
+	</div>
+
+	<button id='send-btn' class='btn'>SEND</button>
+
+</div>
+
+
+
+
+
+
+
+
