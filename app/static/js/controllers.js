@@ -68,6 +68,7 @@ function MainCntl($scope, $window, $location, APIservice, AuthService) {
 			resetUser();
 			resetControls();
 		});
+		document.getElementById('control-view').style.display = "block";
 		showingControls = false;
 	}
 	init();
@@ -243,7 +244,7 @@ function DashboardCntl($scope, $location) {
 	init();
 }
 
-function ListCntl($scope, $location, $anchorScroll, TaskFactory) {
+function ListCntl($scope, TaskFactory) {
 
 	$scope.rooms;
 	$scope.list;
@@ -278,14 +279,15 @@ function ListCntl($scope, $location, $anchorScroll, TaskFactory) {
 		room.taskCount += 1;
 	}
 	$scope.sendList = function() {
-		// if still need to edit list info, force them to do so
+		console.log('sendList')
+		/* if still need to edit list info, force them to do so
+			open up the list editing and scroll to top of the page where it is
+		*/ 
 		if (!($scope.list.phonenumber && $scope.list.location && $scope.list.name)) {
 			$scope.editingListInfo = true;
-			$location.hash('list-info');
-			$anchorScroll();
+			document.body.scrollTop = document.documentElement.scrollTop = 0;
 			return false;
 		}
-		console.log('TODO: sendList')
 	}
 	
 
