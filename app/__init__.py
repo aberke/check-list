@@ -29,6 +29,7 @@ app.config.from_object('config')
 Compress(app)
 
 app.debug = True
+app.config['DEBUG'] = True
 
 print('--------app.debug', app.debug)
 
