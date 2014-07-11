@@ -15,7 +15,6 @@
 
 
 from .auth_utility import *
-print('------------- auth 0')
 from .auth_endpoints import bp
 print('------------- auth 1')
 
