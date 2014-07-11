@@ -16,5 +16,4 @@
 
 from .auth_utility import *
 from .auth_endpoints import bp
-print('------------- auth 1')
 

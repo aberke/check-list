@@ -11,14 +11,11 @@
 #--------------------------------------------------------------------------------
 #*********************************************************************************
 
-print('------------- 0')
-
 
 from flask import Flask, send_file, redirect
 from flask.ext.compress import Compress
 
 import auth
-print('------------- 1')
 
 
 
@@ -28,19 +25,11 @@ app = Flask('app')
 app.config.from_object('config')
 Compress(app)
 
-app.debug = True
-app.config['DEBUG'] = True
-
-print('--------app.debug', app.debug)
-
 from api import bp as api_blueprint
 app.register_blueprint(api_blueprint, url_prefix='/api')
-print('------------- 2')
 
 from auth import bp as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
-print('------------- 3')
-
 
 #---------------------------------------------- Configuration #
 

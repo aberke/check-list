@@ -26,16 +26,11 @@
 from flask import Blueprint, request, redirect
 import json
 from datetime import datetime
-print('------------- auth endpoints 0')
 
 from app.lib import twilio_tools
-print('------------- auth endpoints 01')
 from app.lib.util import yellERROR, dumpJSON, respond500, respond200
-print('------------- auth endpoints 1')
 from app.models import cleaner
-print('------------- auth endpoints 2')
 from .auth_utility import *
-print('------------- auth endpoints 3')
 
 
 
