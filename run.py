@@ -17,4 +17,4 @@ from app import app
 
 ###### Run! ######
 if __name__ == '__main__':
-	app.run(host=app.config['HOST'], port=app.config['PORT'], debug=True)#app.config['DEBUG'])
+	app.run(host=app.config['HOST'], port=app.config['PORT'], debug=True) # Production doesn't use this file
