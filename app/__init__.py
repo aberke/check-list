@@ -17,7 +17,7 @@
 from flask import Flask, send_file, redirect
 from flask.ext.compress import Compress
 
-from cleaner import auth
+import auth
 
 
 

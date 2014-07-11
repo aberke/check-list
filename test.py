@@ -11,7 +11,6 @@ os.environ["ENVIRONMENT"] = "TESTING"
 
 from app import app
 from app import database
-from app.cleaner import auth
 from app.models import cleaner
 
 

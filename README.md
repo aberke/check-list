@@ -44,6 +44,8 @@ Analytics
 TODO
 ---
 
+- test coverage for cleaner.update_password and cleaner.password_valid
+
 - move hamburger-control and control to directives?
 	- pro: modularity
 	- con: extra files to request

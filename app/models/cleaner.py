@@ -19,19 +19,22 @@
 # 	name
 # 	lists [{ObjectId}] - array of ObjectId's
 #
-# TODO - TO PONDER
-# 	collapse find_all and find into one?
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
 
 
 from bson import ObjectId
+import hashlib, uuid # for passwords
+# for reset_code
+import string, random
+from datetime import datetime, timedelta 
 
 from app.database import db
-from app import auth
-from . import stamp_last_modified
+from .model_utility import stamp_last_modified
 import list
+
+RESET_CODE_EXPIRATION = timedelta(hours=1)
 
 
 
@@ -58,8 +61,8 @@ def insert_new(data):
 	if db.cleaners.find_one({"phonenumber": data["phonenumber"]}):
 		raise Exception("cleaner with phonenumber {0} already exists".format(data["phonenumber"]))
 
-	salt = auth.generate_salt()
-	hashed_pwd = auth.hash_password(data["password"], salt)
+	salt = generate_salt()
+	hashed_pwd = hash_password(data["password"], salt)
 
 	data = stamp_last_modified({
 		"name": data["name"],
@@ -76,6 +79,10 @@ def update(id, data):
 	data = stamp_last_modified(data)
 	ret = db.cleaners.update({ "_id": ObjectId(id) }, { "$set": data})
 	return ret
+
+def update_password(id, new_password, salt):
+	new_hashed_pwd = hash_password(new_password, salt)
+	update(id, { "hashed_pwd": new_hashed_pwd })
 
 def add_list(cleaner_id, list_data=None):
 	cleaner_id = ObjectId(cleaner_id)
@@ -101,6 +108,28 @@ def public(cleaner):
 
 
 
+
+#- Helper methods -----------------------------------
+
+def generate_salt():
+	return uuid.uuid4().hex
+
+def hash_password(password, salt):
+	return hashlib.sha512(password + salt).hexdigest()
+
+def password_valid(password, salt, hashed_pwd):
+	hash = hash_password(password, salt)
+	return (hashed_pwd == hash)
+
+def code_generator(size=4, chars=string.ascii_uppercase + string.digits):
+	return ''.join(random.choice(chars) for _ in range(size))
+
+def generate_reset_code():	
+	reset_code = code_generator(size=4)
+	reset_code_expires = datetime.now() + RESET_CODE_EXPIRATION
+	return (reset_code, reset_code_expires)
+
+#----------------------------------- Helper methods -
 
 
 

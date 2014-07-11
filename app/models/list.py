@@ -23,7 +23,7 @@
 from bson import ObjectId
 
 from app.database import db
-from . import stamp_last_modified
+from .model_utility import stamp_last_modified
 import room
 
 
