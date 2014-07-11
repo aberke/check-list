@@ -24,6 +24,9 @@ HOST = os.getenv('HOST', '127.0.0.1')
 PORT = os.getenv('PORT', 3000)
 DEBUG= False if ENVIRONMENT == 'PRODUCTION' else True
 
+# TODO - CHANGE BACK
+DEBUG = True
+
 
 # - MONGO ----------------------------------
 # if development: host is "mongodb://localhost:27017"

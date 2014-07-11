@@ -8,7 +8,8 @@
 # 	Written: Summer 2014
 #
 #
-# 	api.py
+# 	/api/__init__.py
+#
 # 	API endpoints
 # 	-------------------------
 # GET 				/api/cleaner/validate-new-phonenumber/<phonenumber>
@@ -37,7 +38,7 @@ import json
 
 
 from app.lib.util import yellERROR, dumpJSON, respond500, respond200
-from app.lib import twilio_tools, s3
+from app.lib import twilio_tools
 from app import auth
 from app.models import cleaner, list as List, room
 
