@@ -48,6 +48,9 @@ TODO
 	- pro: modularity
 	- con: extra files to request
 
+- protect API endpoints
+	- write middleware
+
 
 - set cache TTL to 0 for /auth/user ?
 

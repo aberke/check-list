@@ -280,11 +280,6 @@ special case is the .heading
 	float: right;
 	margin: 10px 15px;
 }
-#send-btn {
-	width: auto;
-	float: right;
-	margin: 15px;
-}
 
 /*---------------------- view -*/
 
@@ -293,6 +288,9 @@ special case is the .heading
 
 .list-main-info {
 	height: 50px;
+}
+#list-info .error {
+	max-width: 200px;
 }
 #list-info label, 
 #list-info input, 
@@ -341,6 +339,17 @@ special case is the .heading
 .task.add-custom-task {
 	background-color: white;
 	color: #1b1464;
+}
+
+#send-btn {
+	width: auto;
+	float: right;
+	margin: 15px;
+}
+#sent-confirmation {
+	text-align: right;
+	margin: 15px;
+	color: #29abe2;
 }
 
 /* ------- index-view ---------- */

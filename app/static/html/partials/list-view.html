@@ -14,6 +14,7 @@
 			</div>
 		</div>
 		<div ng-show="editingListInfo">
+			<p class='error'>{{error.message}}</p>
 			<div class='input-group'>
 				<div class='label-container'><label>Name:</label></div>
 				<input ng-model="list.name" type="text">
@@ -50,7 +51,8 @@
 		</div>
 	</div>
 
-	<button ng-click="sendList()" id='send-btn' class='btn'>SEND</button>
+	<button ng-show="!confirmationSent" ng-click="sendList()" id='send-btn' class='btn'>SEND</button>
+	<p ng-show="confirmationSent" id='sent-confirmation'>SENT!</p>
 
 </div>
 

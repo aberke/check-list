@@ -109,7 +109,7 @@ function NewCntl($scope, $location, APIservice) {
 			$scope.error.message = message;
 			$scope.error.phonenumber = true;
 		}
-		APIservice.GET('/cleaner/validate-new-phonenumber/' + phonenumber).then(successCallback, errorCallback);
+		APIservice.GET('/api/cleaner/validate-new-phonenumber/' + phonenumber).then(successCallback, errorCallback);
 	}
 
 	$scope.submitPassword = function() {
@@ -134,7 +134,7 @@ function NewCntl($scope, $location, APIservice) {
 		var errorCallback = function(message) {
 			$scope.error.message = message;
 		}
-		APIservice.POST('/cleaner', $scope.cleaner).then(successCallback, errorCallback);
+		APIservice.POST('/api/cleaner', $scope.cleaner).then(successCallback, errorCallback);
 	}
 
 	function init() {
@@ -185,7 +185,7 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 		var successCallback = function(data) {
 			$scope.stage = 1;
 		}
-		APIservice.POST("/cleaner/auth/send-reset-code", $scope.cleaner).then(successCallback, errorCallback);
+		APIservice.POST("/auth/send-reset-code", $scope.cleaner).then(successCallback, errorCallback);
 	}
 	$scope.submitNewPassword = function() {
 		// clear old error
@@ -211,7 +211,7 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 			console.log('successCallback', data)
 			$location.path('/profile/' + $scope.cleaner.phonenumber);
 		}
-		APIservice.PUT("/cleaner/auth/reset-password", $scope.cleaner).then(successCallback, errorCallback);
+		APIservice.PUT("/auth/reset-password", $scope.cleaner).then(successCallback, errorCallback);
 	}
 }
 
@@ -244,7 +244,7 @@ function DashboardCntl($scope, $location) {
 	init();
 }
 
-function ListCntl($scope, TaskFactory) {
+function ListCntl($scope, TaskFactory, APIservice) {
 
 	$scope.rooms;
 	$scope.list;
@@ -280,14 +280,24 @@ function ListCntl($scope, TaskFactory) {
 	}
 	$scope.sendList = function() {
 		console.log('sendList')
+		$scope.error = {};
 		/* if still need to edit list info, force them to do so
 			open up the list editing and scroll to top of the page where it is
 		*/ 
 		if (!($scope.list.phonenumber && $scope.list.location && $scope.list.name)) {
 			$scope.editingListInfo = true;
 			document.body.scrollTop = document.documentElement.scrollTop = 0;
+			$scope.error.message = 'required...'
 			return false;
 		}
+		var successCallback = function() {
+			$scope.editingListInfo = false;
+			$scope.confirmationSent = true;
+		}
+
+		// TODO -- MAKE PUT INSTEAD
+		//APIservice.PUT('/api/list/send').then(successCallback, errorCallback);
+		successCallback();
 	}
 	
 

@@ -5,10 +5,10 @@
 #	Brooklyn, NYC
 #
 # 	Author: Alexandra Berke (aberke)
-# 	Written: June 2014
+# 	Written: Summer 2014
 #
 #
-# 	auth.py
+# 	/auth/auth_core.py
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
@@ -35,7 +35,7 @@ def login(user_data):
 
 
 
-#- Utility methods -----------------------------------
+#- Helper methods -----------------------------------
 
 def generate_salt():
 	return uuid.uuid4().hex
@@ -50,7 +50,7 @@ def password_valid(password, salt, hashed_pwd):
 def code_generator(size=4, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for _ in range(size))
 
-#----------------------------------- Utility methods -
+#----------------------------------- Helper methods -
 
 
 

@@ -5,7 +5,7 @@
 #	Brooklyn, NYC
 #
 # 	Author: Alexandra Berke (aberke)
-# 	Written: June 2014
+# 	Written: Summer 2014
 #
 #
 #
@@ -19,7 +19,9 @@
 from pymongo import MongoClient
 
 import config
-from .util import yellERROR
+from lib.util import yellERROR
+
+
 
 def get_db():
 	if not db:
@@ -48,8 +50,16 @@ db = connect()
 def drop_cleaners():
 	return db.cleaners.remove()
 
+def drop_lists():
+	return db.lists.remove()
+
+def drop_rooms():
+	return db.rooms.remove()
+
 def drop_all():
-	return drop_cleaners()
+	drop_cleaners()
+	drop_lists()
+	drop_rooms()
 
 # -------- FOR COMMAND-LINE TESTING USE ------------------
 

@@ -27,8 +27,11 @@ app = Flask('app')
 app.config.from_object('config')
 Compress(app)
 
-from cleaner import cleaner as cleaner_blueprint
-app.register_blueprint(cleaner_blueprint, url_prefix='/cleaner')
+from api import bp as api_blueprint
+app.register_blueprint(api_blueprint, url_prefix='/api')
+
+from auth import bp as auth_blueprint
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 
 #---------------------------------------------- Configuration #

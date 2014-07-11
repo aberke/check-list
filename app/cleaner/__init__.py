@@ -7,7 +7,7 @@
 # 	Author: Alexandra Berke (aberke)
 # 	Written: Summer 2014
 #
-#
+#	DEPRECATED -- NOT IN USE
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
@@ -15,38 +15,33 @@
 from flask import Blueprint, request, session, redirect
 import json
 
-from ..util import yellERROR, dumpJSON, respond500, respond200
-import app.twilio_tools as twilio_tools
-import app.s3 as s3
+
+from app.lib.util import yellERROR, dumpJSON, respond500, respond200
+from app.lib import twilio_tools, s3
 import auth
 import model
 
 
-cleaner = Blueprint('cleaner', __name__)
+bp = Blueprint('cleaner', __name__)
 
 
 """
 endpoints
 ------------------
-POST 		/cleaner    			-> create user, login(user)
 GET 		/cleaner/all
-GET			/cleaner/<id>
-PUT 	 	/cleaner/<id>
+POST 		/cleaner    			-> create user, login(user)
+GET,PUT		/cleaner/<id>
 POST 		/cleaner/<id>/booking 		
 GET			/cleaner/lookup/phonenumber/<phonenumber>
 GET 		/cleaner/validate-new-phonenumber/<phonenumber>
 
-GET 		/cleaner/auth 			-> return current-user
-POST 		/cleaner/auth/login 	-> login(user)
-POST,GET	/cleaner/auth/logout 	-> logout(user)
-POST,PUT 	/cleaner/auth/send-reset-code
-POST,PUT 	/cleaner/auth/reset-password
+authentication endpoints via the auth Blueprint
 
 """
 
 # -- API routes --------------------------------------------------------
 
-@cleaner.route('/<id>', methods=['PUT'])
+@bp.route('/<id>', methods=['PUT'])
 def PUT_profile(id):
 	try:
 		data = json.loads(request.data)
@@ -58,7 +53,7 @@ def PUT_profile(id):
 		return respond500(e)
 
 
-@cleaner.route('', methods=['POST'])
+@bp.route('', methods=['POST'])
 def POST_profile():
 	""" Insert and login new cleaner """
 	try:
@@ -72,7 +67,7 @@ def POST_profile():
 		return respond500(e)
 
 
-@cleaner.route('/<id>/booking', methods=['POST'])
+@bp.route('/<id>/booking', methods=['POST'])
 def POSTbooking(id):
 	try:
 		data = json.loads(request.data)
@@ -84,7 +79,7 @@ def POSTbooking(id):
 		return respond500(e)
 
 
-@cleaner.route('/all', methods=['GET'])
+@bp.route('/all', methods=['GET'])
 def GET_all_cleaners():
 	try:
 		cleaners = model.get_all()
@@ -93,7 +88,7 @@ def GET_all_cleaners():
 		return respond500(e)
 
 
-@cleaner.route('/<id>', methods=['GET'])
+@bp.route('/<id>', methods=['GET'])
 def GET_cleaner_by_id(id):
 	try:
 		cleaner = model.get_cleaner(id=id)
@@ -101,12 +96,12 @@ def GET_cleaner_by_id(id):
 	except Exception as e:
 		return respond500(e)
 
-@cleaner.route('/lookup/phonenumber/<phonenumber>')
+@bp.route('/lookup/phonenumber/<phonenumber>')
 def GET_cleaner_by_phonenumber(phonenumber):
 	cleaner = model.get_cleaner(phonenumber=phonenumber)
 	return dumpJSON(cleaner)
 
-@cleaner.route('/validate-new-phonenumber/<phonenumber>')
+@bp.route('/validate-new-phonenumber/<phonenumber>')
 def GET_validate_new_phonenumber(phonenumber):
 	cleaner = model.get_cleaner(phonenumber=phonenumber)
 	if cleaner:
@@ -120,94 +115,6 @@ def GET_validate_new_phonenumber(phonenumber):
 # ------------------------------------------------------- API routes -
 
 
-
-# - Auth routes ------------------------------------------
-
-from datetime import datetime, timedelta
-RESET_CODE_EXPIRATION = timedelta(hours=1)
-
-@cleaner.route('/auth/send-reset-code', methods=['POST', 'PUT'])
-def send_reset_code():
-	"""
-	Send reset_code via SMS to the user 
-		Each reset_code expires after RESET_CODE_EXPIRATION
-		If not yet set, or if expired, reset reset_code and reset_code_expires
-	"""
-	try:
-		data = json.loads(request.data)
-		if not 'phonenumber' in data:
-			raise Exception("No phonenumber provided")
-		phonenumber = data['phonenumber']
-		cleaner = model.get_cleaner(phonenumber=phonenumber)
-		if not cleaner:
-			raise Exception(str("No user with phonenumber " + phonenumber))
-
-		if ('reset_code' in cleaner and 'reset_code_expires' in cleaner and (datetime.now() < cleaner['reset_code_expires'])):
-			reset_code = cleaner["reset_code"]
-		else:
-			reset_code = auth.code_generator(size=4)
-			reset_code_expires = datetime.now() + RESET_CODE_EXPIRATION
-			model.update_cleaner(cleaner["_id"], {"reset_code": reset_code, "reset_code_expires": reset_code_expires})
-
-		twilio_tools.send_SMS(phonenumber, str("Your password reset code is: " + reset_code))
-		return respond200()
-	except Exception as e:
-		return respond500(e)
-
-@cleaner.route('/auth/reset-password', methods=['POST', 'PUT'])
-def POST_reset_password():
-	try:
-		data = json.loads(request.data)
-		cleaner = model.get_cleaner(phonenumber=data["phonenumber"])
-		if not (cleaner and 'reset_code' in cleaner):
-			raise Exception(str("Something went wrong"))
-
-		if not ((data['reset_code'] == cleaner["reset_code"]) and (datetime.now() < cleaner['reset_code_expires'])):
-			raise Exception(str("Invalid password reset code"))
-
-		# if they made it this far all is good
-		new_hashed_pwd = auth.hash_password(data["password"], cleaner["salt"])
-		model.update_cleaner(cleaner["_id"], {"hashed_pwd": new_hashed_pwd})
-
-		cleaner_data = model.public_cleaner(cleaner)
-		auth.login(cleaner_data)
-		return respond200()
-	except Exception as e:
-		return respond500(e)
-
-
-
-@cleaner.route('/auth', methods=['GET'])
-def GET_user():
-	return dumpJSON(auth.get_user())
-
-@cleaner.route('/auth/logout', methods=['GET', 'POST'])
-def logout():
-	auth.logout()
-	return redirect('/')
-
-@cleaner.route('/auth/login', methods=['POST'])
-def POST_login(data=None):
-	try:
-		data = json.loads(request.data)
-		if not (data["phonenumber"] and data["password"]):
-			raise Exception("phonenumber and password required to log in")
-
-		cleaner = model.get_cleaner(phonenumber=data['phonenumber'])
-		if not cleaner:
-			raise Exception("No cleaner with phonenumber {0}".format(data["phonenumber"]))
-
-		if not auth.password_valid(data["password"], cleaner["salt"], cleaner["hashed_pwd"]):
-			raise Exception("Incorrect password")
-
-		profile = model.public_cleaner(cleaner)
-		auth.login(profile)
-		return dumpJSON(profile)
-
-	except Exception as e:
-		return respond500(e)
-
-# ------------------------------------------------------- Auth routes -
 
 
 

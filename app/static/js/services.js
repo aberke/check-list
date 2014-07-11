@@ -16,8 +16,7 @@ var FormService = function() {
 }
 
 
-var APIservice = function($rootScope, $http, $q){
-  /* $rootScope broadcasts errors */
+var APIservice = function($http, $q){
 
   function HTTP(method, endpoint, data, params, options) {
 
@@ -79,16 +78,16 @@ var APIservice = function($rootScope, $http, $q){
 
 };
 
-var AuthService = function($rootScope, $window, APIservice) {
+var AuthService = function($window, APIservice) {
 
   this.logout = function() {
-    $window.location = "/cleaner/auth/logout";
+    $window.location = "/auth/logout";
   }
   this.login = function(data) {
-    return APIservice.POST('/cleaner/auth/login', data);
+    return APIservice.POST('/auth/login', data);
   }
   this.GETuser = function() {
-    return APIservice.GET('/cleaner/auth');
+    return APIservice.GET('/auth/user');
   }
 
 }
