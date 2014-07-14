@@ -91,7 +91,7 @@ def add_list(cleaner_id, list_data=None):
 	return list_id
 
 def public(cleaner):
-	if not cleaner:
+	if not (cleaner and cleaner['_id']):
 		return None
 	exclude_fields = ['salt', 'hashed_pwd']
 	profile = {}

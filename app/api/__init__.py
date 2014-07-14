@@ -23,7 +23,7 @@
 # POST,PUT 			/api/list/<id>/send
 # POST 				/api/list/<id>/room
 #
-# GET 				/api/room/search ?_list=list._id | returns all
+# GET 				/api/room/search ?[populate_tasks=boolean]&[_list=list._id | returns all]
 # GET,PUT,DELETE 	/api/room/<id>
 # POST,PUT 			/api/room/<id>/task
 #
@@ -114,7 +114,8 @@ def GET_validate_new_phonenumber(phonenumber):
 @bp.route('/cleaner/<cleaner_id>/list', methods=['POST'])
 def POST_list(cleaner_id):
 	try:
-		list_id = cleaner.add_list(cleaner_id)
+		list_data = json.loads(request.data)
+		list_id = cleaner.add_list(cleaner_id, list_data=list_data)
 		return dumpJSON({ '_id': list_id })
 	except Exception as e:
 		return respond500(e)
@@ -125,7 +126,7 @@ def GET_list_search():
 	""" 
 	Returns List []
 	Parameters:
-		_cleaner  -> search by cleaner 
+		_cleaner  -> search by cleaner
 	searches all if no parameters
 	"""
 	try:
@@ -152,7 +153,7 @@ def PUT_list(id):
 	try:
 		data = json.loads(request.data)
 		List.update(id, data)
-		return respond200()
+		return dumpJSON({ '_id': id })
 	except Exception as e:
 		return respond500(e)
 
@@ -174,20 +175,21 @@ def POST_room(list_id):
 	except Exception as e:
 		return respond500(e)
 
-# GET 		/api/room/search  ?_list=list._id | returns all
+# GET 		/api/room/search  ?[populate_tasks=boolean]&[_list=list._id | returns all]
 @bp.route('/room/search', methods=['GET'])
 def GET_room_search():
 	""" 
 	Returns List []
 	Parameters:
-		_list  -> search by list
+		_list  		-> search by list
+		populate_tasks  -> populate tasks list
 	searches all if no parameters
 	"""
 	try:
-		if '_list' in request.args:
-			result = room.find(_list=request.args['_list'])
-		else:
-			result = room.find()
+		_list 		= request.args['_list'] if '_list' in request.args else None 
+		populate_tasks	= request.args['populate_tasks'] if 'populate_tasks' in request.args else None 
+
+		result = room.find(_list=_list, populate_tasks=populate_tasks)
 		return dumpJSON(result)
 	except Exception as e:
 		return respond500(e)

@@ -33,7 +33,7 @@ class JSONEncoder(json.JSONEncoder):
 encoder = JSONEncoder()
 
 
-def dumpJSON(data, mongo=False):
+def dumpJSON(data):
 	if not isinstance(data, str):
 		data = encoder.encode(data)
 	response_headers = {'Content-Type': 'application/json'}

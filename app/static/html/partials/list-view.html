@@ -27,6 +27,8 @@
 				<div class='label-container'><label>Phone:</label></div>
 				<input ng-model="list.phonenumber" type="number">
 			</div>
+
+			<button ng-click="saveListInfo()" class='save-btn btn short'>SAVE</button>
 		</div>
 	</div>
 
@@ -51,7 +53,7 @@
 		</div>
 	</div>
 
-	<button ng-show="!confirmationSent" ng-click="sendList()" id='send-btn' class='btn'>SEND</button>
+	<button ng-show="!confirmationSent" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
 	<p ng-show="confirmationSent" id='sent-confirmation'>SENT!</p>
 
 </div>

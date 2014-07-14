@@ -44,6 +44,8 @@ Analytics
 TODO
 ---
 
+- test coverage for all api endpoints relating to task
+
 - test coverage for cleaner.update_password and cleaner.password_valid
 
 - move hamburger-control and control to directives?

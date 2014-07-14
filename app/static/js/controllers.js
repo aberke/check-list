@@ -14,10 +14,10 @@ AngularJS controllers
 
 *********************************************************************/
 
-function MainCntl($scope, $window, $location, APIservice, AuthService) {
+function MainCntl($scope, $window, $location, APIservice, UserFactory) {
 	/* This controller's scope spans over all views */
 	$scope.domain = $window.location.origin;
-	$scope.user = null;
+	$scope.user;
 	var showingControls;
 	var view;
 
@@ -51,14 +51,12 @@ function MainCntl($scope, $window, $location, APIservice, AuthService) {
 	}
 	$scope.logout = function(){
 		$scope.user = null;
-		AuthService.logout();
+		UserFactory.logout();
 	}
 	var resetUser = function() {
 		$scope.user = null;
-		AuthService.GETuser().then(function(user) {
-			if (user && user != "null") {
-				$scope.user = user;
-			}
+		UserFactory.GETuser().then(function(user) {
+			$scope.user = user;
 			console.log('user', user)
 		});
 	}
@@ -146,7 +144,7 @@ function NewCntl($scope, $location, APIservice) {
 	init();
 }
 
-function LoginCntl($scope, $rootScope, $location, APIservice, AuthService) {
+function LoginCntl($scope, $location, APIservice, UserFactory) {
 
 	$scope.cleaner = {};
 	$scope.error = {};
@@ -157,10 +155,9 @@ function LoginCntl($scope, $rootScope, $location, APIservice, AuthService) {
 			$scope.error.message = message;
 		}
 		var successCallback = function(data) {
-			$rootScope.user = data;
 			$location.path('/dashboard'); 
 		}
-		AuthService.login($scope.cleaner).then(successCallback, errorCallback);
+		UserFactory.login($scope.cleaner).then(successCallback, errorCallback);
 	}
 }
 
@@ -208,14 +205,13 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 			$scope.error.message = message;
 		}
 		var successCallback = function(data) {
-			console.log('successCallback', data)
-			$location.path('/profile/' + $scope.cleaner.phonenumber);
+			$location.path('/dashboard');
 		}
 		APIservice.PUT("/auth/reset-password", $scope.cleaner).then(successCallback, errorCallback);
 	}
 }
 
-function DashboardCntl($scope, $location) {
+function DashboardCntl($scope, $location, user, lists) {
 
 	$scope.lists;
 
@@ -244,15 +240,41 @@ function DashboardCntl($scope, $location) {
 	init();
 }
 
-function ListCntl($scope, TaskFactory, APIservice) {
-
+function ListCntl($scope, TaskFactory, APIservice, user) {
+	/* ListCntl passed the list object or null if this is a new list */
+	console.log('user', user)
+	var cleaner = user;
+	var cleanerID = user._id;
+	console.log('cleanerID', cleanerID)
+	if (!cleanerID) { console.log('TODO');}
 	$scope.rooms;
 	$scope.list;
+	$scope.editingListInfo;
 
-	$scope.editingListInfo = false;
+	$scope.saveListInfo = function() {
+		/* if no list._id -> new list, must POST (just the first time)
+			else: PUT data
+		*/
+		$scope.editingListInfo = false;
+	console.log('saveListInfo', $scope.list)
+
+		var errorCallback = function(message) {
+			console.log('ERROR on saveListInfo', message)
+		}
+		var successCallback = function(data) {
+			console.log('successCallback', data)
+			$scope.list._id = data._id;
+		}
+
+		if (!$scope.list._id) {
+			APIservice.POST('/api/cleaner/' + cleanerID + '/list', $scope.list).then(successCallback, errorCallback);
+		}
+	}
+
+
 	$scope.clickListInfo = function() {
 		if ($scope.editingListInfo) {
-			$scope.editingListInfo = false;
+			$scope.saveListInfo();
 		} else {
 			$scope.editingListInfo = true;
 		}
@@ -302,13 +324,9 @@ function ListCntl($scope, TaskFactory, APIservice) {
 	
 
 	var init = function() {
+		$scope.editingListInfo = false;
 
 		$scope.list = {
-			'_id': null,
-			'name': null,
-			'phonenumber': null,
-			'location': null,
-			'notes': null,
 			'rooms': [],
 		};
 
@@ -337,7 +355,7 @@ function ListCntl($scope, TaskFactory, APIservice) {
 			'taskObjs': TaskFactory.defaultTaskObjs(),
 			'tasks': [],
 		},{
-			'name': 'EXTRA',
+			'name': 'ADD ROOM',
 			'type': 'etc',
 			'taskCount': 0,
 			'taskObjs': TaskFactory.defaultTaskObjs(),

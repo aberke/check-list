@@ -16,6 +16,8 @@
 
 from flask import session
 
+from app.lib.util import encoder
+
 
 #- Session interactions ---------------------------------
 
@@ -26,6 +28,7 @@ def logout():
 	session['user'] = None
 
 def login(user_data):
+	user_data = encoder.encode(user_data)
 	session['user'] = user_data
 
 #--------------------------------- Session interactions -

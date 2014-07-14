@@ -77,19 +77,3 @@ var APIservice = function($http, $q){
   };
 
 };
-
-var AuthService = function($window, APIservice) {
-
-  this.logout = function() {
-    $window.location = "/auth/logout";
-  }
-  this.login = function(data) {
-    return APIservice.POST('/auth/login', data);
-  }
-  this.GETuser = function() {
-    return APIservice.GET('/auth/user');
-  }
-
-}
-
-

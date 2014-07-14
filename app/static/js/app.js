@@ -25,11 +25,11 @@ var App = angular.module('App', ['ngRoute', 'houseCleanersFilters'])
 
 		// register services
 		$provide.service('APIservice', APIservice);
-		$provide.service('AuthService', AuthService);
 
 
 		// register factories
 		$provide.factory('TaskFactory', TaskFactory);
+		$provide.factory('UserFactory', UserFactory);
 
 	});
 

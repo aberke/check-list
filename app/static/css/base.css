@@ -100,7 +100,7 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 }
 .text-field.short,
 .btn.short {
-	width: 250px;
+	width: auto;
 }
 input,
 .text-field {
@@ -315,7 +315,10 @@ special case is the .heading
 	box-sizing: content-box;
 	border-radius: 0;
 }
-
+#list-info .save-btn {
+	display: block;
+	margin: auto;
+}
 
 
 .room-main-info {
@@ -342,7 +345,6 @@ special case is the .heading
 }
 
 #send-btn {
-	width: auto;
 	float: right;
 	margin: 15px;
 }

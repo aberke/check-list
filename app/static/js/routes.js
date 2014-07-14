@@ -13,6 +13,15 @@
 
 App.config(function($routeProvider) {
 
+	var userOrRedirect = function(UserFactory, $location) {
+		return UserFactory.GETuser().then(function(user) {
+			if (!user) { /* user isn't logged in - redirect to home */
+				$location.path('/');
+			}
+			return user; /* success: return user object */
+		});
+	};
+
 	$routeProvider
 		.when('/', {
 			templateUrl: '/static/html/partials/index.html',
@@ -36,10 +45,22 @@ App.config(function($routeProvider) {
 		.when('/dashboard', {
 			templateUrl: '/static/html/partials/dashboard-view.html',
 			controller: DashboardCntl,
+			resolve: {
+				user: userOrRedirect,
+				lists: function(UserFactory) {
+					return UserFactory.GETlists().then(function(lists) {
+						console.log('UserFactory.then', lists)
+						return lists;
+					});
+				} ,
+			},
 		})
 		.when('/list/new', {
 			templateUrl: '/static/html/partials/list-view.html',
 			controller: ListCntl,
+			resolve: {
+				user: userOrRedirect,
+			},
 		})
 		.when('/list/:id', {
 			templateUrl: '/static/html/partials/list-view.html',

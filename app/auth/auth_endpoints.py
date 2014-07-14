@@ -78,9 +78,7 @@ def POST_reset_password():
 			raise Exception(str("Invalid password reset code"))
 
 		# if they made it this far all is good
-		cleaner.update_password(data["password"], c["salt"])
-		# new_hashed_pwd = cleaner.hash_password(data["password"], c["salt"])
-		# cleaner.update(c["_id"], {"hashed_pwd": new_hashed_pwd})
+		cleaner.update_password(c["_id"], data["password"], c["salt"])
 
 		login(cleaner.public(c))
 		return respond200()
