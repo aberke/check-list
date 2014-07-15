@@ -358,7 +358,7 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 
 
 	$scope.sendList = function() {
-		console.log('sendList')
+		$scope.sendStatus = 'sending';
 		$scope.error = {};
 		/* if still need to edit list info, force them to do so
 			open up the list editing and scroll to top of the page where it is
@@ -371,12 +371,13 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 		}
 		var successCallback = function() {
 			$scope.editingListInfo = false;
-			$scope.confirmationSent = true;
+			$scope.sendStatus = 'sent';
 		}
 		var errorCallback = function(message) {
 			$scope.editingListInfo = true;
 			document.body.scrollTop = document.documentElement.scrollTop = 0;
 			$scope.error.message = message;
+			$scope.sendStatus = null;
 		}
 		APIservice.PUT('/api/cleaner/' + $scope.user._id + '/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
 	}

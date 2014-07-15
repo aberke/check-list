@@ -53,8 +53,12 @@
 		</div>
 	</div>
 
-	<button ng-show="!confirmationSent&&!clientView" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
-	<p ng-show="confirmationSent" id='sent-confirmation'>SENT!</p>
+	<!-- list sending UI -->
+	<span ng-show="!clientView">
+		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
+		<p ng-show="sendStatus=='sending'" id='sent-confirmation'>SENDING...</p>
+		<p ng-show="sendStatus=='sent'" id='sent-confirmation'>SENT!</p>
+	</span>
 
 </div>
 
