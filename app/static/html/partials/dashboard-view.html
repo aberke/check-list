@@ -6,13 +6,13 @@
 	</div>
 
 	<div class='heading container-bar'>
-		<img class='icon logo'>
+		<span class='icon logo'></span>
 		<h1 class='title'>DASHBOARD</h1>
 	</div>
 
 
 	<div ng-click="newList()" class='touchable list-item-container container-bar'>
-		<img class='icon add'>
+		<span class='icon add'></span>
 
 		<div class='list-item'>
 			<h2 class='title'>CREATE NEW LIST</h2>
@@ -20,7 +20,7 @@
 	</div>
 
 	<div ng-repeat="list in lists" class='touchable list-item-container container-bar'>
-		<img ng-click="selectList(list)" class='icon house-{{$index}} house'>
+		<span ng-click="selectList(list)" class='icon house-{{$index}} house'></span>
 
 		<div ng-click="selectList(list)" class='list-item'>
 			<h2 class='name'>{{list.name || 'UNTITLED'}}</h2>

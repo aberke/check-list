@@ -48,8 +48,6 @@ TODO
 
 - handle errors with UI feedback in your controllers errorCallback functions
 
-- add deleting rooms
-
 - all things marked with TODO in test.py etc
 
 - handle default room data

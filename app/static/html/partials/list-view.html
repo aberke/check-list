@@ -41,8 +41,8 @@
 
 		<div ng-show="room.active" class='tasks-container'>
 			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': (task.selected&&!clientView)}" ng-repeat="task in room.tasks">
-				<span ng-show="!clientView" ng-show="task.selected">-</span>
-				<span ng-show="!clientView" ng-show="!task.selected">+</span>
+				<span ng-show="task.selected&&!clientView">-</span>
+				<span ng-show="!task.selected&&!clientView">+</span>
 				<span>{{task.name}}</span>
 			</div>
 			<div ng-show="!clientView" ng-model="newCustomTask" class='task add-custom-task'>

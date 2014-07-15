@@ -47,8 +47,9 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 }
 
 .icon.logo {
-	border: 2px solid white;
 	border-radius: 50%;
+	background: url(/static/img/sl_logo_100px.png);
+	background-size: contain;
 }
 .icon.bathroom {
 	background: url(/static/icon/BATHROOM.png);
