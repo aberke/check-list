@@ -254,11 +254,41 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	init();
 }
 
+function ClientListCntl($scope, APIservice, list) {
+
+	$scope.clientView = true;
+	$scope.list = list;
+
+	$scope.clickRoom = function(room) {
+		room.active = room.active ? false : true;
+	}
+
+
+	var GETrooms = function() {
+		var successCallback = function(rooms) {
+			$scope.list.rooms = rooms;
+		}
+		var errorCallback = function(message) {
+			console.log('TODO -- handle error')
+		}
+		APIservice.GET('/api/room/search?populate_tasks=true&_list=' + $scope.list._id).then(successCallback, errorCallback);
+	}
+	
+
+	var init = function() {
+
+		$scope.list = list;
+		$scope.list.rooms = [];
+		GETrooms();
+
+		console.log('list', $scope.list)
+	}
+	init();
+}
+
 function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	/* ListCntl passed the list object or null if this is a new list */
-	var cleaner = user;
-	var cleanerID = user._id;
-	if (!cleanerID) { console.log('TODO');}
+	$scope.user = user;
 	$scope.rooms;
 	$scope.list;
 	$scope.editingListInfo;
@@ -333,20 +363,22 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 		/* if still need to edit list info, force them to do so
 			open up the list editing and scroll to top of the page where it is
 		*/ 
-		if (!($scope.list.phonenumber && $scope.list.location && $scope.list.name)) {
+		if (!$scope.list.phonenumber) {
 			$scope.editingListInfo = true;
 			document.body.scrollTop = document.documentElement.scrollTop = 0;
-			$scope.error.message = 'required...'
+			$scope.error.message = 'Phonenumber required';
 			return false;
 		}
 		var successCallback = function() {
 			$scope.editingListInfo = false;
 			$scope.confirmationSent = true;
 		}
-
-		// TODO -- MAKE PUT INSTEAD
-		//APIservice.PUT('/api/list/send').then(successCallback, errorCallback);
-		successCallback();
+		var errorCallback = function(message) {
+			$scope.editingListInfo = true;
+			document.body.scrollTop = document.documentElement.scrollTop = 0;
+			$scope.error.message = message;
+		}
+		APIservice.PUT('/api/cleaner/' + $scope.user._id + '/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
 	}
 
 	var GETrooms = function() {

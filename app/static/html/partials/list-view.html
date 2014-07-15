@@ -1,6 +1,6 @@
 <div class='view' id='list-view'>
 
-	<div ng-click="clickHamburger()" class='hamburger-control'>
+	<div ng-show="!clientView" ng-click="clickHamburger()" class='hamburger-control'>
 		<img src="/static/icon/hamburger.png" class='hamburger'>
 	</div>
 
@@ -40,12 +40,12 @@
 		</div>
 
 		<div ng-show="room.active" class='tasks-container'>
-			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.tasks">
-				<span ng-show="task.selected">-</span>
-				<span ng-show="!task.selected">+</span>
+			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': (task.selected&&!clientView)}" ng-repeat="task in room.tasks">
+				<span ng-show="!clientView" ng-show="task.selected">-</span>
+				<span ng-show="!clientView" ng-show="!task.selected">+</span>
 				<span>{{task.name}}</span>
 			</div>
-			<div ng-model="newCustomTask" class='task add-custom-task'>
+			<div ng-show="!clientView" ng-model="newCustomTask" class='task add-custom-task'>
 				<span>+</span>
 				<input ng-model="newCustomTask" type="text">
 				<button class='save-btn' ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">SAVE</button>
@@ -53,7 +53,7 @@
 		</div>
 	</div>
 
-	<button ng-show="!confirmationSent" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
+	<button ng-show="!confirmationSent&&!clientView" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
 	<p ng-show="confirmationSent" id='sent-confirmation'>SENT!</p>
 
 </div>

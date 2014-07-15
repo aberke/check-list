@@ -20,6 +20,8 @@ import os
 # test.py sets environment to TESTING, heroku has environment as PRODUCTION
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'DEVELOPMENT')
 
+DOMAIN_NAME = os.environ.get('DOMAIN_NAME', 'http://127.0.0.1:3000')
+
 HOST = os.getenv('HOST', '127.0.0.1')
 PORT = os.getenv('PORT', 3000)
 DEBUG= False if ENVIRONMENT == 'PRODUCTION' else True

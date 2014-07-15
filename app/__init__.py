@@ -38,6 +38,11 @@ def style_guide():
 	return send_file('static/html/style-guide.html')
 
 
+@app.route('/list/<id>/client')
+def client_views(id=None):
+	return base()
+
+
 @app.route('/')
 @app.route('/new')
 @app.route('/sign-in')
@@ -60,7 +65,6 @@ def user_views(id=None):
 	if not auth.get_user():
 		return redirect('/')
 	return base()
-
 
 
 @app.route('/test')

@@ -66,6 +66,18 @@ App.config(function($routeProvider) {
 				},
 			},
 		})
+		.when('/list/:id/client', {
+			templateUrl: '/static/html/partials/list-view.html',
+			controller: ClientListCntl,
+			resolve: {
+				list: function(APIservice, $route, $location) {
+					return APIservice.GET('/api/list/' + $route.current.params.id).then(function(list) {
+						if (!list) { $location.path('/'); }
+						return list;
+					});
+				},
+			},
+		})
 		.otherwise({
 			redirectTo: '/'
 		});

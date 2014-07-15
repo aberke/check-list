@@ -20,7 +20,7 @@
 #
 # GET 				/api/list/search ?_cleaner=cleaner._id | returns all
 # GET,PUT,DELETE 	/api/list/<id>
-# POST,PUT 			/api/list/<id>/send
+# PUT 				/api/cleaner/<cleaner_id>/list/<list_id>/send
 # POST 				/api/list/<id>/room
 #
 # GET 				/api/room/search ?[populate_tasks=boolean]&[_list=list._id | returns all]
@@ -39,7 +39,7 @@
 from flask import Blueprint, request, session, redirect
 import json
 
-
+import config
 from app.lib.util import yellERROR, dumpJSON, respond500, respond200
 from app.lib import twilio_tools
 from app.lib.util import JSONencoder
@@ -47,6 +47,7 @@ from app import auth
 from app.models import cleaner, list as List, room, task
 
 
+DOMAIN_NAME = config.DOMAIN_NAME
 
 bp = Blueprint('api', __name__)
 
@@ -161,6 +162,22 @@ def PUT_list(id):
 	except Exception as e:
 		return respond500(e)
 
+
+# PUT 	/api/cleaner/<cleaner_id>/list/<list_id>/send
+@bp.route('/cleaner/<cleaner_id>/list/<list_id>/send', methods=['PUT'])
+def PUT_send_list(cleaner_id, list_id):	
+	try:
+		data = JSONencoder.load(request.data)
+		c = cleaner.find_one(id=cleaner_id)
+		client_phonenumber = data['phonenumber']
+		message = ("{0} sent you a new cleaning list: {1}/list/{2}/client".format(c['name'], DOMAIN_NAME, list_id))
+		twilio_tools.send_SMS(client_phonenumber, message)
+		return respond200()
+	except Exception as e:
+		return respond500(e)
+
+
+
 # DELETE 	/api/list/<id>
 @bp.route('/list/<id>', methods=['DELETE'])
 def DELETE_list(id):
@@ -242,8 +259,6 @@ def DELETE_task(id):
 
 
 
-
-# POST,PUT 			/api/list/<id>/send
 
 # GET,DELETE 	/api/room/<id>
 

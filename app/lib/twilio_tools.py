@@ -31,7 +31,7 @@ def send_SMS(to, body):
 		client.messages.create(to=to, from_=NUMBER, body=body)
 	except TwilioRestException as e:
 		if e.code == 21211:
-			raise Exception(str(to + " is not a valid phonenumber"))
+			raise Exception("{0} is not a valid phonenumber".format(to))
 		else:
 			raise e
 
