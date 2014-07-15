@@ -12,6 +12,18 @@
 
 var UtilityService = function() {
 
+  this.dateStringToDate = function(dateString) {
+    /*
+    Server returns datetimes as UTC strings like 2014-07-15 20:56:32.027186
+    Safari fails to make a new Date out of these without extra help
+
+    @param {string} dateString   - UTC string to turn into Date object
+    Returns {Date obj}
+    */
+    var arr = dateString.split(/[- :]/);
+    return new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4], arr[5]);
+  }
+
   this.removeFromList = function(list, item, matchingKey) {
     /* 
     @param {array} list         - list from which to find and remove item

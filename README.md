@@ -44,6 +44,8 @@ Analytics
 TODO
 ---
 
+- number input for entering phonenumber on signin to bring up correct keyboard
+
 - have ListCntl inherit from ClientListCntl?
 
 - handle errors with UI feedback in your controllers errorCallback functions

@@ -247,8 +247,9 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 
 	var init = function() {
 		$scope.lists = lists;
+		// turn last_modified date strings into date objects
 		for (var i=0; i<$scope.lists.length; i++) {
-			$scope.lists[i].last_modified = new Date($scope.lists[i].last_modified);
+			$scope.lists[i].last_modified = UtilityService.dateStringToDate($scope.lists[i].last_modified);
 		}
 	}
 	init();
