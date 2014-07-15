@@ -28,19 +28,19 @@
 				<input ng-model="list.phonenumber" type="number">
 			</div>
 
-			<button ng-click="saveListInfo()" class='save-btn btn short'>SAVE</button>
+			<button ng-click="saveListInfo()" class='save-btn'>SAVE</button>
 		</div>
 	</div>
 
-	<div ng-repeat="room in rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
+	<div ng-repeat="room in list.rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
 		<div ng-click="clickRoom(room)" class='room-main-info'>
-			<img ng-class="room.type" class='icon' ng-class="room.type">
+			<img ng-class="room.type" class='icon'>
 			<h1 ng-class="room.type" class='title'>{{room.name}}</h1>
 			<span ng-class="room.type" class='task-count'>{{room.taskCount}}</span>
 		</div>
 
 		<div ng-show="room.active" class='tasks-container'>
-			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.taskObjs">
+			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.tasks">
 				<span ng-show="task.selected">-</span>
 				<span ng-show="!task.selected">+</span>
 				<span>{{task.name}}</span>
@@ -48,7 +48,7 @@
 			<div ng-model="newCustomTask" class='task add-custom-task'>
 				<span>+</span>
 				<input ng-model="newCustomTask" type="text">
-				<button ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">SAVE</button>
+				<button class='save-btn' ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">SAVE</button>
 			</div>
 		</div>
 	</div>

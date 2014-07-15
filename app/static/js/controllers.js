@@ -211,64 +211,52 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 	}
 }
 
-function DashboardCntl($scope, $location, user, lists) {
+function DashboardCntl($scope, $location, APIservice, UserFactory, user, lists) {
 
 	$scope.lists;
 
 	$scope.newList = function() {
-		console.log('newList')
-		$location.path('/list/new');
+		var successCallback = function(list) {
+			UserFactory.addList(list);
+			$location.path('/list/' + list._id);
+		}
+		APIservice.POST('/api/cleaner/' + user._id + '/list').then(successCallback);
 	}
 
 	$scope.selectList = function(list) {
-		console.log('selectList', list)
+		$location.path('/list/' + list._id);
 	}
 
 	var init = function() {
-
-		$scope.lists = [{
-			'name': 'BOB’S HOUSE',
-			'last_modified': '07/07/07',
-		},{
-			'name': 'AIRBNB #1',
-			'last_modified': '07/07/07',
-		},{
-			'name': 'AIRBNB #2',
-			'last_modified': '07/07/07',
-		},];
+		$scope.lists = lists;
+		for (var i=0; i<$scope.lists.length; i++) {
+			$scope.lists[i].last_modified = new Date($scope.lists[i].last_modified);
+		}
 	}
 	init();
 }
 
-function ListCntl($scope, TaskFactory, APIservice, user) {
+function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	/* ListCntl passed the list object or null if this is a new list */
-	console.log('user', user)
 	var cleaner = user;
 	var cleanerID = user._id;
-	console.log('cleanerID', cleanerID)
 	if (!cleanerID) { console.log('TODO');}
 	$scope.rooms;
 	$scope.list;
 	$scope.editingListInfo;
 
 	$scope.saveListInfo = function() {
-		/* if no list._id -> new list, must POST (just the first time)
-			else: PUT data
-		*/
 		$scope.editingListInfo = false;
-	console.log('saveListInfo', $scope.list)
+		console.log('saveListInfo', $scope.list)
 
 		var errorCallback = function(message) {
 			console.log('ERROR on saveListInfo', message)
 		}
 		var successCallback = function(data) {
 			console.log('successCallback', data)
-			$scope.list._id = data._id;
+			$scope.list._id = ($scope.list._id || data._id);
 		}
-
-		if (!$scope.list._id) {
-			APIservice.POST('/api/cleaner/' + cleanerID + '/list', $scope.list).then(successCallback, errorCallback);
-		}
+		APIservice.PUT('/api/list/' + $scope.list._id, $scope.list).then(successCallback, errorCallback);
 	}
 
 
@@ -286,20 +274,41 @@ function ListCntl($scope, TaskFactory, APIservice, user) {
 	$scope.clickTask = function(room, task) {
 		if (task.selected) {
 			task.selected = false;
-			room.taskCount -= 1;
+			deleteTask(task);
 		} else {
 			task.selected = true;
-			room.taskCount += 1;
+			saveTask(room, task);
 		}
 	}
 	$scope.addCustomTask = function(room, newCustomTask) {
-		room.taskObjs.push({
-			'name': newCustomTask,
-			'selected': true,
-			'custom': true,
-		});
-		room.taskCount += 1;
+		var newTask = TaskFactory.generateCustomTask(newCustomTask, room.type);
+		room.tasks.push(newTask);
+		saveTask(room, newTask);
 	}
+	var saveTask = function(room, task) {
+		var successCallback = function(data) {
+			// this is saved to the correct place in scope
+			task._id = data._id;
+			console.log('successCallback list:', $scope.list)
+		}
+		var errorCallback = function(message) {
+			console.log('ERROR', message, 'TODO: HANDLE');
+		}
+		APIservice.POST('/api/room/' + room._id + '/task', task).then(successCallback, errorCallback);
+	}
+	var deleteTask = function(task) {
+		if (!task._id) { return; }
+		// UI feedback already handled by clickTask -- looks unselected
+		var successCallback = function(data) {
+			console.log('successCallback to delete', data)
+		}
+		var errorCallback = function(message) {
+			console.log('ERROR', message, 'TODO: HANDLE');
+		}
+		APIservice.DELETE('/api/task/' + task._id).then(successCallback, errorCallback);
+	}
+
+
 	$scope.sendList = function() {
 		console.log('sendList')
 		$scope.error = {};
@@ -321,46 +330,26 @@ function ListCntl($scope, TaskFactory, APIservice, user) {
 		//APIservice.PUT('/api/list/send').then(successCallback, errorCallback);
 		successCallback();
 	}
+
+	var GETrooms = function() {
+		var successCallback = function(rooms) {
+			$scope.list.rooms = TaskFactory.setupRoomsTasks(rooms);
+		}
+		var errorCallback = function(message) {
+			console.log('TODO -- handle error')
+		}
+		APIservice.GET('/api/room/search?populate_tasks=true&_list=' + $scope.list._id).then(successCallback, errorCallback);
+	}
 	
 
 	var init = function() {
 		$scope.editingListInfo = false;
 
-		$scope.list = {
-			'rooms': [],
-		};
+		$scope.list = list;
+		$scope.list.rooms = [];
+		GETrooms();
 
-		$scope.rooms = [{
-			'name': 'LIVING ROOM',
-			'type': 'livingroom',
-			'taskCount': 0,
-			'taskObjs': TaskFactory.defaultTaskObjs(),
-			'tasks': [],
-		},{
-			'name': 'BED ROOM',
-			'type': 'bedroom',
-			'taskCount': 0,
-			'taskObjs': TaskFactory.defaultTaskObjs(),
-			'tasks': [],
-		},{
-			'name': 'BATH ROOM',
-			'type': 'bathroom',
-			'taskCount': 0,
-			'taskObjs': TaskFactory.defaultTaskObjs(),
-			'tasks': [],
-		},{
-			'name': 'KITCHEN',
-			'type': 'kitchen',
-			'taskCount': 0,
-			'taskObjs': TaskFactory.defaultTaskObjs(),
-			'tasks': [],
-		},{
-			'name': 'ADD ROOM',
-			'type': 'etc',
-			'taskCount': 0,
-			'taskObjs': TaskFactory.defaultTaskObjs(),
-			'tasks': [],
-		},];
+		console.log('list', $scope.list)
 	}
 	init();
 }

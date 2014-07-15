@@ -11,33 +11,77 @@
 ****************************************************/
 
 
-var TaskFactory = function() {
+var TaskFactory = function($http) {
 	/* used by the ListCntl to get tasks lists for the rooms */
 
-	var defaultTasks = [
-		'Vacuuming',
-		'Fluff the pillows',
-		'Polish something',
-		'Arrange the things',
-	];
-	var tasks = [{
-		'name': 'taskname',
-		'selected': false,
-		'custom': true,
-	}];
+	var defaultTasksLists; // maps { room_type: applicable default tasks }
+
+	$http.get('/static/data/default-tasks.json')
+       .then(function(res){
+          defaultTasksLists = res.data;             
+        });
+
+	var generateDefaultTask = function(name, type) {
+		return { 
+			'name': name,
+			'room_type': (type || 'all'),
+			'selected': false,
+			'custom': false,
+			'default': true,
+		};
+	};
+	var generateCustomTask = function(name, type) {
+		return {
+			'name': name,
+			'room_type': (type || 'all'),
+			'selected': true,
+			'custom': true,
+			'default': false,
+		}
+	}
+
+	var mergeDefaultTasks = function(tasksList, tasksMap, room_type) {
+		if (! (room_type && room_type in defaultTasksLists)) {
+			return;
+		}
+		var task;
+
+		// add the default tasks in
+		var defaultList = defaultTasksLists[room_type]; 
+		for (var i=0; i<defaultList.length; i++) {
+			if (defaultList[i] in tasksMap) {
+				continue;
+			}
+			task = generateDefaultTask(defaultList[i], room_type)
+			tasksList.push(task);
+			tasksMap[task.name] = task;
+		}
+	}
+
+	var setupRoomsTasks = function(rooms) {
+		for (var i=0; i<rooms.length; i++) {
+
+			var tasksList = rooms[i].tasks;
+			var tasksMap = {};
+			var t;
+			for (var j=0; j<tasksList.length; j++) {
+				t = tasksList[j];
+				tasksMap[t.name] = t;
+			}
+
+			// add the default tasks in
+			mergeDefaultTasks(tasksList, tasksMap, 'all');
+			// add in tasks specific to room_type
+			mergeDefaultTasks(tasksList, tasksMap, rooms[i].type);
+
+			rooms[i].tasks = tasksList;
+		}
+		return rooms;
+	}
 
 	return {
-		defaultTaskObjs: function() {
-			var tasks = [];
-			for (t in defaultTasks) {
-				tasks.push({
-					name: defaultTasks[t],
-					selected: false,
-					custom: false,
-				});
-			}
-			return tasks;
-		}
+		generateCustomTask: generateCustomTask,
+		setupRoomsTasks: setupRoomsTasks,
 	}
 }
 
@@ -51,8 +95,8 @@ var UserFactory = function($http, $q, $window, APIservice) {
 
 	Provides login/logout utility which update the stored user as well
 	*/
-	var self = this;
-	// following initialized in reset function
+
+	// the following are initialized in reset function
 	var user;
 	var lists;
 	var listsMap;
@@ -63,6 +107,35 @@ var UserFactory = function($http, $q, $window, APIservice) {
 		listsMap = null; // will be { list_id: list }
 	}
 	reset();
+
+	function addList(list) {
+		/* Used in Dashboard Cntl NewList function
+			As soon as that list is POSTed, want to GET it
+		*/
+		if (!listsMap) {
+			// not saving any time anyhow -- will just have to GET again later
+			return;
+		}
+		listsMap[list._id] = list;
+	}
+
+	function GETlist(listID, tries) {
+		var deferred = $q.defer();
+		var promise = deferred.promise;
+		
+		if (listsMap) {
+			deferred.resolve(listsMap[listID]);
+			return promise;
+		}
+		if (tries) {
+			deferred.reject(null);
+			console.log('ERROR in GETlist -- TODO: handle');
+			return promise;
+		}
+		promise = GETlists().then(function() { return GETlist(listID, 1); });
+		return promise;
+
+	}
 
 	function createListsMap(lists) {
 		listsMap = {};
@@ -167,12 +240,13 @@ var UserFactory = function($http, $q, $window, APIservice) {
 		user = data;
 		GETlists();
 	});
-	console.log('UserFactory')
 
 	return {
 		login: login,
 		logout: logout,
+		addList: addList,
 		GETuser: GETuser,
+		GETlist: GETlist,
 		GETlists: GETlists,
 	}
 }

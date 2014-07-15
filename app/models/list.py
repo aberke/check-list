@@ -26,6 +26,24 @@ from app.database import db
 from .model_utility import stamp_last_modified
 import room
 
+DEFAULT_ROOMS = [{
+		'name': 'BEDROOM',
+		'type': 'bedroom',
+		'tasks': [],
+	},{
+		'name': 'BATHROOM',
+		'type': 'bathroom',
+		'tasks': [],
+	},{
+		'name': 'KITCHEN',
+		'type': 'kitchen',
+		'tasks': [],
+	},{
+		'name': 'LIVING ROOM',
+		'type': 'living-room',
+		'tasks': [],
+	},]
+
 
 
 def find(id=None, _cleaner=None):
@@ -34,7 +52,9 @@ def find(id=None, _cleaner=None):
 		query['_id'] = ObjectId(id)
 	elif _cleaner:
 		query['_cleaner'] = ObjectId(_cleaner)
-	return [l for l in db.lists.find(query)]
+	result = [l for l in db.lists.find(query)]
+	return result
+
 
 def insert_new(cleaner_id, data=None):
 	"""
@@ -46,9 +66,12 @@ def insert_new(cleaner_id, data=None):
 	data["rooms"] = []
 	data = stamp_last_modified(data)
 	list_id = db.lists.insert(data)
-	return list_id
 
-#def add_room(list_id, room_data=None):
+	# TODO - BETTER SOLUTION
+	for room in DEFAULT_ROOMS:
+		add_room(list_id, room.copy())
+
+	return list_id
 
 
 def update(id, data):
@@ -57,8 +80,11 @@ def update(id, data):
 	ret = db.lists.update({ "_id": ObjectId(id) }, { "$set": data})
 	return ret
 
+
 def add_room(list_id, room_data=None):
+	room_data = room_data if room_data else {}
 	list_id = ObjectId(list_id)
+	room_data['_list'] = list_id
 	room_id = room.insert_new(list_id, room_data)
 	ret = db.lists.update({ "_id": list_id }, { "$push": {"rooms": room_id }})
 	return room_id

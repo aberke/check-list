@@ -35,16 +35,20 @@ def find(id=None, _list=None, populate_tasks=False):
 	query = {}
 	if id:
 		query['_id'] = ObjectId(id)
-	elif _list:
+	if _list:
 		query['_list'] = ObjectId(_list)
-	rooms = db.rooms.find(query)
+
+	rooms = [r for r in db.rooms.find(query)]
 
 	if populate_tasks:
 		for r in rooms:
-			r.tasks = task.find(_room=id)
-	print('rooms', rooms)
+			r['tasks'] = task.find(_room=r['_id'])
 
-	return [r for r in rooms]
+	return rooms
+
+def find_one(**kwargs):
+	result = find(**kwargs)
+	return result[0] if result else None
 
 def insert_new(list_id, data=None):
 	"""
@@ -64,9 +68,6 @@ def update(id, data):
 	return ret
 
 def add_task(room_id, task_data):
-	ret = db.rooms.update({ "_id": ObjectId(id) }, { "$push": {"tasks": task_data }})
-	return ret
-
 	room_id = ObjectId(room_id)
 	task_id = task.insert_new(room_id, task_data)
 	ret = db.rooms.update({ "_id": room_id }, { "$push": {"tasks": task_id }})
@@ -77,8 +78,9 @@ def delete(id):
 	1) delete _list's reference to room
 	2) delete room document itself
 	"""
+	id = ObjectId(id)
 	# 0) get room document to have reference it its _list
-	r = db.rooms.find({ "_id": id })
+	r = db.rooms.find_one({ "_id": id })
 	if not r:
 		raise Exception("Cannot delete room with _id {0} - no such document".format(id))
 	# 1) delete _list's reference to it

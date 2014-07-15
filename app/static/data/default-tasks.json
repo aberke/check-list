@@ -1,0 +1,45 @@
+{
+	"all": [
+			"mop floors",
+			"dust/wipe surfaces",
+			"take out trash/recycling"
+		],
+	"kitchen": [
+			"clean stove tops",
+			"clean counter tops",
+			"clean oven exterior",
+			"clean fridge exterior",
+			"wipe appliances exteriors",
+			"wipe cabinet faces",
+			"clean sink & load dishwasher"
+		],
+	"living-room": [
+			"vacuum",
+			"organize clutter",
+			"clean door handles",
+			"clean light switches",
+			"wash mirrors/glass fixtures",
+			"wipe floor baseboards",
+			"wipe windows & window sills"
+		],
+	"bedroom": [
+			"vacuum",
+			"make bed",
+			"wipe windows + window sills",
+			"fold clothes",
+			"organize clutter",
+			"clean door handles",
+			"clean light switches",
+			"wash mirrors/glass fixtures",
+			"wipe floor baseboards"
+		],
+	"bathroom": [
+			"wash/sanitize toilet",
+			"wash/sanitize sink",
+			"wash/sanitize shower",
+			"clean door handles",
+			"clean light switches",
+			"wipe cabinets/drawers exteriors",
+			"vacuum mats"
+		]
+}

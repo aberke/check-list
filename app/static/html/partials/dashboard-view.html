@@ -20,13 +20,12 @@
 	</div>
 
 	<div ng-click="selectList(list)" ng-repeat="list in lists" class='touchable list-item-container container-bar'>
-		<img class='icon house-{{$index}}'>
+		<img class='icon house-{{$index}} house'>
 
 		<div class='list-item'>
-			<h2 class='name'>{{list.name}}</h2>
-			<p>modified {{list.last_modified}}</p>
+			<h2 class='name'>{{list.name || 'UNTITLED'}}</h2>
+			<p>modified {{list.last_modified | date:'MM/dd/yyyy'}}</p>
 		</div>
 	</div>
-
 
 </div>

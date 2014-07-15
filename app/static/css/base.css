@@ -62,7 +62,7 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 .icon.etc {
 	background: url(/static/icon/ETC.png);
 }
-.icon.livingroom {
+.icon.living-room {
 	background: url(/static/icon/LIVINGROOM.png);
 }
 .icon.kitchen {
@@ -71,14 +71,18 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 .icon.house-blue{
 	background: url(/static/icon/house/house-blue2.png);
 }
-.icon.house-1 {
+.icon.house,
+.icon.house-1,
+.icon.house-5 {
 	background: url(/static/icon/house/house-blue3.png);
 }
 .icon.house-orange,
-.icon.house-2 {
+.icon.house-2,
+.icon.house-6 {
 	background: url(/static/icon/house/house-orange.png);
 } 
-.icon.house-0 {
+.icon.house-0,
+.icon.house-4 {
 	background: url(/static/icon/house/house-purple.png);
 }
 .icon.house-3 {
@@ -101,6 +105,13 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 .text-field.short,
 .btn.short {
 	width: auto;
+}
+.save-btn {
+	color: white;
+	width: 40px;
+	height: 20px;
+	border: none;
+	border-radius: 4px;
 }
 input,
 .text-field {
@@ -195,9 +206,9 @@ img.hamburger {
 .bedroom {
 	color: #1b1464;
 }
-.livingroom,
+.living-room,
 .etc,
-.title.livingroom,
+.title.living-room,
 .title.etc {
 	color: #54c0dd;
 }
@@ -215,8 +226,17 @@ img.hamburger {
 	z-index: 1;
 	right: 0;
 	width: 150px;
-	background-color: white;
+	background-color: #29abe2;
 	height: 100%;
+}
+#control-view > * {
+	color: white;
+	text-decoration: none;
+	margin: 0;
+	padding: 10px;
+	display: block;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 /*- view ----------------------*/
@@ -298,6 +318,9 @@ special case is the .heading
 	font-size: 12px;
 	vertical-align: top;
 }
+#list-info .save-btn {
+	background-color: #54C0DD;
+}
 #list-info .label-container {
 	width: 50px;
 	display: inline-block;
@@ -342,6 +365,12 @@ special case is the .heading
 .task.add-custom-task {
 	background-color: white;
 	color: #1b1464;
+}
+.task.add-custom-task input {
+	border: 1px solid #1b1464;	
+}
+.add-custom-task .save-btn {
+	background-color: #1b1464;
 }
 
 #send-btn {

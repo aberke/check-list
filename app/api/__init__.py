@@ -25,7 +25,10 @@
 #
 # GET 				/api/room/search ?[populate_tasks=boolean]&[_list=list._id | returns all]
 # GET,PUT,DELETE 	/api/room/<id>
-# POST,PUT 			/api/room/<id>/task
+# POST 	 			/api/room/<id>/task
+
+# GET 				/api/task/search returns all
+# DELETE 			/api/task/<id>
 #
 # TODO:
 # TEST ALL ENDPOINTS
@@ -39,8 +42,9 @@ import json
 
 from app.lib.util import yellERROR, dumpJSON, respond500, respond200
 from app.lib import twilio_tools
+from app.lib.util import JSONencoder
 from app import auth
-from app.models import cleaner, list as List, room
+from app.models import cleaner, list as List, room, task
 
 
 
@@ -53,7 +57,7 @@ bp = Blueprint('api', __name__)
 def POST_cleaner():
 	""" Insert and login new cleaner """
 	try:
-		data = json.loads(request.data)
+		data = JSONencoder.load(request.data)
 		id = cleaner.insert_new(data)
 		c = cleaner.find_public(id=id)
 		auth.login(c)
@@ -65,7 +69,7 @@ def POST_cleaner():
 @bp.route('/cleaner/<id>', methods=['PUT'])
 def PUT_cleaner(id):
 	try:
-		data = json.loads(request.data)
+		data = JSONencoder.load(request.data)
 		cleaner.update(id, data)
 		return respond200()
 	except Exception as e:
@@ -114,7 +118,7 @@ def GET_validate_new_phonenumber(phonenumber):
 @bp.route('/cleaner/<cleaner_id>/list', methods=['POST'])
 def POST_list(cleaner_id):
 	try:
-		list_data = json.loads(request.data)
+		list_data = JSONencoder.load(request.data)
 		list_id = cleaner.add_list(cleaner_id, list_data=list_data)
 		return dumpJSON({ '_id': list_id })
 	except Exception as e:
@@ -151,7 +155,7 @@ def GET_list_by_id(id):
 @bp.route('/list/<id>', methods=['PUT'])
 def PUT_list(id):
 	try:
-		data = json.loads(request.data)
+		data = JSONencoder.load(request.data)
 		List.update(id, data)
 		return dumpJSON({ '_id': id })
 	except Exception as e:
@@ -186,7 +190,7 @@ def GET_room_search():
 	searches all if no parameters
 	"""
 	try:
-		_list 		= request.args['_list'] if '_list' in request.args else None 
+		_list 			= request.args['_list'] if '_list' in request.args else None 
 		populate_tasks	= request.args['populate_tasks'] if 'populate_tasks' in request.args else None 
 
 		result = room.find(_list=_list, populate_tasks=populate_tasks)
@@ -194,10 +198,52 @@ def GET_room_search():
 	except Exception as e:
 		return respond500(e)
 
+#GET 	/api/room/<id>
+@bp.route('/room/<id>', methods=['GET'])
+def GET_room_by_id(id):
+	try:
+		return dumpJSON(room.find_one(id=id))
+	except Exception as e:
+		return respond500(e)
+
+
+# POST 		/api/room/<id>/task
+@bp.route('/room/<room_id>/task', methods=['POST'])
+def POST_task(room_id):
+	try:
+		data = JSONencoder.load(request.data)
+		id = room.add_task(room_id, data)
+		return dumpJSON({ '_id': id })
+	except Exception as e:
+		return respond500(e)
+
+
+# GET 		/api/task/search returns all
+@bp.route('/room/task', methods=['GET'])
+def GET_task_search():
+	""" 
+	Returns List [] of all tasks
+	"""
+	try:
+		result = task.find()
+		return dumpJSON(result)
+	except Exception as e:
+		return respond500(e)
+
+
+# DELETE 	/api/task/<id>
+@bp.route('/task/<id>', methods=['DELETE'])
+def DELETE_task(id):
+	try:
+		task.delete(id)
+		return respond200()
+	except Exception as e:
+		return respond500(e)
+
+
 
 
 # POST,PUT 			/api/list/<id>/send
 
-# GET,PUT,DELETE 	/api/room/<id>
-# POST,PUT 			/api/room/<id>/task
+# GET,DELETE 	/api/room/<id>
 

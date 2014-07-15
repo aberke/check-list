@@ -49,22 +49,22 @@ App.config(function($routeProvider) {
 				user: userOrRedirect,
 				lists: function(UserFactory) {
 					return UserFactory.GETlists().then(function(lists) {
-						console.log('UserFactory.then', lists)
 						return lists;
 					});
-				} ,
-			},
-		})
-		.when('/list/new', {
-			templateUrl: '/static/html/partials/list-view.html',
-			controller: ListCntl,
-			resolve: {
-				user: userOrRedirect,
+				},
 			},
 		})
 		.when('/list/:id', {
 			templateUrl: '/static/html/partials/list-view.html',
 			controller: ListCntl,
+			resolve: {
+				user: userOrRedirect,
+				list: function(UserFactory, $route) {
+					return UserFactory.GETlist($route.current.params.id).then(function(list) {
+						return list;
+					});
+				},
+			},
 		})
 		.otherwise({
 			redirectTo: '/'

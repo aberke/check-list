@@ -47,7 +47,6 @@ def no_user_views():
 	Redirect to '/dashboard' if user is signed in 
 	"""
 	if auth.get_user():
-		print('server redirect --------')
 		return redirect('/dashboard')
 	return base()
 

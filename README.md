@@ -44,6 +44,14 @@ Analytics
 TODO
 ---
 
+- add deleting rooms
+
+- all things marked with TODO in test.py etc
+
+- handle default room data
+
+- handle default list data via google spreadsheets
+
 - test coverage for all api endpoints relating to task
 
 - test coverage for cleaner.update_password and cleaner.password_valid
@@ -57,6 +65,11 @@ TODO
 
 
 - set cache TTL to 0 for /auth/user ?
+
+- store session in database?
+	- if scale number of servers
+
+- lazily POST list on /list/new
 
 	
 
