@@ -16,10 +16,15 @@ var TaskFactory = function($http) {
 
 	var defaultTasksLists; // maps { room_type: applicable default tasks }
 
-	$http.get('/static/data/default-tasks.json')
-       .then(function(res){
-          defaultTasksLists = res.data;             
-        });
+	var GETdefaultTasks = function(callback) {
+		$http.get('/static/data/default-tasks.json')
+	       .then(function(res){
+	          defaultTasksLists = res.data;
+	          if (callback) { callback(); }          
+	        });
+	}
+	GETdefaultTasks();
+
 
 	var generateDefaultTask = function(name, type) {
 		return { 
@@ -40,7 +45,18 @@ var TaskFactory = function($http) {
 		}
 	}
 
-	var mergeDefaultTasks = function(tasksList, tasksMap, room_type) {
+	var mergeDefaultTasks = function(tasksList, tasksMap, room_type, secondTry) {
+		// possible GETdefaultTasks hasn't yet returned - if not, wait for it and make secondTry
+		// only allow 2 tries because if 2nd try fails that means BAD data was returned
+		if (!defaultTasksLists) {
+			if (!secondTry) { 
+				GETdefaultTasks(function() {
+					mergeDefaultTasks(tasksList, tasksMap, room_type, true);
+				});
+			}
+			return;
+		}
+
 		if (! (room_type && room_type in defaultTasksLists)) {
 			return;
 		}
