@@ -26,6 +26,8 @@ from .model_utility import stamp_last_modified
 import task
 
 
+MUTABLE_FIELDS = ['name', 'type']
+
 
 def find(id=None, _list=None, populate_tasks=False):
 	"""
@@ -63,6 +65,7 @@ def insert_new(list_id, data=None):
 
 def update(id, data):
 	# TODO - RAISE ERROR for unsatisfactory write result ?
+	data = {k:v for (k,v) in data.items() if k in MUTABLE_FIELDS}
 	data = stamp_last_modified(data)
 	ret = db.rooms.update({ "_id": ObjectId(id) }, { "$set": data})
 	return ret

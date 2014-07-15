@@ -442,8 +442,8 @@ class CleanerModelTestCase(ModelTestCase):
 	def test_update(self):
 		new_data = {
 			'hashed_pwd': '1',
-			'a': '2',
-			'b': '3',
+			'name': '2',
+			'phonenumber': '3',
 		}
 		cleaner.update(self.cleaner_id, new_data)
 		c = cleaner.find_one(id=self.cleaner_id)

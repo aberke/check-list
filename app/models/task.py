@@ -26,6 +26,7 @@ from .model_utility import stamp_last_modified
 
 
 
+
 def find(id=None, _room=None):
 	query = {}
 	if id:

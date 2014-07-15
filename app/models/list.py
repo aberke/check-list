@@ -26,6 +26,7 @@ from app.database import db
 from .model_utility import stamp_last_modified
 import room
 
+MUTABLE_FIELDS = ['name', 'phonenumber', 'location']
 DEFAULT_ROOMS = [{
 		'name': 'BEDROOM',
 		'type': 'bedroom',
@@ -75,6 +76,11 @@ def insert_new(cleaner_id, data=None):
 
 
 def update(id, data):
+	"""
+	Only allowed to update list info 
+	"""
+	data = {k:v for (k,v) in data.items() if k in MUTABLE_FIELDS}
+
 	# TODO - RAISE ERROR for unsatisfactory write result ?
 	data = stamp_last_modified(data)
 	ret = db.lists.update({ "_id": ObjectId(id) }, { "$set": data})

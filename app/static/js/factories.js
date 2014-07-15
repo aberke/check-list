@@ -112,10 +112,11 @@ var UserFactory = function($http, $q, $window, APIservice) {
 		/* Used in Dashboard Cntl NewList function
 			As soon as that list is POSTed, want to GET it
 		*/
-		if (!listsMap) {
+		if (!listsMap || !lists) {
 			// not saving any time anyhow -- will just have to GET again later
 			return;
 		}
+		lists.push(list);
 		listsMap[list._id] = list;
 	}
 

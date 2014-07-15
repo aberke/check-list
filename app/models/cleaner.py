@@ -35,7 +35,7 @@ from .model_utility import stamp_last_modified
 import list
 
 RESET_CODE_EXPIRATION = timedelta(hours=1)
-
+MUTABLE_FIELDS = ['name', 'phonenumber', 'salt', 'hashed_pwd', 'reset_code', 'reset_code_expires']
 
 
 
@@ -76,6 +76,8 @@ def insert_new(data):
 
 def update(id, data):
 	# TODO - RAISE ERROR for unsatisfactory write result ?
+	data = {k:v for (k,v) in data.items() if k in MUTABLE_FIELDS}
+
 	data = stamp_last_modified(data)
 	ret = db.cleaners.update({ "_id": ObjectId(id) }, { "$set": data})
 	return ret
