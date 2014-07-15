@@ -102,7 +102,7 @@ var TaskFactory = function($http) {
 }
 
 
-var UserFactory = function($http, $q, $window, APIservice) {
+var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 	/* 
 	Stores 
 		{dict} user 	-- authenticated user or null if user logged out
@@ -124,6 +124,16 @@ var UserFactory = function($http, $q, $window, APIservice) {
 	}
 	reset();
 
+	function removeList(list) {
+		if (! (listsMap && lists && list._id in listsMap)) { return; }
+		
+		// remove from listsMap
+		delete listsMap[list._id];
+		
+		// remove from lists
+		UtilityService.removeFromList(lists, list, '_id');
+	}
+
 	function addList(list) {
 		/* Used in Dashboard Cntl NewList function
 			As soon as that list is POSTed, want to GET it
@@ -132,6 +142,7 @@ var UserFactory = function($http, $q, $window, APIservice) {
 			// not saving any time anyhow -- will just have to GET again later
 			return;
 		}
+		list.last_modified = new Date();
 		lists.push(list);
 		listsMap[list._id] = list;
 	}
@@ -261,9 +272,11 @@ var UserFactory = function($http, $q, $window, APIservice) {
 	return {
 		login: login,
 		logout: logout,
-		addList: addList,
 		GETuser: GETuser,
+
+		addList: addList,
 		GETlist: GETlist,
 		GETlists: GETlists,
+		removeList: removeList,
 	}
 }

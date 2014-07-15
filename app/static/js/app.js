@@ -25,6 +25,7 @@ var App = angular.module('App', ['ngRoute', 'houseCleanersFilters'])
 
 		// register services
 		$provide.service('APIservice', APIservice);
+		$provide.service('UtilityService', UtilityService);
 
 
 		// register factories

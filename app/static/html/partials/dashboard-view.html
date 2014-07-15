@@ -19,13 +19,14 @@
 		</div>
 	</div>
 
-	<div ng-click="selectList(list)" ng-repeat="list in lists" class='touchable list-item-container container-bar'>
-		<img class='icon house-{{$index}} house'>
+	<div ng-repeat="list in lists" class='touchable list-item-container container-bar'>
+		<img ng-click="selectList(list)" class='icon house-{{$index}} house'>
 
-		<div class='list-item'>
+		<div ng-click="selectList(list)" class='list-item'>
 			<h2 class='name'>{{list.name || 'UNTITLED'}}</h2>
 			<p>modified {{list.last_modified | date:'MM/dd/yyyy'}}</p>
 		</div>
+		<span class='delete-btn' ng-click="deleteList(list)">-</span>
 	</div>
 
 </div>

@@ -15,8 +15,8 @@
 	<h2 class='name'>{{cleaner.name}}</h2>
 	<p class='error'>{{error.message}}</p>
 
-    <input ng-model="cleaner.password" ng-class="{'error':error.password}" type='text' class='text-field' placeholder="create a password" >
-    <input ng-model="cleaner.confirmPassword" ng-class="{'error':error.confirmPassword}" type='text' class='text-field' placeholder="confirm password" >
+    <input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' class='text-field' placeholder="create a password" >
+    <input ng-model="cleaner.confirmPassword" ng-class="{'error':error.confirmPassword}" type='password' class='text-field' placeholder="confirm password" >
     <button ng-click="submitPassword()" ng-disabled="!(cleaner.password&&cleaner.confirmPassword)" class='btn'>NEXT</button>
 
 </section>

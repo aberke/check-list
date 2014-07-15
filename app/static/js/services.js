@@ -10,6 +10,30 @@
 
 ****************************************************/
 
+var UtilityService = function() {
+
+  this.removeFromList = function(list, item, matchingKey) {
+    /* 
+    @param {array} list         - list from which to find and remove item
+    @param {object} item        - object that presumably has matchingKey that is subject to removal
+    @param {string} matchingKey - key on which to match items in list to item to find the item
+
+    Returns {boolean} true if removed item, false otherwise
+    */
+    if (!(item && matchingKey && matchingKey in item)) {
+      return false;
+    }
+    for (var i=0; i<list.length; i++) {
+      if (list[i][matchingKey] == item[matchingKey]) {
+        list.splice(i, 1);
+        return true;
+      }
+    }
+    return false;
+  }
+
+}
+
 
 var FormService = function() {
 

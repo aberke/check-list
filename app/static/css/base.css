@@ -292,10 +292,6 @@ special case is the .heading
 	color: #ef7625;
 }
 
-.list-item {
-	float: left;
-	color: #1b1464;
-}
 .container-bar .task-count {
 	float: right;
 	margin: 10px 15px;
@@ -303,6 +299,21 @@ special case is the .heading
 
 /*---------------------- view -*/
 
+/*- Dashboard view -------------*/
+
+.list-item {
+	max-width: 220px;
+	float: left;
+	color: #1b1464;
+}
+.list-item-container .delete-btn {
+	float: right;
+	margin: 15px 8px 15px 5px;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+/*------------- Dashboard view -*/
 
 /* list view -------------------*/
 

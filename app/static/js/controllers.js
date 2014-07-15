@@ -211,9 +211,27 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 	}
 }
 
-function DashboardCntl($scope, $location, APIservice, UserFactory, user, lists) {
+function DashboardCntl($scope, $window, $location, APIservice, UtilityService, UserFactory, user, lists) {
 
 	$scope.lists;
+
+	$scope.deleteList = function(list) {
+		var msg = ("Are you sure you want to delete this list?\n\n" + (list.name || 'UNTITLED'));
+		var confirmed = $window.confirm(msg);
+		if (!confirmed) {
+			return;
+		}
+		var successCallback = function() {
+			// remove list from scope
+			UtilityService.removeFromList($scope.lists, list, '_id');
+			// remove list from UserFactory
+			UserFactory.removeList(list);
+		}
+		var errorCallback = function(message) {
+			console.log('ERROR in deleteList', message, 'TODO');
+		}
+		APIservice.DELETE('/api/list/' + list._id).then(successCallback, errorCallback);
+	}
 
 	$scope.newList = function() {
 		var successCallback = function(list) {

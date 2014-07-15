@@ -101,20 +101,20 @@ def delete(id):
 	2) delete cleaner's reference to list 
 	3) delete list document
 	"""
-	_id = ObjectId(id)
+	id = ObjectId(id)
 	# 0) get list so have its _cleaner and rooms _ids
-	l = db.lists.find_one({ "_id": _id })
+	l = db.lists.find_one({ "_id": id })
 	if not l:
 		raise Exception("Cannot delete list with _id {0} - no such document".format(id))
 	
 	# 1) delete all its rooms
-	db.rooms.remove({ "_list": _id })
+	db.rooms.remove({ "_list": id })
 	
 	# 2) delete _cleaner's reference to it
-	ret = db.cleaners.update({ "_id": ObjectId(l["_cleaner"]) }, { "$pull": { "lists": _id }})
+	ret = db.cleaners.update({ "_id": ObjectId(l["_cleaner"]) }, { "$pull": { "lists": id }})
 	
 	# 3) delete list document
-	db.lists.remove({ "_id": _id })
+	db.lists.remove({ "_id": id })
 
 
 
