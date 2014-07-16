@@ -31,7 +31,7 @@ $ source venv/bin/activate
 
 Running The Tests
 ---
-From the base directory ```python test.py```
+From the base directory ```python run_tests.py```
 
 
 Analytics
@@ -44,7 +44,7 @@ Analytics
 TODO
 ---
 
-- host on AWS
+- host on AWS?
 
 - number input for entering phonenumber on signin to bring up correct keyboard
 
