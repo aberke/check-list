@@ -44,6 +44,8 @@ Analytics
 TODO
 ---
 
+- host on AWS
+
 - number input for entering phonenumber on signin to bring up correct keyboard
 
 - have ListCntl inherit from ClientListCntl?
@@ -59,6 +61,8 @@ TODO
 - test coverage for all api endpoints relating to task
 
 - test coverage for cleaner.update_password and cleaner.password_valid
+
+- add use my current location
 
 - move hamburger-control and control to directives?
 	- pro: modularity
