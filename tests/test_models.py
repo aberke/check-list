@@ -23,6 +23,7 @@ class CleanerModelTestCase(ModelTestCase):
 	insert_new implicitely tested by other test cases
 	"""
 
+
 	def test_find_one(self):
 		""" find_one uses find so find implicitely tested? """
 		test_keys = ['name', 'phonenumber']

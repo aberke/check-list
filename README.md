@@ -44,6 +44,11 @@ Analytics
 TODO
 ---
 
+- test coverage for all api endpoints relating to task
+
+- all things marked with TODO in test.py etc
+
+
 - host on AWS?
 
 - number input for entering phonenumber on signin to bring up correct keyboard
@@ -52,15 +57,10 @@ TODO
 
 - handle errors with UI feedback in your controllers errorCallback functions
 
-- all things marked with TODO in test.py etc
 
 - handle default room data
 
 - handle default list data via google spreadsheets
-
-- test coverage for all api endpoints relating to task
-
-- test coverage for cleaner.update_password and cleaner.password_valid
 
 - add use my current location
 

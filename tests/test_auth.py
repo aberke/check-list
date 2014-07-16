@@ -1,11 +1,49 @@
 
 from base import *
+from app.models import cleaner # need to user cleaner.find to get otherwise unaccessible fields like reset-code and salt
 
 
 class AuthTestCase(BaseTestCase):
 	"""
 	Test the sign-in flow and logouts 
 	"""
+
+	def test_reset_password(self):
+		""" 2 step process:
+				POST,PUT /send-reset-code which sets temporary reset_code in cleaner model and sends via SMS to cleaner
+				POST,PUT /reset-password with {'phonenumber', 'reset_code', 'password'}
+				--> resets password and logs in cleaner
+		"""
+		NEW_PASSWORD = 'NEW-PASSWORD'
+		# verify process works with correct reset-code
+		self.POST_cleaner()
+		self.POST_data('/auth/send-reset-code', data=TEST_CLEANER_DATA)
+		c = cleaner.find_one(self.cleaner['_id'])
+		self.POST_data('/auth/reset-password', data={
+				'password': 'NEW-PASSWORD',
+				'phonenumber': TEST_CLEANER_DATA['phonenumber'],
+				'reset_code': c['reset_code'],
+				})
+		# verify user now logged in
+		data = self.GET_data('/auth/user')
+		self.assertEqual(data['name'], TEST_CLEANER_DATA['name'])
+
+		# logout user and verify user cannot sign in with old password
+		self.logout()
+		rv = self.app.post('/auth/login', data=json.dumps({
+			'password': TEST_CLEANER_DATA['password'],
+			'phonenumber': TEST_CLEANER_DATA['phonenumber']})
+		)
+		self.assertEqual(rv.status_code, 500)
+
+		# verify user can login with new password
+		rv = self.app.post('/auth/login', data=json.dumps({
+			'password': NEW_PASSWORD,
+			'phonenumber': TEST_CLEANER_DATA['phonenumber']})
+		)
+		self.assertEqual(rv.status_code, 200)
+
+		
 
 	def test_login_logout(self):
 		# get user should return null

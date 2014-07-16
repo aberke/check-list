@@ -49,7 +49,7 @@ class APITestCase(BaseTestCase):
 		}
 		self.PUT_data('/api/cleaner/' + self.cleaner['_id'], NEW_CLEANER_DATA)
 		c = self.GET_data('/api/cleaner/' + self.cleaner['_id'])
-		self.assertDataMatch(NEW_CLEANER_DATA, c, ['name', 'phonenumber'])
+		self.assertDataMatch(NEW_CLEANER_DATA, c, keys=['name', 'phonenumber'])
 		self.validate_last_modified(c)
 
 
@@ -154,43 +154,41 @@ class APITestCase(BaseTestCase):
 		""" POST_room main functionality implicitely tested by other tests 
 				verify list added to list's rooms
 		"""
-		# TODO - FIX THIS
-		# COMMENTED OUT WHILE DOING DEFAULT ROOMS WHEN POST LIST
+		self.POST_list()
+		rooms_list_before = self.GET_data('/api/list/' + self.list_id)['rooms']
 
-		# list's rooms should originally be empty
-		# self.POST_list()
-		# data = self.GET_data('/api/list/' + self.list_id)
-		# self.assertEqual([], data['rooms'])
-
-		# # after posting list, cleaner's lists should contain just id of posted list
-		# rv = self.app.post('/api/list/' + self.list_id + '/room')
-		# room_id = json.loads(rv.data)["_id"]
-		# data = self.GET_data('/api/list/' + self.list_id)
-		# self.assertEqual(1, len(data['rooms']))
-		# self.assertEqual(room_id, data['rooms'][0])
-		pass
+		# after posting list, cleaner's lists should contain id of posted list
+		rv = self.app.post('/api/list/' + self.list_id + '/room')
+		room_id = json.loads(rv.data)["_id"]
+		rooms_list_after = self.GET_data('/api/list/' + self.list_id)['rooms']
+		self.assertEqual(len(rooms_list_before) + 1, len(rooms_list_after))
+		self.assertTrue(room_id in rooms_list_after)
 
 
 	def test_GET_room_search(self):
-		# TODO - FIX THIS
-		# COMMENTED OUT WHILE DOING DEFAULT ROOMS WHEN POST LIST
 
 		# test get all rooms
-		# data = self.GET_data('/api/room/search')
-		# self.assertEqual([], data)
-		# self.POST_room()
-		# data = self.GET_data('/api/room/search')
-		# self.assertEqual(1, len(data))
-		# self.assertEqual(self.room_id, data[0]['_id'])
+		self.POST_room()
+		data_1 = self.GET_data('/api/room/search')
+		self.POST_room()
+		data_2 = self.GET_data('/api/room/search')
+		self.assertEqual(len(data_1) + 1, len(data_2))
 
-		# # test get room by _list
-		# data = self.GET_data('/api/room/search?_list=' + self.list_id)
-		# self.assertNotEqual(1, len(data))
-		# self.assertEqual(self.room_id, data[0]['_id'])
-		# self.POST_room()
-		# data = self.GET_data('/api/room/search?_list=' + self.list_id)
-		# self.assertEqual(2, len(data))
-		pass
+		# test get room by _list
+		data = self.GET_data('/api/room/search?_list=53c5c5c7de75d60007bf24cd')
+		self.assertEqual(0, len(data))
+		self.POST_list()
+		self.POST_room()
+		search_all_data = self.GET_data('/api/room/search')
+		specified_list_data = self.GET_data('/api/room/search?_list=' + self.list_id)
+		self.assertNotEqual(0, len(specified_list_data))
+		self.assertTrue(len(search_all_data) > len(specified_list_data))
+
+		# test populate_tasks
+		self.POST_task(TEST_TASK_DATA)
+		data = self.GET_data('/api/room/search?populate_tasks=true&_id=' + self.room_id)
+		self.assertEqual(type(data[0]['tasks'][0]), dict)
+
 
 
 	#GET 	/api/room/<id>
@@ -235,11 +233,19 @@ class APITestCase(BaseTestCase):
 		self.assertEqual(task_id_2, data["tasks"][0])
 
 
-	
-	# TODO
-	# GET 		/api/room/search  ?[populate_tasks=boolean]&[_list=list._id | returns all]
-
 	# GET 		/api/task/search 	returns all
+	def test_GET_task_search(self):
+		""" 
+		Returns List [] of all tasks
+		"""
+		data = self.GET_data('/api/task/search')
+		self.assertEqual(0, len(data))
+		task_id = self.POST_task(TEST_TASK_DATA)
+		data = self.GET_data('/api/task/search')
+		self.assertEqual(1, len(data))
+		self.assertEqual(task_id, data[0]['_id'])
+		self.assertDataMatch(TEST_TASK_DATA, data[0], keys=[k for k in TEST_TASK_DATA.keys()])
+
 
 
 

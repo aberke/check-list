@@ -30,8 +30,6 @@
 # GET 				/api/task/search returns all
 # DELETE 			/api/task/<id>
 #
-# TODO:
-# TEST ALL ENDPOINTS
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
@@ -202,15 +200,17 @@ def GET_room_search():
 	""" 
 	Returns List []
 	Parameters:
-		_list  		-> search by list
+		_id 			-> limit search to _id (helpful for testing)
+		_list  			-> search by list
 		populate_tasks  -> populate tasks list
 	searches all if no parameters
 	"""
 	try:
+		_id 			= request.args['_id'] if '_id' in request.args else None 
 		_list 			= request.args['_list'] if '_list' in request.args else None 
 		populate_tasks	= request.args['populate_tasks'] if 'populate_tasks' in request.args else None 
 
-		result = room.find(_list=_list, populate_tasks=populate_tasks)
+		result = room.find(id=_id, _list=_list, populate_tasks=populate_tasks)
 		return dumpJSON(result)
 	except Exception as e:
 		return respond500(e)
@@ -236,7 +236,7 @@ def POST_task(room_id):
 
 
 # GET 		/api/task/search returns all
-@bp.route('/room/task', methods=['GET'])
+@bp.route('/task/search', methods=['GET'])
 def GET_task_search():
 	""" 
 	Returns List [] of all tasks

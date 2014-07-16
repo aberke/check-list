@@ -120,6 +120,7 @@ def hash_password(password, salt):
 	return hashlib.sha512(password + salt).hexdigest()
 
 def password_valid(password, salt, hashed_pwd):
+	""" Returns true if the supplied password/salt combination matches hashed password """
 	hash = hash_password(password, salt)
 	return (hashed_pwd == hash)
 

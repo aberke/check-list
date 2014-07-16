@@ -56,10 +56,14 @@ def drop_lists():
 def drop_rooms():
 	return db.rooms.remove()
 
+def drop_tasks():
+	return db.tasks.remove()
+
 def drop_all():
 	drop_cleaners()
 	drop_lists()
 	drop_rooms()
+	drop_tasks()
 
 # -------- FOR COMMAND-LINE TESTING USE ------------------
 
