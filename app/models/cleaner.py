@@ -10,14 +10,14 @@
 #
 #
 # Cleaner is the user model. Has
-# 	phonenumber (unique)
-# 		hashed_pwd	
-# 		salt
-# 		reset_code (temp code texted to user to reset password)
-# 		reset_code_expires (datetime at which reset_code no longer valid)
+# 	phonenumber 			{string} (unique)
+# 		hashed_pwd			{string}
+# 		salt 				{string}
+# 		reset_code 			{string} (temp code texted to user to reset password)
+# 		reset_code_expires  {string} (datetime at which reset_code no longer valid)
 
-# 	name
-# 	lists [{ObjectId}] - array of ObjectId's
+# 	name 					{string}
+# 	lists 					[{ObjectId}] - array of ObjectId's
 #
 #
 #--------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ import string, random
 from datetime import datetime, timedelta 
 
 from app.database import db
-from .model_utility import stamp_last_modified
+from .model_utility import stamp_last_modified, sanitize_data, sanitize_phonenumber, sanitize_id
 import list
 
 RESET_CODE_EXPIRATION = timedelta(hours=1)
@@ -42,19 +42,23 @@ MUTABLE_FIELDS = ['name', 'phonenumber', 'salt', 'hashed_pwd', 'reset_code', 're
 def find(id=None, phonenumber=None):
 	query = {}
 	if id:
-		query['_id'] = ObjectId(id)
-	elif phonenumber:
-		query['phonenumber'] = phonenumber
+		query['_id'] = sanitize_id(id)
+	if phonenumber:
+		query['phonenumber'] = sanitize_phonenumber(phonenumber)
 	return [c for c in db.cleaners.find(query)]
+
 
 def find_one(id=None, phonenumber=None):
 	c = find(id=id, phonenumber=phonenumber)
 	return c[0] if c else None
 
-def find_public(id=None, phonenumber=None):
-	return public(find_one(id, phonenumber))
+
+def find_public(**kwargs):
+	return public(find_one(**kwargs))
+
 
 def insert_new(data):
+	data = sanitize_data(data)
 	if not ('phonenumber' in data and data['password']):
 		raise Exception('new cleaner data must include phonenumber and password')
 
@@ -77,9 +81,9 @@ def insert_new(data):
 def update(id, data):
 	# TODO - RAISE ERROR for unsatisfactory write result ?
 	data = {k:v for (k,v) in data.items() if k in MUTABLE_FIELDS}
-
+	data = sanitize_data(data)
 	data = stamp_last_modified(data)
-	ret = db.cleaners.update({ "_id": ObjectId(id) }, { "$set": data})
+	ret = db.cleaners.update({ "_id": sanitize_id(id) }, { "$set": data})
 	return ret
 
 def update_password(id, new_password, salt):
@@ -87,7 +91,7 @@ def update_password(id, new_password, salt):
 	update(id, { "hashed_pwd": new_hashed_pwd })
 
 def add_list(cleaner_id, list_data=None):
-	cleaner_id = ObjectId(cleaner_id)
+	cleaner_id = sanitize_id(cleaner_id)
 	list_id = list.insert_new(cleaner_id, list_data)
 	ret = db.cleaners.update({ "_id": cleaner_id }, { "$push": {"lists": list_id }})
 	return list_id

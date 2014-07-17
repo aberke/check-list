@@ -26,7 +26,7 @@ $ source venv/bin/activate
 * Make sure you have mongodb installed ```$ brew install mongodb```
 * Make sure mongodb is started ```$ mongod```
 
-* Run server ```python run.py``` and visit<http://127.0.0.1:3000>
+* Run server ```python main.py``` and visit<http://127.0.0.1:3000>
 
 
 Running The Tests
@@ -44,14 +44,6 @@ Analytics
 TODO
 ---
 
-- test coverage for all api endpoints relating to task
-
-- all things marked with TODO in test.py etc
-
-
-- host on AWS?
-
-- number input for entering phonenumber on signin to bring up correct keyboard
 
 - have ListCntl inherit from ClientListCntl?
 
@@ -63,6 +55,8 @@ TODO
 - handle default list data via google spreadsheets
 
 - add use my current location
+
+- host on AWS?
 
 - move hamburger-control and control to directives?
 	- pro: modularity

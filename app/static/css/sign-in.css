@@ -41,18 +41,24 @@
 	margin: 20px auto;
 	display: block;
 }
-.sign-in .text-field,
+.sign-in input {
+	border-color: white;
+	border-radius: 10px;
+}
+.sign-in input,
 .sign-in .btn {
 	width: 100%;
+	border-radius: 10px;
+	text-align: center;
+	font-size: 15px;
+	padding: 10px;
+	border-width: 3px;
+	border-style: solid;
 }
 
 .sign-in .title {
 	color: white;
 	max-width: 300px;
-}
-
-.other-options {
-	width: 300px;
 }
 .other-options a {
 	text-decoration: none;

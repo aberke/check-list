@@ -4,8 +4,9 @@
 	<h2 class='title'>WELCOME BACK!</h2>
 	<p class='error'>{{error.message}}</p>
 
-	<input ng-model="cleaner.phonenumber" type='text' class='text-field' placeholder="Phone number" >
-	<input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' class='text-field' placeholder="Password" >
+	<!-- number input for phonenumber to bring up correct keyboard on mobile devices -->
+	<input ng-model="cleaner.phonenumber" type='number' class='phonenumber' placeholder="Phone number" >
+	<input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="Password" >
 	<button ng-click="login()" ng-disabled="!(cleaner.phonenumber&&cleaner.password)" class='btn'>SIGN-IN</button>
 
 	<div class='other-options'>

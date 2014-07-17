@@ -17,12 +17,9 @@
 #*********************************************************************************
 
 
-# TODO -- TEST
-
-from bson import ObjectId
 
 from app.database import db
-from .model_utility import stamp_last_modified
+from .model_utility import stamp_last_modified, sanitize_id
 
 
 
@@ -30,9 +27,9 @@ from .model_utility import stamp_last_modified
 def find(id=None, _room=None):
 	query = {}
 	if id:
-		query['_id'] = ObjectId(id)
+		query['_id'] = sanitize_id(id)
 	elif _room:
-		query['_room'] = ObjectId(_room)
+		query['_room'] = sanitize_id(_room)
 	return [t for t in db.tasks.find(query)]
 
 def insert_new(list_id, data):
@@ -51,7 +48,7 @@ def delete(id):
 	1) delete _room's reference to task
 	2) delete task document itself
 	"""
-	id = ObjectId(id)
+	id = sanitize_id(id)
 	# 0) get task document to have reference it its _list
 	t = db.tasks.find_one({ "_id": id })
 	if not t:

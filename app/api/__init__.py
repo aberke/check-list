@@ -166,10 +166,12 @@ def PUT_list(id):
 def PUT_send_list(cleaner_id, list_id):	
 	try:
 		data = JSONencoder.load(request.data)
+		if not 'phonenumber' in data:
+			return respond500('Client phonenumber required')
+
 		c = cleaner.find_one(id=cleaner_id)
-		client_phonenumber = data['phonenumber']
 		message = ("{0} sent you a new cleaning list: {1}/list/{2}/client".format(c['name'], DOMAIN_NAME, list_id))
-		twilio_tools.send_SMS(client_phonenumber, message)
+		twilio_tools.send_SMS(data['phonenumber'], message)
 		return respond200()
 	except Exception as e:
 		return respond500(e)

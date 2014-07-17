@@ -90,7 +90,7 @@ class BaseTestCase(unittest.TestCase):
 		return self.app.post('/auth/login', data=json.dumps(TEST_CLEANER_DATA))
 
 	def logout(self):
-		return self.app.get('/auth/logout', follow_redirects=True)
+		return self.app.post('/auth/logout', follow_redirects=True)
 
 	def validate_last_modified(self, data):
 		""" Asserts that data has a 'last_modified' field and that date is before now """

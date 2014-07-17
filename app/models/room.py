@@ -19,10 +19,8 @@
 #*********************************************************************************
 
 
-from bson import ObjectId
-
 from app.database import db
-from .model_utility import stamp_last_modified
+from .model_utility import stamp_last_modified, sanitize_id
 import task
 
 
@@ -36,9 +34,9 @@ def find(id=None, _list=None, populate_tasks=False):
 	"""
 	query = {}
 	if id:
-		query['_id'] = ObjectId(id)
+		query['_id'] = sanitize_id(id)
 	if _list:
-		query['_list'] = ObjectId(_list)
+		query['_list'] = sanitize_id(_list)
 
 	rooms = [r for r in db.rooms.find(query)]
 
@@ -67,11 +65,11 @@ def update(id, data):
 	# TODO - RAISE ERROR for unsatisfactory write result ?
 	data = {k:v for (k,v) in data.items() if k in MUTABLE_FIELDS}
 	data = stamp_last_modified(data)
-	ret = db.rooms.update({ "_id": ObjectId(id) }, { "$set": data})
+	ret = db.rooms.update({ "_id": sanitize_id(id) }, { "$set": data})
 	return ret
 
 def add_task(room_id, task_data):
-	room_id = ObjectId(room_id)
+	room_id = sanitize_id(room_id)
 	task_id = task.insert_new(room_id, task_data)
 	ret = db.rooms.update({ "_id": room_id }, { "$push": {"tasks": task_id }})
 	return task_id
@@ -81,7 +79,7 @@ def delete(id):
 	1) delete _list's reference to room
 	2) delete room document itself
 	"""
-	id = ObjectId(id)
+	id = sanitize_id(id)
 	# 0) get room document to have reference it its _list
 	r = db.rooms.find_one({ "_id": id })
 	if not r:
@@ -90,7 +88,7 @@ def delete(id):
 	db.lists.update({ "_id": r["_list"] }, { "$pull": { "rooms": id }})
 	
 	# 2) delete room document
-	db.rooms.remove({ "_id": ObjectId(id) })
+	db.rooms.remove({ "_id": sanitize_id(id) })
 	
 
 

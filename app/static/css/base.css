@@ -92,7 +92,7 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 
 
 
-.text-field, .btn {
+.btn {
 	cursor: pointer;
 	box-sizing: border-box;
 	border-radius: 10px;
@@ -103,7 +103,6 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	border-width: 3px;
 	border-style: solid;
 }
-.text-field.short,
 .btn.short {
 	width: auto;
 }
@@ -115,17 +114,24 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	border-radius: 4px;
 	padding: 0;
 }
-input,
-.text-field {
+input, textarea {
 	background-color: transparent;
-	border-color: white;
 	color: #29abe2;
 	border-radius: 0;
+	box-sizing: border-box;
 }
 ::-webkit-input-placeholder { color: #29abe2; }
 :-moz-placeholder { color: #29abe2; }
 ::-moz-placeholder { color: #29abe2; }
 :-ms-input-placeholder { color: #29abe2; }
+
+/*hide number arrow for phonenumber input*/
+input.phonenumber::-webkit-outer-spin-button,
+input.phonenumber::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
 
 .btn {
 	color: #a0e4f9;
@@ -176,7 +182,8 @@ p.error {
 	text-align: center;
 }
 
-input.error {
+input.error,
+input.ng-invalid {
 	border: 2px solid red;
 }
 .action-bubble {
@@ -349,7 +356,6 @@ special case is the .heading
 	border: 1px solid gray;
 	margin: 8px;
 	width: 180px;
-	box-sizing: content-box;
 	border-radius: 0;
 }
 #list-info .save-btn {

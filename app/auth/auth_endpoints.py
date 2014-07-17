@@ -50,6 +50,7 @@ def send_reset_code():
 		data = json.loads(request.data)
 		if not 'phonenumber' in data:
 			raise Exception("No phonenumber provided")
+		
 		phonenumber = data['phonenumber']
 		c = cleaner.find_one(phonenumber=phonenumber)
 		if not c:
@@ -70,7 +71,7 @@ def send_reset_code():
 def POST_reset_password():
 	try:
 		data = json.loads(request.data)
-		c = cleaner.find_one(phonenumber=data["phonenumber"])
+		c = cleaner.find_one(phonenumber=data['phonenumber'])
 		if not (c and 'reset_code' in c):
 			raise Exception(str("Something went wrong"))
 
@@ -91,19 +92,20 @@ def POST_reset_password():
 def GET_user():
 	return dumpJSON(get_user())
 
-@bp.route('/logout', methods=['GET', 'POST'])
+@bp.route('/logout', methods=['POST'])
 def HTTP_logout():
+	""" Import that logout performed with a POST due to mobile browsers' aggressive caching """
 	logout()
 	return redirect('/')
 
 @bp.route('/login', methods=['POST'])
-def POST_login(data=None):
+def POST_login():
 	try:
 		data = json.loads(request.data)
-		if not (data["phonenumber"] and data["password"]):
+		if not ("phonenumber" in data and "password" in data):
 			raise Exception("phonenumber and password required to log in")
 
-		c = cleaner.find_one(phonenumber=data['phonenumber'])
+		c = cleaner.find_one(phonenumber=data["phonenumber"])
 		if not c:
 			raise Exception("No cleaner with phonenumber {0}".format(data["phonenumber"]))
 

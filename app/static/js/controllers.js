@@ -364,12 +364,6 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 		/* if still need to edit list info, force them to do so
 			open up the list editing and scroll to top of the page where it is
 		*/ 
-		if (!$scope.list.phonenumber) {
-			$scope.editingListInfo = true;
-			document.body.scrollTop = document.documentElement.scrollTop = 0;
-			$scope.error.message = 'Phonenumber required';
-			return false;
-		}
 		var successCallback = function() {
 			$scope.editingListInfo = false;
 			$scope.sendStatus = 'sent';
@@ -379,6 +373,10 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 			document.body.scrollTop = document.documentElement.scrollTop = 0;
 			$scope.error.message = message;
 			$scope.sendStatus = null;
+		}
+		if (!$scope.list.phonenumber) {
+			errorCallback('Phonenumber required');
+			return false;
 		}
 		APIservice.PUT('/api/cleaner/' + $scope.user._id + '/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
 	}
