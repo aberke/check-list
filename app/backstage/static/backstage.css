@@ -1,0 +1,105 @@
+/***************************************************
+	Significance Labs
+	Brooklyn, NYC
+
+ 	Author: Alexandra Berke (aberke)
+ 	Written: Summer 2014
+
+
+ 	backstage CSS styles 
+
+.blue-1 { color: #a0e4f9; } (160,228,249)
+.blue-2 { color: #54c0dd; } (84,192,221)
+.blue-3 { color: #29abe2; }
+.orange { color: #ef7625; }
+.purple { color: #1b1464; }
+
+****************************************************/
+
+
+@font-face {
+    font-family: Montserrat-Regular;
+    src: url(/static/fonts/Montserrat-Regular.ttf);
+}
+
+
+html,body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: Montserrat-Regular;
+}
+a, button { cursor: pointer; }
+button:disabled { cursor: initial; }
+
+.error {
+	color: red;
+	text-align: center;
+}
+
+
+#loading {
+	margin-top: 100px;
+	text-align: center;
+}
+
+#main-container {
+	margin: 50px auto;
+	max-width: 800px;
+}
+
+.cleaner {
+	cursor: pointer;
+	padding: 20px;
+	font-size: 18px;
+}
+.cleaner:hover,
+.cleaner.selected {
+	background-color: rgba(160,228,249,0.2);
+}
+.cleaner.selected {
+	cursor: initial;
+}
+
+.list {
+	margin: 10px 30px;
+	padding: 15px;
+	cursor: pointer;
+}
+.list:hover,
+.list.selected{
+	background-color: rgba(84,192,221,0.3);
+}
+.list.selected {
+	cursor: initial;
+}
+.list p {
+	margin: 0px;
+	font-size: 14px;
+}
+.list p.list-name {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.room {
+	margin: 15px;
+}
+.room-name {
+	border-bottom: 1px solid black;
+}
+.room ul {
+	margin: 3px;
+	font-size: 14px;
+}
+.task.custom {
+	color: #ef7625;
+}
+
+
+
+
+
+
+
+

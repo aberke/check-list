@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="BackstageApp">
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <title>Backstage | Clean Slate</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="description" content="TODO">
+    <meta name="author" content="Alexandra Berke at Significance Labs">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <!-- stylesheets -->
+    <link href="/backstage/static/backstage.css" rel="stylesheet">
+
+
+    <!-- javascript -->
+<!--     
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+     -->
+     
+     <script src="/static/js/vendor/angular.min.js"></script>
+
+
+    <script src="/backstage/static/backstage.js"></script>
+    
+
+
+</head>
+<body ng-controller="MainController">
+
+    <p class='error'>{{error}}</p>
+
+    <div ng-if="loading" id="loading">
+        <img src="/backstage/static/cleaning-footsteps.gif">
+        <p>Loading data...</p>
+    </div>
+
+
+    <div id='main-container' ng-if="!loading">
+
+        <p class='task custom'>Custom tasks are orange</p>
+
+        <div class='cleaner' ng-class="{'selected': cleaner.show}" ng-repeat="cleaner in cleaners">
+            <div ng-click='cleaner.show=true'>{{cleaner.name}} | {{cleaner.phonenumber}} | {{cleaner.lists.length}} Lists</div>
+
+            <div ng-class="{ 'selected':list.show }" class="list" ng-if="cleaner.show" ng-repeat="list in cleaner.lists" ng-click="list.show=true">
+                <p class='list-name'>{{list.name || 'UNTITLED'}}</p>
+                <p class='list-location'>{{list.location || 'LOCATION'}}</p>
+                <p class='list-phonenumber'>{{list.phonenumber || 'PHONENUMBER'}}</p>
+                <p class='list-last-modified'>Last modified {{list.last_modified}}</p>
+                <p class='list-rooms-count'>{{list.rooms.length}} rooms</p>
+
+                <div class='room' ng-if="list.show" ng-repeat="room in list.rooms">
+                    <p class='room-name'>{{room.name}}</p>
+                    
+                    <ul>
+                        <li class='task' ng-class="{'custom':task.custom}" ng-repeat='task in room.tasks'>
+                            {{task.name}}
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

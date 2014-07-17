@@ -31,11 +31,10 @@ app.register_blueprint(api_blueprint, url_prefix='/api')
 from auth import bp as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-#---------------------------------------------- Configuration #
+from backstage import bp as backstage_blueprint
+app.register_blueprint(backstage_blueprint, url_prefix='/backstage')
 
-@app.route('/style-guide')
-def style_guide():
-	return send_file('static/html/style-guide.html')
+#---------------------------------------------- Configuration #
 
 
 @app.route('/list/<id>/client')
@@ -65,6 +64,11 @@ def user_views(id=None):
 	if not auth.get_user():
 		return redirect('/')
 	return base()
+
+
+@app.route('/style-guide')
+def style_guide():
+	return send_file('static/html/style-guide.html')
 
 
 @app.route('/test')

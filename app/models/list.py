@@ -51,8 +51,7 @@ def find(id=None, _cleaner=None):
 		query['_id'] = sanitize_id(id)
 	elif _cleaner:
 		query['_cleaner'] = sanitize_id(_cleaner)
-	result = [l for l in db.lists.find(query)]
-	return result
+	return [l for l in db.lists.find(query)]
 
 
 def insert_new(cleaner_id, data=None):
