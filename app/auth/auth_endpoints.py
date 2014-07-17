@@ -96,7 +96,7 @@ def GET_user():
 def HTTP_logout():
 	""" Import that logout performed with a POST due to mobile browsers' aggressive caching """
 	logout()
-	return redirect('/')
+	return respond200() # dont redirect -- then caches will remember where to redirect to rather than making POST
 
 @bp.route('/login', methods=['POST'])
 def POST_login():
