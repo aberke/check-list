@@ -21,6 +21,8 @@ TEST_LIST_DATA = {
 	'name': 'TEST-LIST',
 	'phonenumber': '6178348458',
 	'location': 'TEST-LOCATION',
+	'notes': 'TEST-NOTES TEST-NOTES TEST-NOTES TEST-NOTES TEST-NOTES TEST-NOTES ',
+	'price': '123',
 }
 TEST_ROOM_DATA = {
 	'name': 'LIVINGROOM',

@@ -25,6 +25,10 @@ def sanitize_phonenumber(phonenumber):
 def sanitize_id(id):
 	return ObjectId(id)
 
+def sanitize_notes(notes):
+	""" Mongo StringField size limit is 16MB per document - so string works for arbitrary text field """
+	return str(notes)
+
 
 def sanitize_data(data):
 	"""
@@ -34,6 +38,8 @@ def sanitize_data(data):
 		data['_id'] = ObjectId(data['_id'])
 	if 'phonenumber' in data:
 		data['phonenumber'] = sanitize_phonenumber(data['phonenumber'])
+	if 'notes' in data:
+		data['notes'] = sanitize_notes(data['notes'])
 	return data
 
 

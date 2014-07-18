@@ -51,6 +51,12 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	background: url(/static/img/sl_logo_100px.png);
 	background-size: contain;
 }
+.icon.notes {
+	background: url(/static/icon/NOTES.png);
+}
+.icon.price {
+	background: url(/static/icon/PRICE.png);
+}
 .icon.bathroom {
 	background: url(/static/icon/BATHROOM.png);
 }
@@ -94,7 +100,7 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 
 .btn {
 	cursor: pointer;
-	box-sizing: border-box;
+	box-sizing: content-box;
 	border-radius: 10px;
 	text-align: center;
 	font-size: 15px;
@@ -112,13 +118,13 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	height: 20px;
 	border: none;
 	border-radius: 4px;
-	padding: 0;
+	padding: 4px;
 }
 input, textarea {
 	background-color: transparent;
 	color: #29abe2;
 	border-radius: 0;
-	box-sizing: border-box;
+	box-sizing: content-box;
 }
 ::-webkit-input-placeholder { color: #29abe2; }
 :-moz-placeholder { color: #29abe2; }
@@ -126,8 +132,8 @@ input, textarea {
 :-ms-input-placeholder { color: #29abe2; }
 
 /*hide number arrow for phonenumber input*/
-input.phonenumber::-webkit-outer-spin-button,
-input.phonenumber::-webkit-inner-spin-button {
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
@@ -230,6 +236,12 @@ img.hamburger {
 .title.kitchen  {
 	color: #ef7625;
 }
+.title.notes {
+	color: #ef7625;
+}
+.title.price {
+	color: #1b1464;
+}
 
 #control-view {
 	position: absolute;
@@ -327,6 +339,12 @@ special case is the .heading
 
 /* list view -------------------*/
 
+#list-view .divider { /*white line divider*/
+	background-color: white;
+	display: block;
+	height: 2px;
+	width: 100%;
+}
 .list-main-info {
 	height: 50px;
 }
@@ -363,8 +381,9 @@ special case is the .heading
 	margin: auto;
 }
 
-
-.room-main-info {
+.room-main-info,
+.notes-main-info,
+.price-main-info {
 	float: left;
 	width: 100%;
 }
@@ -400,6 +419,48 @@ special case is the .heading
 .add-custom-task .save-btn {
 	background-color: #1b1464;
 }
+.show-notes-container {
+	clear: both;
+	padding: 10px 20px 0 20px;
+}
+.show-notes-container textarea {
+	width: 100%;
+	min-height: 80px;
+}
+.show-notes-container .btn {
+	display: inline-block;
+	height: 25px;
+}
+.show-notes-container .btn-container {
+	text-align: right;
+	margin: 5px 0 0 0;
+}
+.price-container {
+	height: 50px !important;
+}
+.price-container .title { /*since it's clickable, must be wide*/
+	min-width: 200px;
+}
+.price-main-info input,
+.price-main-info .btn {
+	margin: 10px;
+}
+.price-main-info input {
+	height: 20px;
+	padding: 2px;
+	color: #1b1464;
+	border: 1px solid #1b1464;
+}
+.price-main-info input.ng-invalid,
+.price-main-info input.error {
+	border: 3px solid red;
+}
+.price-main-info .btn {
+	float: right;
+	padding: 5px;
+}
+
+
 
 #send-btn {
 	float: right;

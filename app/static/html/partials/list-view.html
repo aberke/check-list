@@ -54,6 +54,36 @@
 		</div>
 	</div>
 
+	<span class='divider'></span>
+
+	<!-- notes not viewable to client -->
+	<div ng-show="!clientView" class='notes-container container-bar' ng-class="{'active': showingNotes}">
+		<div class='notes-main-info' ng-click="clickNotes()">
+			<img class='icon notes'>
+			<h1 class='title notes'>NOTES</h1>
+		</div>
+
+		<div ng-show="showingNotes" class='show-notes-container'>
+			<!-- if editing notes, show <textarea> and SAVE btn.  Otherwise <p> and EDIT btn. -->
+			<p ng-show="!editingNotes">{{list.notes}}</p>
+			<textarea ng-show="editingNotes" ng-model="list.notes"></textarea>
+			<div class='btn-container'>
+				<button ng-click="editNotes()" ng-show="!editingNotes" class='save-btn btn'>EDIT</button>
+				<button ng-click="saveNotes()" ng-show="editingNotes&&list.notes" class='save-btn btn'>SAVE</button>
+			</div>
+		</div>
+	</div> <!-- notes-container -->
+
+
+	<div class='price-container container-bar' ng-class="{ 'active': editingPrice }">
+		<div class='price-main-info'>
+			<img ng-click="editPrice()" class='icon price'>
+			<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>{{list.price || 'COST'}}</h1>
+			<input placeholder="00" ng-show="editingPrice" type='number' ng-model="list.price">
+			<button ng-click="savePrice()" ng-show="editingPrice" class='save-btn btn'>SAVE</button>
+		</div>
+	</div> <!-- price-container -->
+
 	<!-- list sending UI -->
 	<span ng-show="!clientView">
 		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>

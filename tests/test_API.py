@@ -118,6 +118,11 @@ class APITestCase(BaseTestCase):
 
 	def test_PUT_list(self):
 		self.POST_list()
+		self.PUT_data('/api/list/' + self.list_id, TEST_LIST_DATA)
+		data = self.GET_data('/api/list/' + self.list_id)
+		self.assertDataMatch(TEST_LIST_DATA, data)
+		self.validate_last_modified(data)
+		# change data again
 		NEW_LIST_DATA = {
 			'name': 'NEW-LIST-NAME',
 			'phonenumber': '2223334444',
@@ -126,12 +131,15 @@ class APITestCase(BaseTestCase):
 				'city': 'Cambridge',
 				'logitude': '113094234',
 				'latitude': '343459',
-			}
+			},
+			'price': '111',
 		}
 		self.PUT_data('/api/list/' + self.list_id, NEW_LIST_DATA)
 		data = self.GET_data('/api/list/' + self.list_id)
 		self.assertDataMatch(NEW_LIST_DATA, data)
 		self.validate_last_modified(data)
+		# didn't change notes -- verify
+		self.assertEqual(TEST_LIST_DATA['notes'], data['notes'])
 
 
 	def test_DELETE_list(self):

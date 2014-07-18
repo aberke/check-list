@@ -293,14 +293,17 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	$scope.rooms;
 	$scope.list;
 	$scope.editingListInfo;
+	$scope.showingNotes;
+	$scope.editingNotes;
+	$scope.editingPrice;
 	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
 
-	$scope.saveListInfo = function() {
+	$scope.saveList = function() {
 		$scope.editingListInfo = false;
-		console.log('saveListInfo', $scope.list)
+		console.log('saveList', $scope.list)
 
 		var errorCallback = function(message) {
-			console.log('ERROR on saveListInfo', message)
+			console.log('ERROR on saveList', message)
 		}
 		var successCallback = function(data) {
 			console.log('successCallback', data)
@@ -311,12 +314,25 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 
 
 	$scope.clickListInfo = function() {
-		if ($scope.editingListInfo) {
-			$scope.saveListInfo();
-		} else {
-			$scope.editingListInfo = true;
+		$scope.editingListInfo ? $scope.saveList() : $scope.editingListInfo = true;
+	}
+	$scope.clickNotes = function() {
+		$scope.showingNotes = !$scope.showingNotes;
+		if (!$scope.list.notes) { // show textarea
+			$scope.editingNotes = true;
 		}
 	}
+	$scope.saveNotes = function() {
+		$scope.saveList();
+		$scope.editingNotes = false;
+	}
+	$scope.editNotes = function() { $scope.editingNotes = true; }
+
+	$scope.savePrice = function() {
+		$scope.editingPrice = false;
+		$scope.saveList();
+	}
+	$scope.editPrice = function() { $scope.editingPrice = true; }
 
 	$scope.clickRoom = function(room) {
 		room.active = room.active ? false : true;

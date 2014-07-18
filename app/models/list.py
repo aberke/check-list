@@ -11,20 +11,22 @@
 # List Model
 # 	_id 		{ObjectId}
 # 	_cleaner  	{ObjectId}	-- cleaner._id of owner cleaner
-# 	name
-# 	phonenumber
-# 	location
+# 	name		{String}
+# 	phonenumber	{String}
+# 	location	{String}
 # 	rooms 		[{ObjectId}] - array of ObjectId's
+#	notes		{String}
+#	price		{Integer} -- Integer not enforced server side
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
 
 
 from app.database import db
-from .model_utility import stamp_last_modified, sanitize_id
+from .model_utility import stamp_last_modified, sanitize_id, sanitize_data
 import room
 
-MUTABLE_FIELDS = ['name', 'phonenumber', 'location']
+MUTABLE_FIELDS = ['name', 'phonenumber', 'location', 'notes', 'price',]
 DEFAULT_ROOMS = [{
 		'name': 'BATHROOM',
 		'type': 'bathroom',
@@ -59,7 +61,7 @@ def insert_new(cleaner_id, data=None):
 	@param {ObjectId} cleaner_id
 	Returns _id of newly inserted list 
 	"""
-	data = data if data else {}
+	data = sanitize_data(data) if data else {}
 	data["_cleaner"] = cleaner_id
 	data["rooms"] = []
 	data = stamp_last_modified(data)
@@ -77,7 +79,7 @@ def update(id, data):
 	Only allowed to update list info 
 	"""
 	data = {k:v for (k,v) in data.items() if k in MUTABLE_FIELDS}
-
+	data = sanitize_data(data)
 	# TODO - RAISE ERROR for unsatisfactory write result ?
 	data = stamp_last_modified(data)
 	ret = db.lists.update({ "_id": sanitize_id(id) }, { "$set": data})
