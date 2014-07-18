@@ -23,7 +23,7 @@ from app.models import cleaner, list as List, room, task
 
 bp = Blueprint('backstage', __name__, static_folder='static')
 
-print('static', bp.static_folder)
+
 
 @bp.route('/')
 def view():

@@ -50,6 +50,7 @@ button:disabled { cursor: initial; }
 
 .cleaner {
 	cursor: pointer;
+	margin: 10px 0;
 	padding: 20px;
 	font-size: 18px;
 }
@@ -57,21 +58,15 @@ button:disabled { cursor: initial; }
 .cleaner.selected {
 	background-color: rgba(160,228,249,0.2);
 }
-.cleaner.selected {
-	cursor: initial;
-}
 
 .list {
-	margin: 10px 30px;
+	margin: 10px 0px;
 	padding: 15px;
 	cursor: pointer;
 }
 .list:hover,
 .list.selected{
 	background-color: rgba(84,192,221,0.3);
-}
-.list.selected {
-	cursor: initial;
 }
 .list p {
 	margin: 0px;

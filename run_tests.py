@@ -2,8 +2,9 @@
 import unittest
 
 testmodules = [
-    'tests.test_views',
+    'tests.test_backstage',
     'tests.test_models',
+    'tests.test_views',
     'tests.test_auth',
     'tests.test_API',
     ]

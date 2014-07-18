@@ -191,7 +191,8 @@ def DELETE_list(id):
 @bp.route('/list/<list_id>/room', methods=['POST'])
 def POST_room(list_id):
 	try:
-		room_id = List.add_room(list_id)
+		data = JSONencoder.load(request.data)
+		room_id = List.add_room(list_id, room_data=data)
 		return dumpJSON({ '_id': room_id })
 	except Exception as e:
 		return respond500(e)

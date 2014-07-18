@@ -39,14 +39,17 @@
 
         <p class='task custom'>Custom tasks are orange</p>
 
-        <div class='cleaner' ng-class="{'selected': cleaner.show}" ng-repeat="cleaner in cleaners">
-            <div ng-click='cleaner.show=true'>{{cleaner.name}} | {{cleaner.phonenumber}} | {{cleaner.lists.length}} Lists</div>
+        <input type='text' placeholder='search cleaners' ng-model='search'>
 
-            <div ng-class="{ 'selected':list.show }" class="list" ng-if="cleaner.show" ng-repeat="list in cleaner.lists" ng-click="list.show=true">
+        <div class='cleaner' ng-class="{'selected': cleaner.show}" ng-repeat="cleaner in cleaners | filter:search">
+            <div ng-click='cleaner.show=!cleaner.show'>{{cleaner.name}} | {{cleaner.phonenumber}} | {{cleaner.lists.length}} Lists</div>
+
+            <div ng-class="{ 'selected':list.show }" class="list" ng-if="cleaner.show" ng-repeat="list in cleaner.lists" ng-click="list.show=!list.show">
+
                 <p class='list-name'>{{list.name || 'UNTITLED'}}</p>
                 <p class='list-location'>{{list.location || 'LOCATION'}}</p>
                 <p class='list-phonenumber'>{{list.phonenumber || 'PHONENUMBER'}}</p>
-                <p class='list-last-modified'>Last modified {{list.last_modified}}</p>
+                <p class='list-last-modified'>Last modified {{list.last_modified | date:'short' }}</p>
                 <p class='list-rooms-count'>{{list.rooms.length}} rooms</p>
 
                 <div class='room' ng-if="list.show" ng-repeat="room in list.rooms">

@@ -17,13 +17,11 @@ TEST_CLEANER_DATA = {
 	'password': 'TEST-PASSWORD',
 }
 TEST_LIST_DATA = {
-	'_cleaner': '',
 	'name': 'TEST-LIST',
 	'phonenumber': '6178348458',
 	'location': 'TEST-LOCATION',
 }
 TEST_ROOM_DATA = {
-	'_list': '',
 	'name': 'LIVINGROOM',
 	'type': 'livingroom',
 }
