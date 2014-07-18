@@ -372,6 +372,14 @@ special case is the .heading
 	clear: both;
 	padding: 10px;
 }
+.select-all {
+	color: #1b1464;
+	/* optimize style for easy clickability */
+	display: inline-block;
+	padding: 5px 0;
+	margin: 0 0 5px 0;
+	cursor: pointer;
+}
 .task {
 	font-size: 18px;
 	padding: 2px;

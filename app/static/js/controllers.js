@@ -10,7 +10,7 @@
 
 
 
-AngularJS controllers 
+	AngularJS controllers 
 
 *********************************************************************/
 
@@ -293,6 +293,7 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	$scope.rooms;
 	$scope.list;
 	$scope.editingListInfo;
+	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
 
 	$scope.saveListInfo = function() {
 		$scope.editingListInfo = false;
@@ -320,25 +321,36 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	$scope.clickRoom = function(room) {
 		room.active = room.active ? false : true;
 	}
-	$scope.clickTask = function(room, task) {
-		if (task.selected) {
-			task.selected = false;
-			deleteTask(task);
-		} else {
-			task.selected = true;
-			saveTask(room, task);
+	$scope.selectAllTasks = function(room) {
+		for (var i=0; i<room.tasks.length; i++) {
+			var task = room.tasks[i];
+			console.log(task)
+			if (!task.selected) {
+				selectTask(room, task);
+			}
 		}
+	}
+	$scope.clickTask = function(room, task) {
+		task.selected ? unselectTask(room, task) : selectTask(room, task);
 	}
 	$scope.addCustomTask = function(room, newCustomTask) {
 		var newTask = TaskFactory.generateCustomTask(newCustomTask, room.type);
 		room.tasks.push(newTask);
 		saveTask(room, newTask);
 	}
+	var unselectTask = function(room, task) {
+		task.selected = false;
+		deleteTask(task);
+	}
+	var selectTask = function(room, task) {
+		task.selected = true;
+		saveTask(room, task);
+	}
 	var saveTask = function(room, task) {
 		var successCallback = function(data) {
 			// this is saved to the correct place in scope
 			task._id = data._id;
-			console.log('successCallback list:', $scope.list)
+			console.log('successCallback for saveTask. list:', $scope.list)
 		}
 		var errorCallback = function(message) {
 			console.log('ERROR', message, 'TODO: HANDLE');
@@ -357,6 +369,18 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 		APIservice.DELETE('/api/task/' + task._id).then(successCallback, errorCallback);
 	}
 
+	var registerPhonenumberListener = function() {
+		/* after sending list, user should be able to edit phonenumber and resend 
+			However ng-change listeners are expensive
+				--> Only register listener after sendList 
+					(when user would presumably see they got phonenumber wrong and want to resend)
+		*/
+		$scope.$watch('list.phonenumber', function(newValue, oldValue) {
+			if (newValue != oldValue) {
+				$scope.sendStatus = null;
+			}
+		});
+	}
 
 	$scope.sendList = function() {
 		$scope.sendStatus = 'sending';
@@ -379,6 +403,7 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 			return false;
 		}
 		APIservice.PUT('/api/cleaner/' + $scope.user._id + '/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
+		registerPhonenumberListener();
 	}
 
 	var GETrooms = function() {
