@@ -297,13 +297,16 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	$scope.editingNotes;
 	$scope.editingPrice;
 	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
+	$scope.error;
 
 	$scope.saveList = function() {
+		$scope.error = {};
 		$scope.editingListInfo = false;
 		console.log('saveList', $scope.list)
 
 		var errorCallback = function(message) {
-			console.log('ERROR on saveList', message)
+			$scope.error.message = message;
+			$scope.editingListInfo = true;
 		}
 		var successCallback = function(data) {
 			console.log('successCallback', data)
@@ -439,6 +442,13 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 		$scope.list = list;
 		$scope.list.rooms = [];
 		GETrooms();
+
+		/* backwards compatibility:
+			phonenumbers stored as strings need be converted to integers
+		*/
+		if ($scope.list.phonenumber) {
+			$scope.list.phonenumber = Number($scope.list.phonenumber);
+		}
 
 		console.log('list', $scope.list)
 	}

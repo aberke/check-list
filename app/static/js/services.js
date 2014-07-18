@@ -20,7 +20,7 @@ var UtilityService = function() {
     @param {string} dateString   - UTC string to turn into Date object
     Returns {Date obj}
     */
-    if (dateString instanceof Date) { return; } // necessary to avoid errors when dateString is already turned into Date object
+    if (!dateString || dateString instanceof Date) { return; } // necessary to avoid errors when dateString is already turned into Date object
     
     var arr = dateString.split(/[- :]/);
     return new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4], arr[5]);

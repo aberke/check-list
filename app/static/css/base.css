@@ -375,6 +375,7 @@ special case is the .heading
 	margin: 8px;
 	width: 180px;
 	border-radius: 0;
+	padding: 3px;
 }
 #list-info .save-btn {
 	display: block;
