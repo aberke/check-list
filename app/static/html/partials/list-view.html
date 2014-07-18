@@ -40,7 +40,7 @@
 		</div>
 
 		<div ng-show="room.active" class='tasks-container'>
-			<p class='select-all' ng-click="selectAllTasks(room)">select all</p>
+			<p ng-show="!clientView" class='select-all' ng-click="selectAllTasks(room)">select all</p>
 			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': (task.selected&&!clientView)}" ng-repeat="task in room.tasks">
 				<span ng-show="task.selected&&!clientView">-</span>
 				<span ng-show="!task.selected&&!clientView">+</span>
