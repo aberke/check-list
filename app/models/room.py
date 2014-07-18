@@ -10,10 +10,11 @@
 #
 # Room Model
 # 	_id		{ObjectId}
-# 	_list 	{ObjectId}	<- list._id of owner list
-# 	name
-# 	type 				<- icon etc
+# 	_list 	{ObjectId}		<- list._id of owner list
+# 	name	{String}
+# 	type 	{String}		<- icon etc
 # 	tasks 	{array}
+#	count
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
@@ -24,7 +25,7 @@ from .model_utility import stamp_last_modified, sanitize_id
 import task
 
 
-MUTABLE_FIELDS = ['name', 'type']
+MUTABLE_FIELDS = ['name', 'type', 'count']
 
 
 def find(id=None, _list=None, populate_tasks=False):
