@@ -2,8 +2,9 @@ import json
 import unittest
 import dateutil.parser
 from datetime import datetime
+from base64 import b64encode # for basic auth
 
-
+import config
 from app import app
 from app import database
 from app.models import cleaner
@@ -53,6 +54,17 @@ class BaseTestCase(unittest.TestCase):
 		keys = keys if keys else test_data.keys()
 		for test_key in keys:
 			self.assertEqual(test_data[test_key], response_data[test_key])
+
+	def GET_basic_auth_protected(self, endpoint):
+		""" requires_auth decorator in lib/basic_auth verifies that request made with BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD
+			or sends 401
+		"""
+		BASIC_AUTH_USERNAME = config.BASIC_AUTH_USERNAME
+		BASIC_AUTH_PASSWORD = config.BASIC_AUTH_PASSWORD
+		headers = {
+    		'Authorization': 'Basic ' + b64encode("{0}:{1}".format(BASIC_AUTH_USERNAME, BASIC_AUTH_PASSWORD))
+		}
+		return self.app.get(endpoint, headers=headers)
 
 	def GET_data(self, endpoint):
 		rv = self.app.get(endpoint)

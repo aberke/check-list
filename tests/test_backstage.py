@@ -6,7 +6,10 @@ from base import *
 class BackstageTestCase(BaseTestCase):
 
 	def test_views(self):
+		# backstage view is protected with basic auth
 		rv = self.app.get('/backstage/')
+		self.assertEqual(rv.status_code, 401)
+		rv = self.GET_basic_auth_protected('/backstage/')
 		self.assertEqual(rv.status_code, 200)
 		self.assertTrue(int(rv.headers['Content-Length']) > 500)
 
