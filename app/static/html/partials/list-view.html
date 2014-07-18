@@ -74,8 +74,8 @@
 		</div>
 	</div> <!-- notes-container -->
 
-
-	<div class='price-container container-bar' ng-class="{ 'active': editingPrice }">
+	<!-- if no price is set, don't show it to client -->
+	<div ng-show="!clientView||list.price" class='price-container container-bar' ng-class="{ 'active': editingPrice }">
 		<div class='price-main-info'>
 			<img ng-click="editPrice()" class='icon price'>
 			<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>{{list.price || 'COST'}}</h1>
