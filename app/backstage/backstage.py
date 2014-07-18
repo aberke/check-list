@@ -18,7 +18,7 @@ from flask import Blueprint, request, send_file
 
 from app.lib.util import dumpJSON, respond500
 from app.models import cleaner, list as List, room, task
-
+from app.lib.basic_auth import requires_auth
 
 
 bp = Blueprint('backstage', __name__, static_folder='static')
@@ -26,6 +26,7 @@ bp = Blueprint('backstage', __name__, static_folder='static')
 
 
 @bp.route('/')
+@requires_auth
 def view():
 	"""
 	TODO: Administration only
