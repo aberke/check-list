@@ -77,10 +77,18 @@ button:disabled { cursor: initial; }
 	font-weight: bold;
 }
 
-.room {
+.list-details {
 	margin: 15px;
 }
-.room-name {
+.list-notes,
+.room {
+	margin: 10px 0;
+}
+.list-notes .notes-content {
+	margin-left: 20px;
+}
+.room-name, 
+.notes-title {
 	border-bottom: 1px solid black;
 }
 .room ul {

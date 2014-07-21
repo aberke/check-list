@@ -51,15 +51,24 @@
                 <p class='list-phonenumber'>{{list.phonenumber || 'PHONENUMBER'}}</p>
                 <p class='list-last-modified'>Last modified {{list.last_modified | date:'short' }}</p>
                 <p class='list-rooms-count'>{{list.rooms.length}} rooms</p>
+                <p class='list-price'>Price: {{list.price || 'Not set'}}</p>
 
-                <div class='room' ng-if="list.show" ng-repeat="room in list.rooms">
-                    <p class='room-name'>{{room.name}}</p>
-                    
-                    <ul>
-                        <li class='task' ng-class="{'custom':task.custom}" ng-repeat='task in room.tasks'>
-                            {{task.name}}
-                        </li>
-                    </ul>
+                <div ng-if="list.show" class='list-details'>
+
+                    <div class='list-notes'>
+                        <p class='notes-title'>Notes</p>
+                        <p class='notes-content'>{{list.notes}}</p>
+                    </div>
+
+                    <div class='room' ng-repeat="room in list.rooms">
+                        <p class='room-name'>{{room.name}}  ({{room.count || 1}})</p>
+                        
+                        <ul>
+                            <li class='task' ng-class="{'custom':task.custom}" ng-repeat='task in room.tasks'>
+                                {{task.name}}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
             </div>
