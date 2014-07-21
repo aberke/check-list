@@ -135,7 +135,6 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 	}
 
 	function addList(list) {
-		console.log('UserFactory.addList', list)
 		/* Used in Dashboard Cntl NewList function
 			As soon as that list is POSTed, want to GET it
 		*/
@@ -146,11 +145,9 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 		list.last_modified = new Date();
 		lists.push(list);
 		listsMap[list._id] = list;
-		console.log('lists', lists, 'listsMap', listsMap)
 	}
 
 	function GETlist(listID, tries) {
-		console.log('GETlist', listID, lists, listsMap)
 		var deferred = $q.defer();
 		var promise = deferred.promise;
 		
@@ -180,7 +177,6 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 
 
 	function GETlists(tries) {
-		console.log('GETlists', lists, listsMap)
 		/*
 			@param {int|undefined} how many times this function has already been called
 			Returns {promise} that will be resolved with {list} lists data
