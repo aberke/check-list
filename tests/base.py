@@ -26,7 +26,7 @@ TEST_LIST_DATA = {
 }
 TEST_ROOM_DATA = {
 	'name': 'LIVINGROOM',
-	'type': 'livingroom',
+	'type': 'living-room',
 }
 TEST_TASK_DATA = {
 	'name': 'vacuum',

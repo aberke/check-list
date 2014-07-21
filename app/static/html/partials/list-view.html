@@ -36,10 +36,17 @@
 		<div ng-click="clickRoom(room)" class='room-main-info'>
 			<img ng-class="room.type" class='icon'>
 			<h1 ng-class="room.type" class='title'>{{room.name}}</h1>
-			<span ng-class="room.type" class='task-count'>{{room.taskCount}}</span>
+			<span ng-class="room.type" class='room-count'>{{room.count || 1}}</span>
 		</div>
 
-		<div ng-show="room.active" class='tasks-container'>
+		<div ng-show="room.active" class='room-details-container'>
+
+			<div ng-show="!clientView" class='edit-room-count'>
+				<span ng-click="decrementRoomCount(room)" ng-show="!clientView">-</span>
+				<span ng-click="incrementRoomCount(room)" ng-show="!clientView">+</span>
+				<span>{{room.count || 1}} {{room.name}}</span>
+			</div>
+
 			<p ng-show="!clientView" class='select-all' ng-click="selectAllTasks(room)">select all</p>
 			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': (task.selected&&!clientView)}" ng-repeat="task in room.tasks">
 				<span ng-show="task.selected&&!clientView">-</span>
@@ -56,8 +63,8 @@
 
 	<span class='divider'></span>
 
-	<!-- notes not viewable to client -->
-	<div ng-show="!clientView" class='notes-container container-bar' ng-class="{'active': showingNotes}">
+	<!-- notes shown to client iff there are notes  -->
+	<div ng-show="!clientView||list.notes" class='notes-container container-bar' ng-class="{'active': showingNotes}">
 		<div class='notes-main-info' ng-click="clickNotes()">
 			<img class='icon notes'>
 			<h1 class='title notes'>NOTES</h1>
@@ -68,8 +75,9 @@
 			<p ng-show="!editingNotes">{{list.notes}}</p>
 			<textarea ng-show="editingNotes" ng-model="list.notes"></textarea>
 			<div class='btn-container'>
-				<button ng-click="editNotes()" ng-show="!editingNotes" class='save-btn btn'>EDIT</button>
-				<button ng-click="saveNotes()" ng-show="editingNotes&&list.notes" class='save-btn btn'>SAVE</button>
+				<!-- only cleaner can edit notes -->
+				<button ng-click="editNotes()" ng-show="!editingNotes&&!clientView" class='save-btn btn'>EDIT</button>
+				<button ng-click="saveNotes()" ng-show="editingNotes" class='save-btn btn'>SAVE</button>
 			</div>
 		</div>
 	</div> <!-- notes-container -->

@@ -197,6 +197,25 @@ def POST_room(list_id):
 	except Exception as e:
 		return respond500(e)
 
+# PUT 		/api/room/<id>
+@bp.route('/room/<id>', methods=['PUT'])
+def PUT_room(id):
+	try:
+		data = JSONencoder.load(request.data)
+		room.update(id, data=data)
+		return dumpJSON({ '_id': id })
+	except Exception as e:
+		return respond500(e)
+
+#GET 	/api/room/<id>
+@bp.route('/room/<id>', methods=['GET'])
+def GET_room_by_id(id):
+	try:
+		return dumpJSON(room.find_one(id=id))
+	except Exception as e:
+		return respond500(e)
+
+
 # GET 		/api/room/search  ?[populate_tasks=boolean]&[_list=list._id | returns all]
 @bp.route('/room/search', methods=['GET'])
 def GET_room_search():
@@ -217,15 +236,6 @@ def GET_room_search():
 		return dumpJSON(result)
 	except Exception as e:
 		return respond500(e)
-
-#GET 	/api/room/<id>
-@bp.route('/room/<id>', methods=['GET'])
-def GET_room_by_id(id):
-	try:
-		return dumpJSON(room.find_one(id=id))
-	except Exception as e:
-		return respond500(e)
-
 
 # POST 		/api/room/<id>/task
 @bp.route('/room/<room_id>/task', methods=['POST'])

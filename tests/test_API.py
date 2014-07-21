@@ -26,7 +26,7 @@ class APITestCase(BaseTestCase):
 		""" Helper method to post list, then room and keep returned room id as self.room_id """
 		if not self.list_id:
 			self.POST_list()
-		rv = self.POST_data('/api/list/' + self.list_id + '/room')
+		rv = self.POST_data('/api/list/' + self.list_id + '/room', data=TEST_ROOM_DATA)
 		self.assertEqual(rv.status_code, 200)
 		self.room_id = json.loads(rv.data)['_id']
 
@@ -171,6 +171,25 @@ class APITestCase(BaseTestCase):
 		rooms_list_after = self.GET_data('/api/list/' + self.list_id)['rooms']
 		self.assertEqual(len(rooms_list_before) + 1, len(rooms_list_after))
 		self.assertTrue(room_id in rooms_list_after)
+
+	def test_PUT_room(self):
+		"""
+		1) POST_room
+		2) update room data with just count and name 
+		3) ensure room still has originally posted data other than count and name 
+		4) ensure count and name updated
+		"""
+		# 1)
+		self.POST_room()
+		# 2)
+		NEW_ROOM_DATA = {'count': '3', 'name': 'NEW-ROOM-NAME'}
+		rv = self.PUT_data('/api/room/' + self.room_id, NEW_ROOM_DATA)
+		# 3)
+		data = self.GET_data('/api/room/' + self.room_id)
+		self.assertDataMatch(TEST_ROOM_DATA, data, ['type'])
+		# 4)
+		self.assertDataMatch(NEW_ROOM_DATA, data, NEW_ROOM_DATA.keys())
+		self.validate_last_modified(data)
 
 
 	def test_GET_room_search(self):

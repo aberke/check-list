@@ -259,11 +259,14 @@ function ClientListCntl($scope, APIservice, list) {
 
 	$scope.clientView = true;
 	$scope.list = list;
+	$scope.editingNotes = false;
 
 	$scope.clickRoom = function(room) {
 		room.active = room.active ? false : true;
 	}
-
+	$scope.clickNotes = function() {
+		$scope.showingNotes = !$scope.showingNotes;
+	}
 
 	var GETrooms = function() {
 		var successCallback = function(rooms) {
@@ -277,12 +280,8 @@ function ClientListCntl($scope, APIservice, list) {
 	
 
 	var init = function() {
-
-		$scope.list = list;
 		$scope.list.rooms = [];
 		GETrooms();
-
-		console.log('list', $scope.list)
 	}
 	init();
 }
@@ -313,6 +312,23 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 			$scope.list._id = ($scope.list._id || data._id);
 		}
 		APIservice.PUT('/api/list/' + $scope.list._id, $scope.list).then(successCallback, errorCallback);
+	}
+	var saveRoomCount = function(room) {
+		var errorCallback = function(message) {
+			$scope.error.message = message;
+		}
+		var successCallback = function(data) {
+			console.log('successCallback', data)
+		}
+		APIservice.PUT('/api/room/' + room._id, room).then(successCallback, errorCallback);
+	}
+	$scope.incrementRoomCount = function(room) {
+		room.count = room.count ? (room.count + 1) : 1;
+		saveRoomCount(room);
+	}
+	$scope.decrementRoomCount = function(room) {
+		room.count = room.count ? (room.count - 1) : 0;
+		saveRoomCount(room);
 	}
 
 

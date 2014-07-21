@@ -301,7 +301,7 @@ special case is the .heading
 }
 .container-bar .title,
 .container-bar .name,
-.container-bar .task-count {
+.container-bar .room-count {
 	font-size: 20px;
 }
 .heading p {
@@ -314,7 +314,7 @@ special case is the .heading
 	color: #ef7625;
 }
 
-.container-bar .task-count {
+.container-bar .room-count {
 	float: right;
 	margin: 10px 15px;
 }
@@ -388,7 +388,7 @@ special case is the .heading
 	float: left;
 	width: 100%;
 }
-.tasks-container {
+.room-details-container {
 	clear: both;
 	padding: 10px;
 }
