@@ -443,6 +443,11 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 
 	var GETrooms = function() {
 		var successCallback = function(rooms) {
+			// initialize room.count to 0 if not set
+			for (var i=0; i<rooms.length; i++) {
+				rooms[i].count = (rooms[i].count || 1);
+			}
+
 			$scope.list.rooms = TaskFactory.setupRoomsTasks(rooms);
 		}
 		var errorCallback = function(message) {

@@ -25,6 +25,8 @@ NUMBER = config.TWILIO_NUMBER
 
 def send_SMS(to, body):
 	""" 
+	@param {int | str} to
+	@param {str} body
 	Sends SMS message to 'to' number with message 'body'
 	"""
 	try:

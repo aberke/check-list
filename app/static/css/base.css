@@ -45,7 +45,9 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	background-position: center !important;
 	border-radius: 6px;
 }
-
+img.logo {
+	width: 130px;
+}
 .icon.logo {
 	border-radius: 50%;
 	background: url(/static/img/sl_logo_100px.png);
@@ -161,13 +163,6 @@ a.btn {
 .next .btn {
 	width: 100px;
 	border-color: #a0e4f9;
-	text-align: center;
-}
-.banner{
-	background-color: #ef7625;
-	color: white;
-	font-size: 4em;
-	padding: 0.1em;
 	text-align: center;
 }
 
@@ -314,10 +309,6 @@ special case is the .heading
 	color: #ef7625;
 }
 
-.container-bar .room-count {
-	float: right;
-	margin: 10px 15px;
-}
 
 /*---------------------- view -*/
 
@@ -388,9 +379,27 @@ special case is the .heading
 	float: left;
 	width: 100%;
 }
+.room-main-info .expand-btn {
+	display: inline-block;
+}
 .room-details-container {
 	clear: both;
 	padding: 10px;
+}
+.room-count-container {
+	display: inline-block;
+	float: right;
+}
+.room-count-container .room-count-btn {
+	display: inline-block;
+	height: 30px;
+	margin: 10px 0;
+}
+.room-count-container .room-count {
+	margin: 12px 10px 0px 0px;
+	display: inline-block;
+	vertical-align: top;
+	width: 10px;
 }
 .select-all {
 	color: #1b1464;
@@ -474,15 +483,22 @@ special case is the .heading
 }
 
 /* ------- index-view ---------- */
+#index-view {
+	padding: 15px 0;
+}
+#index-view .logo {
+	display: block;
+	margin: auto;
+}
 #index-view .banner{
-	margin: 0.5em 0 0 0;
-	font-size: 3.5em;
-	color: #a0e4f9;
+	font-size: 2.5em;
+	color: white;
+	text-align: center;
 }
 #index-view section {
-	max-width: 600px;
+	max-width: 230px;
 	margin: auto;
-	padding: 1em;
+	padding: 0 40px;
 }
 #index-view #welcome-copy {
 	font-size: 18px;

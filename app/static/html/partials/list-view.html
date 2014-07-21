@@ -33,19 +33,20 @@
 	</div>
 
 	<div ng-repeat="room in list.rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
-		<div ng-click="clickRoom(room)" class='room-main-info'>
-			<img ng-class="room.type" class='icon'>
-			<h1 ng-class="room.type" class='title'>{{room.name}}</h1>
-			<span ng-class="room.type" class='room-count'>{{room.count || 1}}</span>
+		<div class='room-main-info'>
+			<span class="expand-btn" ng-click="clickRoom(room)">
+				<img ng-class="room.type" class='icon'>
+				<h1 ng-class="room.type" class='title'>{{room.name}}</h1>
+			</span>
+
+			<span class='room-count-container'>
+				<img ng-click="decrementRoomCount(room)" ng-show="!clientView&&room.active" class='room-count-btn' src="/static/icon/minus.png">
+				<img ng-click="incrementRoomCount(room)" ng-show="!clientView&&room.active" class='room-count-btn' src="/static/icon/plus.png">
+				<span ng-class="room.type" class='room-count'>{{room.count}}</span>
+			</span>
 		</div>
 
 		<div ng-show="room.active" class='room-details-container'>
-
-			<div ng-show="!clientView" class='edit-room-count'>
-				<span ng-click="decrementRoomCount(room)" ng-show="!clientView">-</span>
-				<span ng-click="incrementRoomCount(room)" ng-show="!clientView">+</span>
-				<span>{{room.count || 1}} {{room.name}}</span>
-			</div>
 
 			<p ng-show="!clientView" class='select-all' ng-click="selectAllTasks(room)">select all</p>
 			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': (task.selected&&!clientView)}" ng-repeat="task in room.tasks">

@@ -32,13 +32,17 @@
 	color: #29abe2;
 	max-width: 250px;
 	margin: auto;
+	padding: 15px 0;
 }
-.sign-in .logo,
+.sigin-in .logo {
+	display: block;
+	margin: auto;
+}
 .sign-in .title,
 .sign-in input,
 .sign-in button,
 .sign-in .other-options {
-	margin: 20px auto;
+	margin: 12px auto;
 	display: block;
 }
 .sign-in input {
@@ -54,6 +58,7 @@
 	padding: 10px;
 	border-width: 3px;
 	border-style: solid;
+	box-sizing: border-box;
 }
 
 .sign-in .title {
@@ -85,16 +90,6 @@
 	padding: 30% 0;
 }
 
-
-
-/* ------- new-view ---------- */
-#new-view section {
-	height: 100%;
-	border-bottom: 3px solid white;
-	padding: 2.5em 0;
-	overflow: auto;
-}
-/* ------- new-view ---------- */
 
 
 
