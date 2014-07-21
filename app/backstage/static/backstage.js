@@ -26,10 +26,6 @@ var App = angular.module('BackstageApp', [])
 		$scope.loading;
 		$scope.cleaners;
 		$scope.error;
-
-		$scope.$on('$viewContentLoaded', function() {
-			console.log('$viewContentLoaded')
-		});
 		
 	
 
@@ -46,8 +42,17 @@ var App = angular.module('BackstageApp', [])
 					var cleaner;
 					for (var i=0; i<$scope.cleaners.length; i++) {
 						cleaner = $scope.cleaners[i];
+						/* Sorting cleaners in ng-repeat by last_activity
+							where last_activity is more recent of 
+							cleaner.last_modified and 
+							most recent of their lists last_modified 
+						*/
+						cleaner.last_active = new Date(cleaner.last_modified);
 						for (var j=0; j<cleaner.lists.length; j++) {
 							cleaner.lists[j].last_modified = new Date(cleaner.lists[j].last_modified);
+							if (cleaner.lists[j].last_modified > cleaner.last_active) {
+								cleaner.last_active = cleaner.lists[j].last_modified;
+							}
 						}
 					}
 					$scope.loading = false;

@@ -58,6 +58,9 @@ button:disabled { cursor: initial; }
 .cleaner.selected {
 	background-color: rgba(160,228,249,0.2);
 }
+.cleaner-last-active {
+	margin: 0;
+}
 
 .list {
 	margin: 10px 0px;
