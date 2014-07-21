@@ -47,7 +47,7 @@ var App = angular.module('BackstageApp', [])
 							cleaner.last_modified and 
 							most recent of their lists last_modified 
 						*/
-						cleaner.last_active = new Date(cleaner.last_modified);
+						cleaner.last_active = cleaner.last_modified ? new Date(cleaner.last_modified) : new Date(2014, 6, 1);
 						for (var j=0; j<cleaner.lists.length; j++) {
 							cleaner.lists[j].last_modified = new Date(cleaner.lists[j].last_modified);
 							if (cleaner.lists[j].last_modified > cleaner.last_active) {
