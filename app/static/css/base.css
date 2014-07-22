@@ -368,9 +368,26 @@ special case is the .heading
 	border-radius: 0;
 	padding: 3px;
 }
+#list-info #location-input {
+	margin-bottom: 0;
+}
+#list-info #nearest-locations-container {
+	width: 180px;
+	margin-left: 80px;
+	font-size: 12px;
+}
+#list-info #use-current-location-btn {
+	color: #54c0dd;
+	text-decoration: underline;
+}
+#list-info .location {
+	display: block;
+	margin: 10px 0;
+	color: #54c0dd;
+}
 #list-info .save-btn {
 	display: block;
-	margin: auto;
+	margin: 0 0 0 225px;
 }
 
 .room-main-info,

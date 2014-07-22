@@ -11,7 +11,7 @@
 ****************************************************/
 
 
-App.config(function($routeProvider) {
+ChecklistApp.config(function($routeProvider) {
 
 	var userOrRedirect = function(UserFactory, $location) {
 		return UserFactory.GETuser().then(function(user) {

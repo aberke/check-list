@@ -10,6 +10,59 @@
 
 ****************************************************/
 
+var GeolocationFactory = function($http) {
+  
+	var GOOGLE_API_KEY = "AIzaSyCJxQK1oDn4U3kbDIK-epf96ckze7fuSHQ";
+	var GOOGLE_GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+	var nearestLocations = null;
+	var result_type = "street_address|intersection|transit_station|train_station|bus_station|establishment|premise|subpremise|neighborhood";
+
+	var formatLocationResults = function(rawResults) {
+		/*
+		@param {array} rawResults - array returned by Google Maps API to parse
+		Returns array of format ['formatted_address' for each address in rawResults]
+		*/
+		var formattedResults = [];
+		for (var i=0; i<rawResults.length; i++) {
+			var formattedAddress = rawResults[i].formatted_address;
+			formattedResults.push(formattedAddress);
+		}
+		return formattedResults;
+	}
+
+  	var getNearestLocations = function(successCallback, errorCallback) {
+  		/* 
+  		Retrieves and formats array or nearest locations
+  		
+  		@param {function} successCallback - function to call with formatted results array on success
+  		@param {function} errorCallback   - function to call on error with message
+  		*/
+	  	if (nearestLocations) { return successCallback(nearestLocations); }
+
+	  	if (!navigator.geolocation) {
+	  		return errorCallback("Browser doesn't support Geolocation");
+	  	}
+		navigator.geolocation.getCurrentPosition(function(position) {
+			$http.get(GOOGLE_GEOCODE_URL + 'latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&result_type=' + result_type + '&key=' + GOOGLE_API_KEY)
+				.success(function(res) {
+					nearestLocations = formatLocationResults(res.results);
+					return successCallback(nearestLocations);
+				})
+				.error(function(errData) {
+					console.log(errData);
+					errorCallback('ERROR with reverse geocoding request');
+				});
+
+		}, function() {
+			errorCallback("Browser doesn't support Geolocation");
+		});
+	}
+	getNearestLocations(function() {});
+
+	return {
+		getNearestLocations: getNearestLocations,
+	}
+}
 
 var TaskFactory = function($http) {
 	/* used by the ListCntl to get tasks lists for the rooms */

@@ -286,7 +286,7 @@ function ClientListCntl($scope, APIservice, list) {
 	init();
 }
 
-function ListCntl($scope, TaskFactory, APIservice, user, list) {
+function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, list) {
 	/* ListCntl passed the list object or null if this is a new list */
 	$scope.user = user;
 	$scope.rooms;
@@ -298,10 +298,26 @@ function ListCntl($scope, TaskFactory, APIservice, user, list) {
 	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
 	$scope.error;
 
+	$scope.useCurrentLocation = function() {
+		$scope.error = {};
+		$scope.nearestLocations = [];
+		var successCallback = function(nearestLocations) {
+			$scope.nearestLocations = nearestLocations;
+		}
+		var errorCallback = function(message) {
+			$scope.error.message = message;
+			$scope.nearestLocations = null;
+		}
+		GeolocationFactory.getNearestLocations(successCallback, errorCallback);
+	}
+	$scope.useLocation = function(location) {
+		$scope.list.location = location;
+		$scope.nearestLocations = null;
+	}
+
 	$scope.saveList = function() {
 		$scope.error = {};
 		$scope.editingListInfo = false;
-		console.log('saveList', $scope.list)
 
 		var errorCallback = function(message) {
 			$scope.error.message = message;

@@ -13,7 +13,7 @@
 
 
 
-var App = angular.module('App', ['ngRoute', 'houseCleanersFilters'])
+var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'houseCleanersFilters'])
 
 	.config(function($locationProvider) {
 
@@ -31,6 +31,7 @@ var App = angular.module('App', ['ngRoute', 'houseCleanersFilters'])
 		// register factories
 		$provide.factory('TaskFactory', TaskFactory);
 		$provide.factory('UserFactory', UserFactory);
+		$provide.factory('GeolocationFactory', GeolocationFactory);
 
 	});
 

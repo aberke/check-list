@@ -64,6 +64,8 @@ TODO
 - protect API endpoints
 	- write middleware
 
+- limit Google API key to only my IPs?
+
 
 - set cache TTL to 0 for /auth/user ?
 

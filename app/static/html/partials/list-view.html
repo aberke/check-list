@@ -19,10 +19,18 @@
 				<div class='label-container'><label>Name:</label></div>
 				<input ng-model="list.name" type="text">
 			</div>
+
 			<div class='input-group'>
 				<div class='label-container'><label>Address:</label></div>
-				<textarea ng-model="list.location"></textarea>
+				<textarea id='location-input' ng-model="list.location"></textarea>
+				<div id='nearest-locations-container'>
+					<span ng-show="!nearestLocations" ng-click="useCurrentLocation()" id='use-current-location-btn'>use current location</span>
+					<span class='location' ng-click="useLocation(location)" ng-repeat="location in nearestLocations">
+					{{location}}
+					</span>
+				</div>
 			</div>
+
 			<div class='input-group'>
 				<div class='label-container'><label>Phone:</label></div>
 				<input class='phonenumber' ng-model="list.phonenumber" type="number">
