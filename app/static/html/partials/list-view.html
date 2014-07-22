@@ -9,7 +9,7 @@
 			<img class='icon house-blue'>
 			<h1 class='name'>{{list.name || 'NEW CLIENT'}}</h1>
 			<div ng-show="!editingListInfo">
-				<p>{{list.location || 'LOCATION'}}</p>
+				<p>{{list.location || 'LOCATION' | limitTo:35 }}</p>
 				<p>{{list.phonenumber || 'PHONENUMBER'}}</p>
 			</div>
 		</div>
