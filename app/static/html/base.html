@@ -72,6 +72,11 @@
         <span ng-click="logout()">Sign-Out</span>
         <a href="/dashboard">Dashboard</a>
 
+        <div id='language-control-container'>
+            <button ng-disabled="currentLanguage=='en'" ng-click="currentLanguage='en'" class=''>English</button>
+            <button ng-disabled="currentLanguage=='sp'" ng-click="currentLanguage='sp'" class=''>Espanol</button>
+        </div>
+
     </div>
  
     <!-- main view -- decided by routes.js -->
