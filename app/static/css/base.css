@@ -263,6 +263,7 @@ img.hamburger {
 	width: 100%;
 	z-index: 1;
 	right: 0;
+	transition: 0.25s;
 }
 #view.collapsed {
 	right: 150px;
