@@ -30,7 +30,7 @@ html,body, #view, .view {
 	background-color: #a0e4f9;
 	height: 100%;
 }
-a, button { cursor: pointer; }
+a, button, .touchable { cursor: pointer; }
 button:disabled { cursor: initial; }
 
 h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
@@ -315,16 +315,18 @@ special case is the .heading
 
 /*- Dashboard view -------------*/
 
-.list-item {
-	max-width: 220px;
-	float: left;
+.list-item-container .title {
 	color: #1b1464;
 }
-.list-item-container .delete-btn {
-	float: right;
-	margin: 15px 8px 15px 5px;
-	font-weight: bold;
-	font-size: 18px;
+.list-item-container .list-item {
+	display: inline-block;
+}
+.list-item-container .name {
+	margin: 0;
+}
+.list-item-container .list-item-btns img {
+	margin: 0 15px 0 0;
+	height: 28px;
 }
 
 /*------------- Dashboard view -*/
@@ -490,15 +492,21 @@ special case is the .heading
 
 
 
-#send-btn {
-	float: right;
-	margin: 15px;
+#send-list-container {
+	text-align: right;
+	padding: 10px;
+}
+#send-list-container,
+.edit-mode #send-list-container {
+	background-color: transparent;
+}
+.clean-mode #send-list-container {
+	background-color: white;
 }
 #sent-confirmation {
-	text-align: right;
-	margin: 15px;
 	color: #29abe2;
 }
+
 
 /* ------- index-view ---------- */
 #index-view {

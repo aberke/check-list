@@ -349,7 +349,8 @@ class APITestCase(BaseTestCase):
 
 
 
-	#TODO
+	#TODO -- test sending list
+	# PUT 	/api/list/<list_id>/send
 
 # POST 				/api/list/<id>/receipt
 

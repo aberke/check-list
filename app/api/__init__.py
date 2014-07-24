@@ -18,9 +18,9 @@
 # GET,PUT 			/api/cleaner/<id>
 # POST 				/api/cleaner/<id>/list
 #
-# GET 				/api/list/search ?_cleaner=cleaner._id | returns all
+# GET 				/api/list/search ?[_id=list._id]populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
 # GET,PUT,DELETE 	/api/list/<id>
-# PUT 				/api/cleaner/<cleaner_id>/list/<list_id>/send
+# PUT 				/api/list/<list_id>/send
 # POST 				/api/list/<id>/room
 #
 # GET 				/api/room/search ?[populate_tasks=boolean]&[_list=list._id | returns all]
@@ -169,23 +169,6 @@ def PUT_list(id):
 		return respond500(e)
 
 
-# PUT 	/api/cleaner/<cleaner_id>/list/<list_id>/send
-@bp.route('/cleaner/<cleaner_id>/list/<list_id>/send', methods=['PUT'])
-def PUT_send_list(cleaner_id, list_id):	
-	try:
-		data = JSONencoder.load(request.data)
-		if not 'phonenumber' in data:
-			return respond500('Client phonenumber required')
-
-		c = cleaner.find_one(id=cleaner_id)
-		message = ("{0} sent you a new cleaning list: {1}/list/{2}/client".format(c['name'], DOMAIN_NAME, list_id))
-		twilio_tools.send_SMS(data['phonenumber'], message)
-		return respond200()
-	except Exception as e:
-		return respond500(e)
-
-
-
 # DELETE 	/api/list/<id>
 @bp.route('/list/<id>', methods=['DELETE'])
 def DELETE_list(id):
@@ -196,16 +179,64 @@ def DELETE_list(id):
 		return respond500(e)
 
 
+# PUT 	/api/list/<list_id>/send
+@bp.route('/list/<list_id>/send', methods=['PUT'])
+def PUT_send_list(list_id):
+	"""
+	NO UNIT TEST COVERAGE -- TODO
+	Note: does same work as POST_receipt + sends receipt to client via SMS 
+	
+	When a receipt is posted, the list/receipt models do the work
+	No data is posted - just list_id
+	A snapshot of the list at time of POST is saved as a receipt 
+	list.create_receipt retrieves a fully populated list and inserts the receipt
+
+	Sends link to receipt to client via SMS
+
+	@param 		{list_id} _id of list of which to take snapshot and save as receipt 
+	payload:	Request is made with entire list object - have _cleaner as cleaner._id
+
+	Returns _id of newly inserted receipt 
+	"""
+	try:
+		list_data = JSONencoder.load(request.data)
+
+		# verify phonenumber in list_data -- need it to send link to receipt to client
+		if not 'phonenumber' in list_data:
+			return respond500('Client phonenumber required')
+		phonenumber = list_data['phonenumber']
+
+		# need to fetch cleaner for just cleaner's name in SMS message
+		cleaner_id = list_data['_cleaner'] # something went wrong with request if _cleaner not in payload
+		c = cleaner.find_one(id=cleaner_id)
+
+		# create the receipt that will live forever
+		receipt_id = List.create_receipt(list_id)
+
+		# send SMS to client that has link to viewable receipt
+		message = ("{0} sent you a new cleaning receipt: {1}/receipt/{2}".format(c['name'], DOMAIN_NAME, receipt_id))
+		twilio_tools.send_SMS(phonenumber, message)
+		
+		return dumpJSON({'_id': receipt_id})
+	except Exception as e:
+		return respond500(e)
+
+
 # POST 		/api/list/<id>/receipt
 @bp.route('/list/<list_id>/receipt', methods=['POST'])
 def POST_receipt(list_id):
 	"""
+	Note: PUT_send_list does the same work + sends receipt to client via SMS 
+
 	When a receipt is posted, the list/receipt models do the work
 	No data is posted - just list_id
 	A snapshot of the list at time of POST is saved as a receipt 
-	list.create_receipt retrieves a fully populated list and inserts the receipt 
+	list.create_receipt retrieves a fully populated list and inserts the receipt
 
-	@param {list_id} _id of list of which to take snapshot and save as receipt 
+	Sends link to receipt to client via SMS
+
+	@param 		{list_id} _id of list of which to take snapshot and save as receipt 
+	payload:	Request is made with entire list object - have _cleaner as cleaner._id
 
 	Returns _id of newly inserted receipt 
 	"""

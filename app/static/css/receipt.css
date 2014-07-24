@@ -1,0 +1,82 @@
+/***************************************************
+	Significance Labs
+	Brooklyn, NYC
+
+ 	Author: Alexandra Berke (aberke)
+ 	Written: Summer 2014
+
+
+ 	styles pertaining to static list, ie
+ 		receipt-view.html
+ 		static-list.html
+
+****************************************************/
+
+
+#static-list-partial .line,
+#receipt-view .line {
+	border: 1px solid #1b1464;
+	margin: 0;
+}
+
+
+/*- static-list-partial ---------*/
+#static-list-partial {
+	background-color: white;
+	padding: 10px;
+	color: #1b1464;
+}
+#static-list-partial .room {
+	margin: 5px 0;
+}
+#static-list-partial .room-title {
+	display: block;
+	border-bottom: 1px solid #1b1464;
+	margin-top: 5px;
+}
+#static-list-partial .room-name {
+	display: inline-block;
+}
+#static-list-partial .room-count {
+	float: right;
+}
+#static-list-partial .task.custom {
+	color: #ef7625;
+}
+#static-list-partial #price {
+	color: #54c0dd;	
+	font-weight: bold;
+	margin: 5px 0;
+}
+#static-list-partial .price-amount{
+	float: right;
+}
+/*--------- static-list-partial -*/
+
+/*- receipt-view ----------------*/
+#receipt-view {
+	background-color: white;
+	color: #1b1464;
+}
+#receipt-view #header {
+	padding: 5px 10px;
+}
+#receipt-view #header .cleaner-info{
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 5px;
+}
+#receipt-view .receipt-info {
+	padding: 5px 10px;
+}
+#receipt-view .client-info {
+	width: 50%;
+	color: #ef7625;
+}
+
+/*---------------- receipt-view -*/
+
+
+
+
+

@@ -244,6 +244,9 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	$scope.selectList = function(list) {
 		$location.path('/list/' + list._id);
 	}
+	$scope.editList = function(list) {
+		$location.path('/list/' + list._id + '/edit');
+	}
 
 	var init = function() {
 		$scope.lists = lists;
@@ -254,7 +257,7 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	}
 	init();
 }
-
+// TODO -- TAKE OUT?
 function ClientListCntl($scope, APIservice, list) {
 
 	$scope.clientView = true;
@@ -286,10 +289,10 @@ function ClientListCntl($scope, APIservice, list) {
 	init();
 }
 
-function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, list) {
+function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, list, editMode) {
 	/* ListCntl passed the list object or null if this is a new list */
+	$scope.editMode = editMode;
 	$scope.user = user;
-	$scope.rooms;
 	$scope.list;
 	$scope.editingListInfo;
 	$scope.showingNotes;
@@ -453,7 +456,7 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 			errorCallback('Phonenumber required');
 			return false;
 		}
-		APIservice.PUT('/api/cleaner/' + $scope.user._id + '/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
+		APIservice.PUT('/api/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
 		registerPhonenumberListener();
 	}
 
@@ -480,6 +483,7 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 		$scope.list.rooms = [];
 		GETrooms();
 
+
 		/* backwards compatibility:
 			phonenumbers stored as strings need be converted to integers
 		*/
@@ -492,7 +496,18 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	init();
 }
 
+function ReceiptCntl($scope, receipt) {
+	$scope.cleaner;
+	$scope.list; // for now receipt mimicing list
 
+	var init = function() {
+		$scope.cleaner = receipt.cleaner;
+		$scope.list = receipt;
+
+		console.log('list', $scope.list)
+	}
+	init();
+}
 
 
 
