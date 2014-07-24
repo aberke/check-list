@@ -236,7 +236,7 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	$scope.newList = function() {
 		var successCallback = function(list) {
 			UserFactory.addList(list);
-			$location.path('/list/' + list._id);
+			$location.path('/list/' + list._id + '/edit');
 		}
 		APIservice.POST('/api/cleaner/' + user._id + '/list').then(successCallback);
 	}

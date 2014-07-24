@@ -323,7 +323,9 @@ special case is the .heading
 }
 .list-item-container .name {
 	margin: 0;
+	width: 100%;
 }
+
 .list-item-container .list-item-btns img {
 	margin: 0 15px 0 0;
 	height: 28px;
