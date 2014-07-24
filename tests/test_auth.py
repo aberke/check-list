@@ -18,7 +18,7 @@ class AuthTestCase(BaseTestCase):
 		# verify process works with correct reset-code
 		self.POST_cleaner()
 		self.POST_data('/auth/send-reset-code', data=TEST_CLEANER_DATA)
-		c = cleaner.find_one(self.cleaner['_id'])
+		c = cleaner.find_one(id=self.cleaner['_id'])
 		self.POST_data('/auth/reset-password', data={
 				'password': 'NEW-PASSWORD',
 				'phonenumber': TEST_CLEANER_DATA['phonenumber'],

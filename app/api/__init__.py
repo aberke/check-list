@@ -29,6 +29,10 @@
 
 # GET 				/api/task/search returns all
 # DELETE 			/api/task/<id>
+
+# POST 				/api/list/<id>/receipt
+# GET 				/api/receipt/<id>
+
 #
 #
 #--------------------------------------------------------------------------------
@@ -42,7 +46,7 @@ from app.lib.util import yellERROR, dumpJSON, respond500, respond200
 from app.lib import twilio_tools
 from app.lib.util import JSONencoder
 from app import auth
-from app.models import cleaner, list as List, room, task
+from app.models import cleaner, list as List, room, task, receipt
 
 
 DOMAIN_NAME = config.DOMAIN_NAME
@@ -123,20 +127,24 @@ def POST_list(cleaner_id):
 	except Exception as e:
 		return respond500(e)
 
-# GET 				/api/list/search
+
+# GET 		/api/list/search ?[populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
 @bp.route('/list/search', methods=['GET'])
 def GET_list_search():
 	""" 
 	Returns List []
 	Parameters:
-		_cleaner  -> search by cleaner
+		_id 			-> search by id 
+		_cleaner  		-> search by cleaner
+		populate_rooms  -> populate rooms list which will also populate tasks list 
 	searches all if no parameters
 	"""
 	try:
-		if '_cleaner' in request.args:
-			result = List.find(_cleaner=request.args['_cleaner'])
-		else:
-			result = List.find()
+		_id 			= request.args['_id'] if '_id' in request.args else None 
+		_cleaner 		= request.args['_cleaner'] if '_cleaner' in request.args else None 
+		populate_rooms	= request.args['populate_rooms'] if 'populate_rooms' in request.args else None 
+		
+		result = List.find(id=_id, _cleaner=_cleaner, populate_rooms=populate_rooms)
 		return dumpJSON(result)
 	except Exception as e:
 		return respond500(e)
@@ -186,6 +194,36 @@ def DELETE_list(id):
 		return respond200()
 	except Exception as e:
 		return respond500(e)
+
+
+# POST 		/api/list/<id>/receipt
+@bp.route('/list/<list_id>/receipt', methods=['POST'])
+def POST_receipt(list_id):
+	"""
+	When a receipt is posted, the list/receipt models do the work
+	No data is posted - just list_id
+	A snapshot of the list at time of POST is saved as a receipt 
+	list.create_receipt retrieves a fully populated list and inserts the receipt 
+
+	@param {list_id} _id of list of which to take snapshot and save as receipt 
+
+	Returns _id of newly inserted receipt 
+	"""
+	try:
+		receipt_id = List.create_receipt(list_id)
+		return dumpJSON({'_id': receipt_id})
+	except Exception as e:
+		return respond500(e)
+
+
+# GET 		/api/receipt/<id>
+@bp.route('/receipt/<id>', methods=['GET'])
+def GET_receipt_by_id(id):
+	try:
+		return dumpJSON(receipt.find_one(id=id))
+	except Exception as e:
+		return respond500(e)
+
 
 # POST 		/api/list/<id>/room
 @bp.route('/list/<list_id>/room', methods=['POST'])
@@ -269,6 +307,8 @@ def DELETE_task(id):
 		return respond200()
 	except Exception as e:
 		return respond500(e)
+
+
 
 
 

@@ -18,9 +18,18 @@ class APITestCase(BaseTestCase):
 
 	def POST_list(self):
 		""" Helper method to post the list and keep returned list id as self.list_id """
-		rv = self.app.post('/api/cleaner/{0}/list'.format(self.cleaner['_id']))
+		rv = self.POST_data('/api/cleaner/{0}/list'.format(self.cleaner['_id']), data=TEST_LIST_DATA)
 		self.assertEqual(rv.status_code, 200)
 		self.list_id = json.loads(rv.data)['_id']
+
+	def POST_receipt(self):
+		""" Helper method to testing receipt endpoints """
+		if not self.list_id:
+			self.POST_list()
+		rv = self.POST_data('/api/list/' + self.list_id + '/receipt')
+		self.assertEqual(rv.status_code, 200)
+		self.receipt_id = json.loads(rv.data)['_id']
+
 
 	def POST_room(self):
 		""" Helper method to post list, then room and keep returned room id as self.room_id """
@@ -29,6 +38,7 @@ class APITestCase(BaseTestCase):
 		rv = self.POST_data('/api/list/' + self.list_id + '/room', data=TEST_ROOM_DATA)
 		self.assertEqual(rv.status_code, 200)
 		self.room_id = json.loads(rv.data)['_id']
+
 
 	def POST_task(self, task_data):
 		""" Helper method to tests.
@@ -244,6 +254,7 @@ class APITestCase(BaseTestCase):
 		self.assertEqual(1, len(data["tasks"]))
 		self.assertEqual(task_id, data["tasks"][0])
 
+
 	# DELETE 	/api/task/<id>
 	def test_DELETE_task(self):
 		""" Posts 3 tasks and then deletes 2 """
@@ -272,6 +283,75 @@ class APITestCase(BaseTestCase):
 		self.assertEqual(1, len(data))
 		self.assertEqual(task_id, data[0]['_id'])
 		self.assertDataMatch(TEST_TASK_DATA, data[0], keys=[k for k in TEST_TASK_DATA.keys()])
+
+
+	# GET 		/api/receipt/<id>
+	def test_GET_receipt_by_id(self):
+		"""
+		verify that posted receipt has the same data as list and 
+		verify receipt fills in public cleaner
+		verify that when list is deleted, receipt not deleted by _list marked as null
+		"""
+		self.POST_receipt()
+		# verify receipt data matches list_data and that date set
+		list_data = self.GET_data('/api/list/search?_id=' + self.list_id + '&populate_rooms=true')[0]
+		receipt_data = self.GET_data('/api/receipt/' + self.receipt_id)
+
+		self.assertEqual(list_data['_id'], receipt_data['_list'])
+		self.assertDataMatch(list_data, receipt_data, ['_cleaner', 'phonenumber', 'notes', 'price','location'])
+		
+		self.assertTrue('date' in receipt_data)
+		self.assertTrue(dateutil.parser.parse(receipt_data['date']) > datetime.now())
+
+		# for each room in list_data and receipt_data, assert they match
+		self.assertEqual(len(list_data['rooms']), len(receipt_data['rooms']))
+		num_rooms = len(list_data['rooms'])
+
+		for r in range(num_rooms):
+			self.assertEqual(list_data['rooms'][r]['name'], receipt_data['rooms'][r]['name'])
+			self.assertEqual(len(list_data['rooms'][r]['tasks']), len(receipt_data['rooms'][r]['tasks']))
+			for t in range(len(list_data['rooms'][r]['tasks'])):
+				self.assertEqual(list_data['rooms'][r]['tasks'][t], receipt_data['rooms'][r]['tasks'])
+
+		# verify receipt.cleaner is filled in public cleaner
+		cleaner_data = self.GET_data('/api/cleaner/' + receipt_data['_cleaner'])
+		self.assertEqual(cleaner_data['name'], receipt_data['cleaner']['name'])
+		self.assertEqual(cleaner_data['phonenumber'], receipt_data['cleaner']['phonenumber'])
+		self.assertTrue('hashed_pwd' not in receipt_data['cleaner'])
+
+		# delete receipt's parent list and assert receipt not deleted and receipt._list is null
+		self.DELETE('/api/list/' + self.list_id)
+		receipt_data = self.GET_data('/api/receipt/' + self.receipt_id)
+		self.assertNotEqual(None, receipt_data)
+		self.assertEqual(receipt_data['_list'], None)
+
+
+
+	# POST 		/api/list/<id>/receipt
+	def test_POST_receipt(self):
+		# list should have no receipts at first
+		self.POST_list()
+		list_data = self.GET_data('/api/list/' + self.list_id)
+		self.assertTrue(('receipts' not in list_data) or not len(list_data['receipts']))
+
+		# after post receipt and its _id should be in list.receipts
+		self.POST_receipt()
+		list_data = self.GET_data('/api/list/' + self.list_id)
+		self.assertTrue('receipts' in list_data)
+		self.assertEqual([self.receipt_id], list_data['receipts'])
+
+		# post another receipt and receipts should have length of 2
+		self.POST_receipt()
+		list_data = self.GET_data('/api/list/' + self.list_id)
+		self.assertEqual(2, len(list_data['receipts']))
+
+
+
+
+
+	#TODO
+
+# POST 				/api/list/<id>/receipt
 
 
 

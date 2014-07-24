@@ -48,8 +48,8 @@ def find(id=None, phonenumber=None):
 	return [c for c in db.cleaners.find(query)]
 
 
-def find_one(id=None, phonenumber=None):
-	c = find(id=id, phonenumber=phonenumber)
+def find_one(**kwargs):
+	c = find(**kwargs)
 	return c[0] if c else None
 
 
@@ -92,7 +92,7 @@ def update_password(id, new_password, salt):
 
 def add_list(cleaner_id, list_data=None):
 	cleaner_id = sanitize_id(cleaner_id)
-	list_id = list.insert_new(cleaner_id, list_data)
+	list_id = list.insert_new(cleaner_id, data=list_data)
 	ret = db.cleaners.update({ "_id": cleaner_id }, { "$push": {"lists": list_id }})
 	return list_id
 

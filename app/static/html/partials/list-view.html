@@ -13,6 +13,11 @@
 				<p>{{list.phonenumber || 'PHONENUMBER'}}</p>
 			</div>
 		</div>
+
+		<ng-include ng-if="editMode==false" src="'/static/html/partials/static-list.html'"></ng-include>
+
+
+
 		<div ng-show="editingListInfo">
 			<p class='error'>{{error.message}}</p>
 			<div class='input-group'>
