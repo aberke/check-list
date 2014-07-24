@@ -13,7 +13,7 @@
 
 
 
-var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'houseCleanersFilters'])
+var ChecklistApp = angular.module('ChecklistApp', ['ngRoute'])
 
 	.config(function($locationProvider) {
 

@@ -346,13 +346,33 @@ class APITestCase(BaseTestCase):
 		self.assertEqual(2, len(list_data['receipts']))
 
 
-
-
-
-	#TODO -- test sending list
 	# PUT 	/api/list/<list_id>/send
+	def test_PUT_send_list(self):
+		""" PUT_send_list does the same work as POST_receipt but also sends list to client
+			it expects list in payload and requires list.phonenumber and list._cleaner
+		"""
+		# list should have no receipts at first
+		self.POST_list()
+		list_data = self.GET_data('/api/list/' + self.list_id)
+		self.assertTrue(('receipts' not in list_data) or not len(list_data['receipts']))
 
-# POST 				/api/list/<id>/receipt
+
+		# after put request, receipt should be created and its _id should be in list.receipts
+		rv = self.PUT_data('/api/list/' + self.list_id + '/send', data=list_data)
+		data = json.loads(rv.data)
+		self.assertTrue('_id' in data)
+		receipt_id = data['_id']
+
+		list_data = self.GET_data('/api/list/' + self.list_id)
+		self.assertTrue('receipts' in list_data)
+		self.assertEqual([receipt_id], list_data['receipts'])
+
+		# post another receipt and receipts should have length of 2
+		self.PUT_data('/api/list/' + self.list_id + '/send', data=list_data)
+		list_data = self.GET_data('/api/list/' + self.list_id)
+		self.assertEqual(2, len(list_data['receipts']))
+
+
 
 
 

@@ -4,7 +4,7 @@
 		<img src='/static/icon/log.png'>
 		<div class='cleaner-info'>
 			<h2 id='cleaner-name'>{{cleaner.name}}</h2>
-			<p id='cleaner-phonenumber'>{{cleaner.phonenumber}}</p>
+			<p id='cleaner-phonenumber'>{{ cleaner.phonenumber | telephone }}</p>
 		</div>
 		
 		<hr class='line' />
@@ -14,8 +14,10 @@
 		<div class='client-info'>
 			<h4>{{list.name}}</h4>
 			<h4>{{list.location}}</h4>
-			<h4>{{list.phonenumber}}</h4>
+			<h4>{{ list.phonenumber | telephone }}</h4>
 		</div>
+
+		<span class='date'>{{ list.date | date:'shortDate' }}
 		
 	</div>
 

@@ -44,10 +44,7 @@ Analytics
 TODO
 ---
 
-- have ListCntl inherit from ClientListCntl?
-
 - handle errors with UI feedback in your controllers errorCallback functions
-
 
 - handle default room data
 

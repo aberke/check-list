@@ -257,37 +257,7 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	}
 	init();
 }
-// TODO -- TAKE OUT?
-function ClientListCntl($scope, APIservice, list) {
 
-	$scope.clientView = true;
-	$scope.list = list;
-	$scope.editingNotes = false;
-
-	$scope.clickRoom = function(room) {
-		room.active = room.active ? false : true;
-	}
-	$scope.clickNotes = function() {
-		$scope.showingNotes = !$scope.showingNotes;
-	}
-
-	var GETrooms = function() {
-		var successCallback = function(rooms) {
-			$scope.list.rooms = rooms;
-		}
-		var errorCallback = function(message) {
-			console.log('TODO -- handle error')
-		}
-		APIservice.GET('/api/room/search?populate_tasks=true&_list=' + $scope.list._id).then(successCallback, errorCallback);
-	}
-	
-
-	var init = function() {
-		$scope.list.rooms = [];
-		GETrooms();
-	}
-	init();
-}
 
 function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, list, editMode) {
 	/* ListCntl passed the list object or null if this is a new list */
@@ -496,13 +466,15 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	init();
 }
 
-function ReceiptCntl($scope, receipt) {
+function ReceiptCntl($scope, UtilityService, receipt) {
 	$scope.cleaner;
 	$scope.list; // for now receipt mimicing list
 
 	var init = function() {
+		receipt.date = UtilityService.dateStringToDate(receipt.date);
 		$scope.cleaner = receipt.cleaner;
 		$scope.list = receipt;
+
 
 		console.log('list', $scope.list)
 	}

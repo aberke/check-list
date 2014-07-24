@@ -1,6 +1,6 @@
 <div class='view' id='list-view' ng-class="{'edit-mode':editMode, 'clean-mode': !editMode}">
 
-	<div ng-show="!clientView" ng-click="clickHamburger()" class='hamburger-control'>
+	<div ng-click="clickHamburger()" class='hamburger-control'>
 		<img src="/static/icon/hamburger.png" class='hamburger'>
 	</div>
 
@@ -10,7 +10,7 @@
 			<h1 class='name'>{{list.name || 'NEW CLIENT'}}</h1>
 			<div ng-show="!editingListInfo">
 				<p>{{list.location || 'LOCATION' | limitTo:35 }}</p>
-				<p>{{list.phonenumber || 'PHONENUMBER'}}</p>
+				<p>{{(list.phonenumber | telephone) || 'PHONENUMBER'}}</p>
 			</div>
 		</div>
 		<div ng-show="editingListInfo">
@@ -54,21 +54,21 @@
 				</span>
 
 				<span class='room-count-container'>
-					<img ng-click="decrementRoomCount(room)" ng-show="!clientView&&room.active" class='room-count-btn' src="/static/icon/minus.png">
-					<img ng-click="incrementRoomCount(room)" ng-show="!clientView&&room.active" class='room-count-btn' src="/static/icon/plus.png">
+					<img ng-click="decrementRoomCount(room)" ng-show="room.active" class='room-count-btn' src="/static/icon/minus.png">
+					<img ng-click="incrementRoomCount(room)" ng-show="room.active" class='room-count-btn' src="/static/icon/plus.png">
 					<span ng-class="room.type" class='room-count'>{{room.count}}</span>
 				</span>
 			</div>
 
 			<div ng-show="room.active" class='room-details-container'>
 
-				<p ng-show="!clientView" class='select-all' ng-click="selectAllTasks(room)">select all</p>
-				<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': (task.selected&&!clientView)}" ng-repeat="task in room.tasks">
-					<span ng-show="task.selected&&!clientView">-</span>
-					<span ng-show="!task.selected&&!clientView">+</span>
+				<p class='select-all' ng-click="selectAllTasks(room)">select all</p>
+				<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.tasks">
+					<span ng-show="task.selected">-</span>
+					<span ng-show="!task.selected">+</span>
 					<span>{{task.name}}</span>
 				</div>
-				<div ng-show="!clientView" ng-model="newCustomTask" class='task add-custom-task'>
+				<div ng-model="newCustomTask" class='task add-custom-task'>
 					<span>+</span>
 					<input ng-model="newCustomTask" type="text">
 					<button class='save-btn' ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">SAVE</button>
@@ -78,8 +78,7 @@
 
 		<span class='divider'></span>
 
-		<!-- notes shown to client iff there are notes  -->
-		<div ng-show="!clientView||list.notes" class='notes-container container-bar' ng-class="{'active': showingNotes}">
+		<div class='notes-container container-bar' ng-class="{'active': showingNotes}">
 			<div class='notes-main-info' ng-click="clickNotes()">
 				<img class='icon notes'>
 				<h1 class='title notes'>NOTES</h1>
@@ -91,14 +90,13 @@
 				<textarea ng-show="editingNotes" ng-model="list.notes"></textarea>
 				<div class='btn-container'>
 					<!-- only cleaner can edit notes -->
-					<button ng-click="editNotes()" ng-show="!editingNotes&&!clientView" class='save-btn btn'>EDIT</button>
+					<button ng-click="editNotes()" ng-show="!editingNotes" class='save-btn btn'>EDIT</button>
 					<button ng-click="saveNotes()" ng-show="editingNotes" class='save-btn btn'>SAVE</button>
 				</div>
 			</div>
 		</div> <!-- notes-container -->
 
-		<!-- if no price is set, don't show it to client -->
-		<div ng-show="!clientView||list.price" class='price-container container-bar' ng-class="{ 'active': editingPrice }">
+		<div class='price-container container-bar' ng-class="{ 'active': editingPrice }">
 			<div class='price-main-info'>
 				<img ng-click="editPrice()" class='icon price'>
 				<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>{{list.price || 'COST'}}</h1>
@@ -110,7 +108,7 @@
 	</div> <!-- edit-view -->
 
 	<!-- list sending UI -->
-	<div id='send-list-container' ng-show="!clientView">
+	<div id='send-list-container'>
 		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
 		<p ng-show="sendStatus=='sending'" id='sent-confirmation'>SENDING...</p>
 		<p ng-show="sendStatus=='sent'" id='sent-confirmation'>SENT!</p>

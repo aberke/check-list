@@ -72,6 +72,11 @@
 #receipt-view .client-info {
 	width: 50%;
 	color: #ef7625;
+	display: inline-block;
+}
+#receipt-view .receipt-info .date {
+	color: #54c0dd;
+	float: right;
 }
 
 /*---------------- receipt-view -*/

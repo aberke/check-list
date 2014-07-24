@@ -183,7 +183,6 @@ def DELETE_list(id):
 @bp.route('/list/<list_id>/send', methods=['PUT'])
 def PUT_send_list(list_id):
 	"""
-	NO UNIT TEST COVERAGE -- TODO
 	Note: does same work as POST_receipt + sends receipt to client via SMS 
 	
 	When a receipt is posted, the list/receipt models do the work
@@ -232,8 +231,6 @@ def POST_receipt(list_id):
 	No data is posted - just list_id
 	A snapshot of the list at time of POST is saved as a receipt 
 	list.create_receipt retrieves a fully populated list and inserts the receipt
-
-	Sends link to receipt to client via SMS
 
 	@param 		{list_id} _id of list of which to take snapshot and save as receipt 
 	payload:	Request is made with entire list object - have _cleaner as cleaner._id
