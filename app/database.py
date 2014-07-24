@@ -59,11 +59,15 @@ def drop_rooms():
 def drop_tasks():
 	return db.tasks.remove()
 
+def drop_receipts():
+	return db.receipts.remove()
+
 def drop_all():
 	drop_cleaners()
 	drop_lists()
 	drop_rooms()
 	drop_tasks()
+	drop_receipts()
 
 # -------- FOR COMMAND-LINE TESTING USE ------------------
 
