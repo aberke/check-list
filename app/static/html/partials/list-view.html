@@ -1,4 +1,6 @@
-<div class='view' id='list-view' ng-class="{'edit-mode':editMode, 'clean-mode': !editMode}">
+
+
+<div class='view' id='list-view' ng-class="{'clean-mode': mode=='clean', 'edit-mode': mode=='edit'}">
 
 	<div ng-click="clickHamburger()" class='hamburger-control'>
 		<img src="/static/icon/hamburger.png" class='hamburger'>
@@ -40,11 +42,17 @@
 		</div>
 	</div>
 
-	<ng-include ng-if="editMode==false" src="'/static/html/partials/static-list.html'"></ng-include>
+	<div ng-if="mode=='clean'" id='cleaning-log-header-container'>
+	<div id='cleaning-log-header'>
+		<span id='cleaning-log-title'>CLEANING LOG</span>
+		<span id='cleaning-log-date'>{{today | date:'shortDate'}}</span>
+	</div>
+	</div>
+	<ng-include ng-if="mode=='clean'" src="'/static/html/partials/static-list.html'"></ng-include>
 
 
 
-	<div ng-if="editMode" id="edit-view">
+	<div ng-if="mode=='edit'" id="edit-view">
 
 		<div ng-repeat="room in list.rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
 			<div class='room-main-info'>
@@ -109,7 +117,9 @@
 
 	<!-- list sending UI -->
 	<div id='send-list-container'>
-		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendList()" id='send-btn' class='btn short'>SEND</button>
+		<button ng-show="mode=='clean'" ng-click="changeMode('edit')" class='btn short'>EDIT</button>
+
+		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendList()" class='btn short'>SEND</button>
 		<p ng-show="sendStatus=='sending'" id='sent-confirmation'>SENDING...</p>
 		<p ng-show="sendStatus=='sent'" id='sent-confirmation'>SENT!</p>
 	</div>

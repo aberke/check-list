@@ -238,6 +238,8 @@ img.hamburger {
 	color: #1b1464;
 }
 
+/* - control-view ---------------- */
+
 #control-view {
 	position: absolute;
 	z-index: 1;
@@ -255,6 +257,27 @@ img.hamburger {
 	font-size: 18px;
 	font-weight: bold;
 }
+
+.control-toggle {
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+	width: 130px;
+	margin: 10px;
+	color: white;
+	font-size: 18px;
+	padding: 5px 0;
+}
+.control-toggle input[type=radio] {
+	border: 2px solid white;
+	background-color: white;
+	background-image: none;
+	border-radius: 50%;
+}
+.control-toggle input[type=radio].selected {
+	background-color: gray;
+}
+
+/* ---------------- control-view - */
 
 /*- view ----------------------*/
 
@@ -353,6 +376,23 @@ special case is the .heading
 	font-size: 12px;
 	vertical-align: top;
 }
+#cleaning-log-header-container {
+	background-color: white;
+	padding: 10px 30px 20px 30px;
+}
+#cleaning-log-title,
+#cleaning-log-date {
+	width: 49%;
+	color: #54c0dd;
+	display: inline-block;
+}
+#cleaning-log-title {
+	text-align: left;
+}
+#cleaning-log-date {
+	text-align: right
+}
+
 #list-info .save-btn {
 	background-color: #54C0DD;
 }
@@ -507,6 +547,7 @@ special case is the .heading
 }
 #sent-confirmation {
 	color: #29abe2;
+	display: inline-block;
 }
 
 
@@ -550,9 +591,7 @@ special case is the .heading
 /* ---------------- index-view - */
 
 
-#temp {
-	position: absolute;
-}
+
 
 /* - style-guide ---------------- */
 

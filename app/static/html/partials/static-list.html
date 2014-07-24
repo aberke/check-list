@@ -9,11 +9,16 @@
 		</span>
 		<p class='task' ng-class="{'custom':task.custom}" ng-show="task.selected" ng-repeat="task in room.tasks">{{task.name}}</p>
 	</div>
+	
+	<div ng-if="list.notes" id='notes'>
+		<p class='notes-title'>NOTES:</p>
+		<p class='notes-content'>{{list.notes}}</p>
+	</div>
 
 	<hr class='line' />
 	
 	<div ng-if="list.price" id='price'>
-		<span class='price-title'>Total:</span>
+		<span class='price-title'>PRICE:</span>
 		<span class='price-amount'>${{list.price}}</span>
 	</div>
 

@@ -258,11 +258,24 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	init();
 }
 
+function ListModeCntl($scope, $location) {
+	/* Always nested within list-view
+		therefore always has $scope of ListCntl as parent $scope
+			-- therefore has $scope.mode
+	*/
+	$scope.mode; // inherited from $scope of ListCntl
+	$scope.list; // inherited from $scope of ListCntl
+	
+}
 
-function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, list, editMode) {
-	/* ListCntl passed the list object or null if this is a new list */
-	$scope.editMode = editMode;
+function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory, user, list, editMode) {
+	/* View exists in two alternative states (modes_:
+		edit-mode: collapsable rooms with editable tasks
+		clean-mode: static task list that is nearly identical to client's receipt
+	*/
+	$scope.view = 'list';
 	$scope.user = user;
+	$scope.mode; // either 'edit' or 'clean'
 	$scope.list;
 	$scope.editingListInfo;
 	$scope.showingNotes;
@@ -270,6 +283,11 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	$scope.editingPrice;
 	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
 	$scope.error;
+
+	$scope.changeMode = function(mode) {
+		var path = '/list/' + $scope.list._id + ( mode=='edit' ? '/edit' : '');
+		$location.path(path);
+	}
 
 	$scope.useCurrentLocation = function() {
 		$scope.error = {};
@@ -447,11 +465,19 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	
 
 	var init = function() {
+		if (editMode) { 
+			$scope.mode = 'edit';
+		} else {
+			$scope.mode = 'clean';
+		}
 		$scope.editingListInfo = false;
 
 		$scope.list = list;
+		$scope.list._cleaner = user._id;
 		$scope.list.rooms = [];
 		GETrooms();
+
+		$scope.today = new Date(); // for cleaning log title
 
 
 		/* backwards compatibility:
