@@ -50,8 +50,6 @@ TODO
 
 - handle default list data via google spreadsheets
 
-- add use my current location
-
 - host on AWS?
 
 - move hamburger-control and control to directives?
