@@ -25,13 +25,15 @@ $ source venv/bin/activate
 * Install dependencies: ```$ pip install -r requirements.txt``` (may need to run with sudo)
 * Make sure you have mongodb installed ```$ brew install mongodb```
 * Make sure mongodb is started ```$ mongod```
-
-* Run server ```python main.py``` and visit<http://127.0.0.1:3000>
+* Set necessary environment variables, or obtain environment variable file from Alex and run ```$ source env.sh```
+* Run server ```$ python main.py``` and visit<http://127.0.0.1:3000>
 
 
 Running The Tests
 ---
-From the base directory ```python run_tests.py```
+
+* Ensure environment variables are set and in virtualenv
+* From the base directory ```$ python run_tests.py```
 
 
 Analytics
@@ -39,6 +41,26 @@ Analytics
 
 <https://www.google.com/analytics/web/?authuser=2#report/visitors-overview/a52152670w85170631p88292434/>
 
+Work Flow
+---
+
+Branches: 
+- ```working``` branch 	- where work gets done
+- ```master``` branch  	- where all outstanding working branches get merged in to
+- ```staging``` branch 	- Merges in Master branch when ready to push new features to staging server
+- ```production``` branch - Merges in staging when and pushed to production server
+
+Flow:
+- Merge in working branches to ```master```
+- Merge in ```master``` to ```staging```
+- Push ```staging``` to staging server ```$ git push staging staging```
+	- staging lives at <http://clean-slate-staging.herokuapp.com/>
+	- configure your remote in ```.git/config``` like Alex so that you can just hit ```$ git push staging```
+- Perform QA on staging
+- Merge ```staging``` into ```production```
+- Push to production ```$ git push production production```
+	- production lives at <http://clean-slate2.herokuapp.com/>
+	- configure your remote in ```.git/config``` like Alex so that you can just hit ```$ git push production```
 
 
 TODO
