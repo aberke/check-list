@@ -213,7 +213,7 @@ def PUT_send_list(list_id):
 		receipt_id = List.create_receipt(list_id)
 
 		# send SMS to client that has link to viewable receipt
-		message = ("{0} sent you a new cleaning receipt: {1}/receipt/{2}".format(c['name'], DOMAIN_NAME, receipt_id))
+		message = ("{0} sent you a new cleaning log: {1}/receipt/{2}".format(c['name'], DOMAIN_NAME, receipt_id))
 		twilio_tools.send_SMS(phonenumber, message)
 		
 		return dumpJSON({'_id': receipt_id})

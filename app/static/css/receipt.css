@@ -40,7 +40,7 @@
 #static-list-partial .room-count {
 	float: right;
 }
-#static-list-partial .task.custom {
+#list-view .task.custom {
 	color: #ef7625;
 }
 #static-list-partial #notes {
