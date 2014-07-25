@@ -44,6 +44,8 @@ Analytics
 TODO
 ---
 
+- parse URL for mongoHQ in config file
+
 - handle errors with UI feedback in your controllers errorCallback functions
 
 - handle default room data
