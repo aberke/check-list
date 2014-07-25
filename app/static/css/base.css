@@ -463,7 +463,7 @@ special case is the .heading
 	vertical-align: top;
 	width: 10px;
 }
-.select-all {
+#list-view .select-all {
 	color: #1b1464;
 	/* optimize style for easy clickability */
 	display: inline-block;
@@ -471,13 +471,13 @@ special case is the .heading
 	margin: 0 0 5px 0;
 	cursor: pointer;
 }
-.task {
+#list-view .task {
 	font-size: 18px;
 	padding: 2px;
 	color: #1b1464;
 }
-.task.hover,
-.task.selected {
+#list-view .task.hover,
+#list-view .task.selected {
 	background-color: #1b1464;
 	color: white;
 }

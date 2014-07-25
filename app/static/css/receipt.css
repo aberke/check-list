@@ -56,15 +56,25 @@
 #static-list-partial .price-amount{
 	float: right;
 }
+#thank-you-container {
+	text-align: right;
+}
 /*--------- static-list-partial -*/
 
 /*- receipt-view ----------------*/
 #receipt-view {
 	background-color: white;
 	color: #1b1464;
+	font-size: 14px;
 }
 #receipt-view #header {
 	padding: 5px 10px;
+}
+#receipt-view #header img {
+	height: 70px;
+}
+#receipt-view #header .title {
+	color: #54c0dd;
 }
 #receipt-view #header .cleaner-info{
 	display: inline-block;
@@ -76,7 +86,7 @@
 }
 #receipt-view .client-info {
 	width: 50%;
-	color: #ef7625;
+	color: #54c0dd;
 	display: inline-block;
 }
 #receipt-view .receipt-info .date {
