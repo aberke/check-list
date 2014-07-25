@@ -53,14 +53,38 @@ Branches:
 Flow:
 - Merge in working branches to ```master```
 - Merge in ```master``` to ```staging```
-- Push ```staging``` to staging server ```$ git push staging staging```
+- Push ```staging``` to staging server
 	- staging lives at <http://clean-slate-staging.herokuapp.com/>
-	- configure your remote in ```.git/config``` like Alex so that you can just hit ```$ git push staging```
 - Perform QA on staging
 - Merge ```staging``` into ```production```
-- Push to production ```$ git push production production```
+- Push to ```production``` branch to production server
 	- production lives at <http://clean-slate2.herokuapp.com/>
-	- configure your remote in ```.git/config``` like Alex so that you can just hit ```$ git push production```
+
+* Configure ```.git/config``` file to push to staging with ```$ git push staging``` and push to production with ```$ git push production```
+
+```
+# commands:
+#————————————
+# git push origin [branchName] -> push to github [branchName]
+# git push staging	     -> push staging branch to staging(remote) (which #merges into remote’s master) 	
+# git push production	     -> push staging branch to staging(remote) (which merges into remote’s master)
+
+[remote "origin"]
+	url = https://github.com/aberke/check-list.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[remote "production"]
+	url = git@heroku.com:clean-slate2.git
+	fetch = +refs/heads/*:refs/remotes/heroku/*
+	push = production:master
+[remote "staging"]
+	url = git@heroku.com:clean-slate-staging.git
+	fetch = +refs/heads/*:refs/remotes/staging/*
+	push = staging:master
+
+```
 
 
 TODO
