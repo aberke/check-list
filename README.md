@@ -66,7 +66,7 @@ Flow:
 # commands:
 #————————————
 # git push origin [branchName] -> push to github [branchName]
-# git push staging	     -> push staging branch to staging(remote) (which #merges into remote’s master) 	
+# git push staging	     -> push staging branch to staging(remote) (which merges into remote’s master) 	
 # git push production	     -> push staging branch to staging(remote) (which merges into remote’s master)
 
 [remote "origin"]
