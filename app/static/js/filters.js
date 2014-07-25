@@ -11,11 +11,9 @@
 ****************************************************/
 
 
-// NOT YET USING ANYWHERE
 
 
-angular.module('houseCleanersFilters', [])
-    .filter('telephone', function () {
+ChecklistApp.filter('telephone', function () {
         /* borrowed with gratitude from StackOverflow
             http://stackoverflow.com/questions/12700145/how-to-format-a-telephone-number-in-angularjs
         

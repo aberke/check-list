@@ -1,0 +1,52 @@
+<div class='view' id='receipt-view'>
+
+	<div id='header'>
+		<img src='/static/icon/log.png'>
+		<div class='cleaner-info'>
+			<h3 class='title'>CLEANING LOG</h3>
+			<h3 id='cleaner-name'>{{cleaner.name}}</h3>
+			<p id='cleaner-phonenumber'>{{ cleaner.phonenumber | telephone }}</p>
+		</div>
+		
+		<hr class='line' />
+	</div>
+
+	<div class='receipt-info'>
+		<div class='client-info'>
+			<h4>{{list.name}}</h4>
+			<h4>{{list.location}}</h4>
+			<h4>{{ list.phonenumber | telephone }}</h4>
+		</div>
+
+		<span class='date'>{{ list.date | date:'shortDate' }}
+		
+	</div>
+
+
+	<ng-include src="'/static/html/partials/static-list.html'"></ng-include>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

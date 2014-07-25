@@ -30,10 +30,6 @@ ChecklistApp.config(function($routeProvider) {
 			templateUrl: '/static/html/partials/new.html',
 			controller: NewCntl,
 		})
-		.when('/test', {
-			templateUrl: '/static/html/partials/test.html',
-			controller: NewCntl,
-		})
 		.when('/sign-in', {
 			templateUrl: '/static/html/partials/sign-in.html',
 			controller: LoginCntl,
@@ -64,16 +60,30 @@ ChecklistApp.config(function($routeProvider) {
 						return list;
 					});
 				},
+				editMode: function() { return false; },
 			},
 		})
-		.when('/list/:id/client', {
+		.when('/list/:id/edit', {
 			templateUrl: '/static/html/partials/list-view.html',
-			controller: ClientListCntl,
+			controller: ListCntl,
 			resolve: {
-				list: function(APIservice, $route, $location) {
-					return APIservice.GET('/api/list/' + $route.current.params.id).then(function(list) {
-						if (!list) { $location.path('/'); }
+				user: userOrRedirect,
+				list: function(UserFactory, $route) {
+					return UserFactory.GETlist($route.current.params.id).then(function(list) {
 						return list;
+					});
+				},
+				editMode: function() { return true; },
+			},
+		})
+		.when('/receipt/:id', {
+			templateUrl: '/static/html/partials/receipt-view.html',
+			controller: ReceiptCntl,
+			resolve: {
+				receipt: function(APIservice, $route, $location) {
+					return APIservice.GET('/api/receipt/' + $route.current.params.id).then(function(receipt) {
+						if (!receipt) { $location.path('/'); }
+						return receipt;
 					});
 				},
 			},

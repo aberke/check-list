@@ -1,0 +1,29 @@
+<!-- static list in included in both list-view.html and reciept-view.html -->
+
+<div id='static-list-partial'>
+
+	<div class='room' ng-repeat="room in list.rooms">
+		<span class='room-title'>
+			<p class='room-name'>{{room.name}}</p>
+			<p class='room-count'>{{room.count}}</p>
+		</span>
+		<p class='task' ng-class="{'custom':task.custom}" ng-show="task.selected" ng-repeat="task in room.tasks">{{task.name}}</p>
+	</div>
+	
+	<div ng-if="list.notes" id='notes'>
+		<p class='notes-title'>NOTES:</p>
+		<p class='notes-content'>{{list.notes}}</p>
+	</div>
+
+	<div id='thank-you-container'>
+		<img src='/static/icon/thankyou.png'>
+	</div>
+
+	<hr class='line' />
+	
+	<div ng-if="list.price" id='price'>
+		<span class='price-title'>PRICE:</span>
+		<span class='price-amount'>${{list.price}}</span>
+	</div>
+
+</div>

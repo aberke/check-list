@@ -13,7 +13,7 @@
 
 
 
-var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'houseCleanersFilters'])
+var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'translateModule'])
 
 	.config(function($locationProvider) {
 
@@ -21,7 +21,7 @@ var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'houseCleanersFilt
 
 	})
 
-	.config(function($provide, $compileProvider, $filterProvider) {
+	.config(function($provide) {
 
 		// register services
 		$provide.service('APIservice', APIservice);

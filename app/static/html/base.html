@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
     <!-- stylesheets -->
     <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/receipt.css" rel="stylesheet">
     <link href="/static/css/sign-in.css" rel="stylesheet">
 
 
@@ -36,10 +37,14 @@
     <script src="/static/js/filters.js"></script>
 
     <script src="/static/js/routes.js"></script>
+
+    <!-- translation module -->
+    <script src="/static/js/translateModule/translateMap.js"></script>
+    <script src="http://spreadsheets.google.com/feeds/list/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/od6/public/basic?alt=json-in-script&callback=GETtranslateDataCallback"></script>
+    <script src="/static/js/translateModule/translate.js"></script>
+    <script src="/static/js/translateModule/services.js"></script>
+    <script src="/static/js/translateModule/filters.js"></script>
     
-    <!-- directives --><!-- 
-    <script src="/static/directives/error.js"></script>
- -->
 
     <!-- using fastclick.js to prevent delay on mobile browsers -->
     <script type='application/javascript' src="/static/js/vendor/fastclick.js"></script>
@@ -72,14 +77,22 @@
         <span ng-click="logout()">Sign-Out</span>
         <a href="/dashboard">Dashboard</a>
 
-        <div id='language-control-container'>
-            <button ng-disabled="currentLanguage=='en'" ng-click="currentLanguage='en'" class=''>English</button>
-            <button ng-disabled="currentLanguage=='sp'" ng-click="currentLanguage='sp'" class=''>Espanol</button>
+        <div class='control-toggle' id='language-toggle'>
+            <div>
+                <input type='radio' name='language' ng-class="{'selected':language=='en'}" ng-model="language" value='en' ng-change="selectLanguage('en')">
+                <label>English</label>
+            </div>
+            <div>
+                <input type='radio' name='language' ng-class="{'selected':language=='es'}" ng-model="language" value='es' ng-change="selectLanguage('es')">
+                <label>Spanish</label>
+            </div>
         </div>
 
     </div>
  
     <!-- main view -- decided by routes.js -->
+<!--     {{ 'hi' | translate: 'titlecase' }}
+    {{ 'PHONENUMBER' | translate}} -->
     <div id='view' ng-view></div>
  
 </body>

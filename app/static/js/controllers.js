@@ -236,13 +236,16 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	$scope.newList = function() {
 		var successCallback = function(list) {
 			UserFactory.addList(list);
-			$location.path('/list/' + list._id);
+			$location.path('/list/' + list._id + '/edit');
 		}
 		APIservice.POST('/api/cleaner/' + user._id + '/list').then(successCallback);
 	}
 
 	$scope.selectList = function(list) {
 		$location.path('/list/' + list._id);
+	}
+	$scope.editList = function(list) {
+		$location.path('/list/' + list._id + '/edit');
 	}
 
 	var init = function() {
@@ -255,41 +258,24 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	init();
 }
 
-function ClientListCntl($scope, APIservice, list) {
-
-	$scope.clientView = true;
-	$scope.list = list;
-	$scope.editingNotes = false;
-
-	$scope.clickRoom = function(room) {
-		room.active = room.active ? false : true;
-	}
-	$scope.clickNotes = function() {
-		$scope.showingNotes = !$scope.showingNotes;
-	}
-
-	var GETrooms = function() {
-		var successCallback = function(rooms) {
-			$scope.list.rooms = rooms;
-		}
-		var errorCallback = function(message) {
-			console.log('TODO -- handle error')
-		}
-		APIservice.GET('/api/room/search?populate_tasks=true&_list=' + $scope.list._id).then(successCallback, errorCallback);
-	}
+function ListModeCntl($scope, $location) {
+	/* Always nested within list-view
+		therefore always has $scope of ListCntl as parent $scope
+			-- therefore has $scope.mode
+	*/
+	$scope.mode; // inherited from $scope of ListCntl
+	$scope.list; // inherited from $scope of ListCntl
 	
-
-	var init = function() {
-		$scope.list.rooms = [];
-		GETrooms();
-	}
-	init();
 }
 
-function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, list) {
-	/* ListCntl passed the list object or null if this is a new list */
+function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory, user, list, editMode) {
+	/* View exists in two alternative states (modes_:
+		edit-mode: collapsable rooms with editable tasks
+		clean-mode: static task list that is nearly identical to client's receipt
+	*/
+	$scope.view = 'list';
 	$scope.user = user;
-	$scope.rooms;
+	$scope.mode; // either 'edit' or 'clean'
 	$scope.list;
 	$scope.editingListInfo;
 	$scope.showingNotes;
@@ -297,6 +283,11 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	$scope.editingPrice;
 	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
 	$scope.error;
+
+	$scope.changeMode = function(mode) {
+		var path = '/list/' + $scope.list._id + ( mode=='edit' ? '/edit' : '');
+		$location.path(path);
+	}
 
 	$scope.useCurrentLocation = function() {
 		$scope.error = {};
@@ -453,7 +444,7 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 			errorCallback('Phonenumber required');
 			return false;
 		}
-		APIservice.PUT('/api/cleaner/' + $scope.user._id + '/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
+		APIservice.PUT('/api/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
 		registerPhonenumberListener();
 	}
 
@@ -474,11 +465,20 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	
 
 	var init = function() {
+		if (editMode) { 
+			$scope.mode = 'edit';
+		} else {
+			$scope.mode = 'clean';
+		}
 		$scope.editingListInfo = false;
 
 		$scope.list = list;
+		$scope.list._cleaner = user._id;
 		$scope.list.rooms = [];
 		GETrooms();
+
+		$scope.today = new Date(); // for cleaning log title
+
 
 		/* backwards compatibility:
 			phonenumbers stored as strings need be converted to integers
@@ -492,7 +492,20 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, user, lis
 	init();
 }
 
+function ReceiptCntl($scope, UtilityService, receipt) {
+	$scope.cleaner;
+	$scope.list; // for now receipt mimicing list
 
+	var init = function() {
+		receipt.date = UtilityService.dateStringToDate(receipt.date);
+		$scope.cleaner = receipt.cleaner;
+		$scope.list = receipt;
+
+
+		console.log('list', $scope.list)
+	}
+	init();
+}
 
 
 

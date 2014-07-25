@@ -37,8 +37,8 @@ app.register_blueprint(backstage_blueprint, url_prefix='/backstage')
 #---------------------------------------------- Configuration #
 
 
-@app.route('/list/<id>/client')
-def client_views(id=None):
+@app.route('/receipt/<id>')
+def client_views(id):
 	return base()
 
 
@@ -57,6 +57,7 @@ def no_user_views():
 
 @app.route('/dashboard')
 @app.route('/list/<id>')
+@app.route('/list/<id>/edit')
 def user_views(id=None):
 	""" 
 	Redirect to '/' if no user signed in
@@ -71,7 +72,6 @@ def style_guide():
 	return send_file('static/html/style-guide.html')
 
 
-@app.route('/test')
 def base():
 	return send_file('static/html/base.html')
 
