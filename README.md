@@ -60,6 +60,7 @@ Flow:
 - Merge ```staging``` into ```production```
 - Push ```production``` branch to production server
 	- production lives at <http://clean-slate2.herokuapp.com/>
+- Tag commit to ```production``` branch with updated version number
 
 For Simplicity:
 * Configure ```.git/config``` file to push to staging with ```$ git push staging``` and push to production with ```$ git push production```
