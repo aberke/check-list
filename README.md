@@ -92,6 +92,29 @@ For Simplicity:
 
 ```
 
+Language Support
+---
+
+- Support Spanish and English
+- All translations handled client side
+- Can easily toggle between languages in the UI
+- Device/browser language detected 
+	- if user uses spanish, defaults to spanish
+	- otherwise defaults to english
+
+Implemention via Google Spreadsheet + AngularJS
+- Google doc spreadsheet contains the terms we need translated
+	- JSON pulled from this document in real time
+	- <https://docs.google.com/a/significancelabs.org/spreadsheets/d/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/edit#gid=0>
+- Separate AngularJS module handles all translations
+	- See translateModule
+	- translate filter used in HTML to handle all copy
+		- filter syntax: ```{{ 'KEYNAME' | translate: 'format' }}```
+			- ```'KEYNAME'``` is the keyname (column A of spreadsheet) that maps to the translations
+			- ```'format'``` is the format in which to present the translation, eg: ```'uppercase'``` or ```'titlecase'```
+		- example use: ```{{ 'SAVE' | translate: 'uppercase' }}```
+	- TranslateService does the actual work of translations
+		- utilized by filter and controllers
 
 
 
