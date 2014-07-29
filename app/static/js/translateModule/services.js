@@ -27,8 +27,56 @@ var TranslateService = function() {
 	translateMap is constructed in translateMap.js
 	*/
 
-	// initialize currentLanguage to english
-	var currentLanguage = 'en';
+
+	var currentLanguage;
+	var browserLanguageMap = {
+		    'en': 'en',
+		    'en-gb': 'en',
+		    'en-us': 'en',
+		    'en-au': 'en',
+		    'en-ca': 'en',
+		    'en-nz': 'en',
+		    'en-ie': 'en',
+		    'en-za': 'en',
+		    'en-jm': 'en',
+		    'en-bz': 'en',
+		    'en-tt': 'en',
+
+		    'es': 	 'es',
+			'es-do': 'es',
+			'es-ar': 'es',
+			'es-co': 'es',
+			'es-mx': 'es',
+			'es-es': 'es',
+			'es-gt': 'es',
+			'es-cr': 'es',
+			'es-pa': 'es',
+			'es-ve': 'es',
+			'es-pe': 'es',
+			'es-ec': 'es',
+			'es-cl': 'es',
+			'es-uy': 'es',
+			'es-py': 'es',
+			'es-bo': 'es',
+			'es-sv': 'es',
+			'es-hn': 'es',
+			'es-ni': 'es',
+			'es-pr': 'es',
+	}
+	var detectLanguage = function() {
+		/* 	Check the browser for which language is set
+			
+			Returns {String | null}
+				if detected: language 'en' or 'es' 
+				else: null
+		*/
+		// navigator.language for non EI, navigator.userLanguage for IE
+		var browserLanguage = (navigator.language || navigator.userLanguage);
+		if (!browserLanguage) { return null; } // language not detected
+
+		browserLanguage = browserLanguage.toLowerCase();
+		return browserLanguageMap[browserLanguage];
+	}
 
 	this.getCurrentLanguage = function() {
 		return currentLanguage;
@@ -45,4 +93,12 @@ var TranslateService = function() {
 		}
 		return null;
 	}
+
+	var init = function() {
+		// initialize currentLanguage to whichever language user's browser uses. 
+		// defaults to english
+		var detectedLanguage = detectLanguage();
+		currentLanguage = (detectedLanguage || 'en');
+	}
+	init();
 }
