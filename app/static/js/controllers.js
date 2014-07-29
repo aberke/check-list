@@ -121,17 +121,20 @@ function NewCntl($scope, $location, APIservice) {
 		// clear old error
 		$scope.error = {};
 
-		if (!$scope.cleaner.password) {
-			$scope.error.password = true;
-		}
-		if (!$scope.cleaner.confirmPassword || $scope.cleaner.confirmPassword != $scope.cleaner.password) {
+		// verify both pasword and confirmPassword entered
+		$scope.error.password = $scope.cleaner.password ? false : true;
+		$scope.error.confirmPassword = $scope.cleaner.confirmPassword ? false : true;
+
+		// verify password and confirmPassword match
+		if ($scope.cleaner.confirmPassword != $scope.cleaner.password) {
+			$scope.error.message = 'INVALID_PASSWORD_CONFIRM_ERROR';
 			$scope.error.confirmPassword = true;
 		}
 		if ($scope.error.phonenumber||$scope.error.password||$scope.error.confirmPassword) {
+			console.log('error', $scope.error)
 			return false;
 		}
 		var successCallback = function(data) {
-			console.log('new cleaner', data)
 			$location.path('/dashboard');
 		}
 		var errorCallback = function(message) {
@@ -193,16 +196,17 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 		// clear old error
 		$scope.error = {};
 
-		if (!$scope.cleaner.reset_code) {
-			$scope.error.reset_code = true;
-		}
-		if (!$scope.cleaner.password) {
-			$scope.error.password = true;
-		}
+		// verify reset_code, password, and confirmPassword all entered
+		$scope.error.reset_code = $scope.cleaner.reset_code ? false : true;
+		$scope.error.password = $scope.cleaner.password ? false : true;
+		$scope.error.confirmPassword = $scope.cleaner.confirmPassword ? false : true;
+
+		// verify password matches confirmPassword
 		if (!$scope.cleaner.confirmPassword || $scope.cleaner.confirmPassword != $scope.cleaner.password) {
+			$scope.error.message = "INVALID_PASSWORD_CONFIRM_ERROR";
 			$scope.error.confirmPassword = true;
 		}
-		if ($scope.error.password||$scope.error.confirmPassword) {
+		if ($scope.error.password || $scope.error.confirmPassword) {
 			return false;
 		}
 
@@ -448,7 +452,7 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 			$scope.sendStatus = null;
 		}
 		if (!$scope.list.phonenumber) {
-			errorCallback('Phonenumber required');
+			errorCallback('PHONENUMBER_REQUIRED_ERROR');
 			return false;
 		}
 		APIservice.PUT('/api/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);

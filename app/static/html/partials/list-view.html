@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<div ng-show="editingListInfo">
-			<p class='error'>{{error.message}}</p>
+			<p class='error'>{{error.message | translate }}</p>
 			<div class='input-group'>
 				<div class='label-container'><label>{{ 'NAME' | translate: 'titlecase' }}:</label></div>
 				<input ng-model="list.name" type="text">

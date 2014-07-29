@@ -3,7 +3,7 @@
     <img class='logo' src='/static/img/logo.png'>
 
 <section class='sign-in' ng-show="stage==0||showAll" id='create-username'>
-	<p class='error'>{{error.message}}</p>
+	<p class='error'>{{ error.message | translate }}</p>
 
     <input ng-model="cleaner.name" type='text' placeholder="{{ 'WHAT_IS_YOUR_NAME' | translate }}" >
     <input ng-model="cleaner.phonenumber" ng-class="{'error':error.phonenumber}" type='number' class='phonenumber' placeholder="{{ 'WHAT_IS_YOUR_PHONENUMBER' | translate }}" >
@@ -14,7 +14,7 @@
 <section class='sign-in' ng-show="stage==1||showAll" id='create-password'>
 
 	<h2 class='name'>{{cleaner.name}}</h2>
-	<p class='error'>{{error.message}}</p>
+	<p class='error'>{{ error.message | translate }}</p>
 
     <input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="{{ 'CREATE_PASSWORD' | translate }}" >
     <input ng-model="cleaner.confirmPassword" ng-class="{'error':error.confirmPassword}" type='password' placeholder="{{ 'CONFIRM_PASSWORD' | translate }}" >

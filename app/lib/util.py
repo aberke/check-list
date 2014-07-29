@@ -20,6 +20,10 @@ import json
 from bson import ObjectId
 from datetime import datetime
 
+import error_codes
+
+
+
 
 class JSONEncoder(json.JSONEncoder):
 	# Custom JSONJSONencoder because by default, json cannot handle datetimes or ObjectIds """
@@ -58,14 +62,38 @@ def dumpJSON(data):
 	response_headers = {'Content-Type': 'application/json'}
 	return Response(data, 200, response_headers)
 
-def respond500(err='ERROR'):
-	yellERROR(err)
-	data = json.dumps({'message': str(err)})
-	response_headers = {'Content-Type': 'application/json'}
-	return Response(data, 500, response_headers)
 
 def respond200():
 	return Response(status=200)
+
+
+def respond500(code=0, err='ERROR'):
+	"""
+	@param {int} code: error code for which to find error string in error_codes map
+	@param {str} err: optional error message to YELL to server for logs
+	
+	Philosophy:
+	Return a small set of error strings 
+		- These strings are keywords in the translations spreadsheet that have translations
+	Use:
+	When endpoints are hit with bad data or cause accidental exceptions to occur
+	It catches accidentally raised Exceptions 
+		- In this case, expects code==0
+		- Returns nicely formatted response to user rather than cryptic mongo/python error 
+	It it called directly when endpoint receives invalid data 
+		- Expects code in error_codes map
+	"""
+	try:
+		err = error_codes.map[code]
+		yellERROR(err) # yell the new error
+	except Exception as e:
+		yellERROR('INCORRECT USE OF respond500.  Original err: {0}'.format(err))
+		err = error_codes.map[0]
+
+	data = json.dumps({ 'message': err, 'code': code })
+	response_headers = {'Content-Type': 'application/json'}
+	return Response(data, 500, response_headers)
+
 
 def yellERROR(msg=None):
 	print("\n**************************\nERROR\n" + str(msg) + "\n**************************\n")

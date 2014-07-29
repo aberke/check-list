@@ -49,6 +49,10 @@
 	border-color: white;
 	border-radius: 10px;
 }
+.sign-in input.error,
+.sign-in input.ng-invalid {
+	border-color: red;
+}
 .sign-in input,
 .sign-in .btn {
 	width: 100%;

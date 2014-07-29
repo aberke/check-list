@@ -2,7 +2,7 @@
 
 	<img class='logo' src='/static/img/logo.png'>
 	
-	<p class='error'>{{error.message}}</p>
+	<p class='error'>{{ error.message | translate }}</p>
 
 	<!-- number input for phonenumber to bring up correct keyboard on mobile devices -->
 	<input ng-model="cleaner.phonenumber" type='number' class='phonenumber' placeholder="{{ 'PHONENUMBER' | translate: 'titlecase' }}" >
