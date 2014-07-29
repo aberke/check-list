@@ -120,13 +120,15 @@ Implemention via Google Spreadsheet + AngularJS
 Domain Name Configuration
 ---
 
-Main URL: <http://neat-streak.com>
+- Production server (URL for users): <http://www.neat-streak.com>
+- Staging server: <http://staging.neat-streak.com>
 
-- ```http://staging.neat-streak.com``` -> ```staging``` server
-- ```http://www.neat-streak.com``` -> ```http://neat-streak.com```
-- ```http://neat-streak.org``` -> ```http://neat-streak.com```
-- ```http://www.neat-streak.org``` -> ```http://neat-streak.com```
+- The following redirect to <http://www.neat-streak.com>
+	- <http://neat-streak.com>
+	- <http://neat-streak.org>
+	- <http://www.neat-streak.org>
 
+Domain names bought from and configured via namecheap.com under Ciara's account
 
 
 
@@ -157,8 +159,6 @@ TODO
 
 - store session in database?
 	- if scale number of servers
-
-- lazily POST list on /list/new
 
 	
 
