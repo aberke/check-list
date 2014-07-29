@@ -117,6 +117,18 @@ Implemention via Google Spreadsheet + AngularJS
 		- utilized by filter and controllers
 
 
+Domain Name Configuration
+---
+
+Main URL: <http://neat-streak.com>
+
+- ```http://staging.neat-streak.com``` -> ```staging``` server
+- ```http://www.neat-streak.com``` -> ```http://neat-streak.com```
+- ```http://neat-streak.org``` -> ```http://neat-streak.com```
+- ```http://www.neat-streak.org``` -> ```http://neat-streak.com```
+
+
+
 
 TODO
 ---
