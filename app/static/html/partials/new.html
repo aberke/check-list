@@ -5,10 +5,10 @@
 <section class='sign-in' ng-show="stage==0||showAll" id='create-username'>
 	<p class='error'>{{error.message}}</p>
 
-    <input ng-model="cleaner.name" type='text' placeholder="What's your name?" >
-    <input ng-model="cleaner.phonenumber" ng-class="{'error':error.phonenumber}" type='number' class='phonenumber' placeholder="Your phone number?" >
-    <button ng-show='!waiting' ng-click="submitPhonenumber()" ng-disabled="!(cleaner.name&&cleaner.phonenumber)" class='btn'>NEXT</button>
-    <p ng-show='waiting'>verifying phonenumber...</p>
+    <input ng-model="cleaner.name" type='text' placeholder="{{ 'WHAT_IS_YOUR_NAME' | translate }}" >
+    <input ng-model="cleaner.phonenumber" ng-class="{'error':error.phonenumber}" type='number' class='phonenumber' placeholder="{{ 'WHAT_IS_YOUR_PHONENUMBER' | translate }}" >
+    <button ng-show='!waiting' ng-click="submitPhonenumber()" ng-disabled="!(cleaner.name&&cleaner.phonenumber)" class='btn'>{{ 'NEXT' | translate: 'uppercase' }}</button>
+    <p ng-show='waiting'>{{ 'VERIFYING_PHONENUMBER' | translate }}...</p>
 
 </section>
 <section class='sign-in' ng-show="stage==1||showAll" id='create-password'>
@@ -16,9 +16,9 @@
 	<h2 class='name'>{{cleaner.name}}</h2>
 	<p class='error'>{{error.message}}</p>
 
-    <input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="create a password" >
-    <input ng-model="cleaner.confirmPassword" ng-class="{'error':error.confirmPassword}" type='password' placeholder="confirm password" >
-    <button ng-click="submitPassword()" ng-disabled="!(cleaner.password&&cleaner.confirmPassword)" class='btn'>NEXT</button>
+    <input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="{{ 'CREATE_PASSWORD' | translate }}" >
+    <input ng-model="cleaner.confirmPassword" ng-class="{'error':error.confirmPassword}" type='password' placeholder="{{ 'CONFIRM_PASSWORD' | translate }}" >
+    <button ng-click="submitPassword()" ng-disabled="!(cleaner.password&&cleaner.confirmPassword)" class='btn'>{{ 'NEXT' | translate: 'uppercase' }}</button>
 
 </section>
 

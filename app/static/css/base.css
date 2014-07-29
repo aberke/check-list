@@ -116,7 +116,7 @@ img.logo {
 }
 .save-btn {
 	color: white;
-	width: 40px;
+	max-width: 70px;
 	height: 20px;
 	border: none;
 	border-radius: 4px;
@@ -187,7 +187,7 @@ input.error,
 input.ng-invalid {
 	border: 2px solid red;
 }
-.action-bubble {
+/*.action-bubble {
 	border: 4px solid #29abe2;
 	border-radius: 50%;
 	background-color: #a0e4f9;
@@ -196,9 +196,19 @@ input.ng-invalid {
 	color: white;
 	text-align: center;
 	position: relative;
-}
-.action-bubble h3 {
+}*/
+/*.action-bubble h3 {
 	font-size: 18px;
+}*/
+.change-language {
+	color: #29abe2;
+	display: block;
+	margin: 25px 0;
+	text-align: center;
+	cursor: pointer;
+	bottom: 0;
+	width: 100%;
+	font-size: 12px;
 }
 
 .hamburger-control {
@@ -257,7 +267,7 @@ img.hamburger {
 	font-size: 18px;
 	font-weight: bold;
 }
-
+/* control-toggles mimic radio buttons */
 .control-toggle {
 	border-top: 1px solid white;
 	border-bottom: 1px solid white;
@@ -267,14 +277,22 @@ img.hamburger {
 	font-size: 18px;
 	padding: 5px 0;
 }
-.control-toggle input[type=radio] {
-	border: 2px solid white;
-	background-color: white;
-	background-image: none;
-	border-radius: 50%;
+.control-toggle .control {
+	margin: 10px 0;
 }
-.control-toggle input[type=radio].selected {
-	background-color: gray;
+.control .control-status {
+	background-color: white;
+	border: 2px solid white;
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+}
+.control.selected .control-status {
+	background-color: #ef7625;
+}
+.control-toggle label {
+	vertical-align: top;
 }
 
 /* ---------------- control-view - */
@@ -375,6 +393,9 @@ special case is the .heading
 #list-info textarea {
 	font-size: 12px;
 	vertical-align: top;
+}
+.price-input {
+	max-width: 70px;
 }
 #cleaning-log-header-container {
 	background-color: white;

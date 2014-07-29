@@ -12,18 +12,10 @@
 
 var TranslateService = function() {
 
-	// initialize currentLanguage to english
-	var currentLanguage = 'en';
-
-	this.getCurrentLanguage = function() {
-		return currentLanguage;
-	}
-	this.setCurrentLanguage = function(language) {
-		currentLanguage = language;
-	}
-
 	/*
-	Keeps translations in translateMap:
+	- Manager of current language {String} currentLanguage
+	- Called by TranslateFilter to do the work of translation
+	- Keeps translations in translateMap:
 	{
 		keyname: {
 			en: "english translation",
@@ -34,6 +26,17 @@ var TranslateService = function() {
 	}
 	translateMap is constructed in translateMap.js
 	*/
+
+	// initialize currentLanguage to english
+	var currentLanguage = 'en';
+
+	this.getCurrentLanguage = function() {
+		return currentLanguage;
+	}
+	this.setCurrentLanguage = function(language) {
+		currentLanguage = language;
+		return language;
+	}
 	this.translateMap = translateMap;
 
 	this.translate = function(keyname) {

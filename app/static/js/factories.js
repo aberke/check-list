@@ -128,6 +128,16 @@ var TaskFactory = function($http) {
 	}
 
 	var setupRoomsTasks = function(rooms) {
+		/*
+		@param {List of objects} rooms
+			List of room objects that may or may not already have saved tasks
+		
+		Returns {List of objects} updated rooms list with added unselected tasks
+
+		The main function called by Controller
+		ListCntl passes in rooms to be filled in with default tasks
+		Calls mergeDefaultTasks as a helper function
+		*/
 		for (var i=0; i<rooms.length; i++) {
 
 			var tasksList = rooms[i].tasks;
@@ -278,7 +288,6 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 	function login(userData) {
 		var deferred = $q.defer();
 		if (user) {
-			console.log('GETuser: already have user', user, user._id);
 			deferred.resolve(user);
 			return deferred.promise;
 		}

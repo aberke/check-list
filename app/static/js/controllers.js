@@ -14,7 +14,7 @@
 
 *********************************************************************/
 
-function MainCntl($scope, $window, $location, APIservice, UserFactory) {
+function MainCntl($scope, $window, $location, APIservice, UserFactory, TranslateService) {
 	/* This controller's scope spans over all views */
 	$scope.domain = $window.location.origin;
 	$scope.user;
@@ -60,6 +60,9 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory) {
 			console.log('user', user)
 		});
 	}
+	$scope.selectLanguage = function(language) {
+		$scope.currentLanguage = TranslateService.setCurrentLanguage(language);
+	}
 	var init = function() {
 		setupGoogleAnalytics();
 		$scope.$on('$routeChangeSuccess', function(event) {
@@ -68,6 +71,8 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory) {
 		});
 		document.getElementById('control-view').style.display = "block";
 		showingControls = false;
+
+		$scope.currentLanguage = TranslateService.getCurrentLanguage();
 	}
 	init();
 }
@@ -211,12 +216,14 @@ function ResetPasswordCntl($scope, $timeout, $location, APIservice) {
 	}
 }
 
-function DashboardCntl($scope, $window, $location, APIservice, UtilityService, UserFactory, user, lists) {
+function DashboardCntl($scope, $window, $location, APIservice, UtilityService, UserFactory, TranslateService, user, lists) {
 
 	$scope.lists;
 
 	$scope.deleteList = function(list) {
-		var msg = ("Are you sure you want to delete this list?\n\n" + (list.name || 'UNTITLED'));
+		var msg = TranslateService.translate("DELETE_LIST_CONFIRM_MSG");
+		msg += ("\n\n");
+		msg += TranslateService.translate(list.name || 'UNTITLED');
 		var confirmed = $window.confirm(msg);
 		if (!confirmed) {
 			return;

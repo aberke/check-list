@@ -5,13 +5,13 @@
 	<p class='error'>{{error.message}}</p>
 
 	<!-- number input for phonenumber to bring up correct keyboard on mobile devices -->
-	<input ng-model="cleaner.phonenumber" type='number' class='phonenumber' placeholder="Phone number" >
-	<input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="Password" >
-	<button ng-click="login()" ng-disabled="!(cleaner.phonenumber&&cleaner.password)" class='btn'>SIGN-IN</button>
+	<input ng-model="cleaner.phonenumber" type='number' class='phonenumber' placeholder="{{ 'PHONENUMBER' | translate: 'titlecase' }}" >
+	<input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="{{ 'PASSWORD' | translate: 'titlecase' }}" >
+	<button ng-click="login()" ng-disabled="!(cleaner.phonenumber&&cleaner.password)" class='btn'>{{ 'SIGN_IN' | translate: 'uppercase' }}</button>
 
 	<div class='other-options'>
-		<a href='/new'>I'm new</a>
-		<a href='/reset-password'>Forgot password</a>
+		<a href='/new'>{{ 'I_AM_NEW' | translate }}</a>
+		<a href='/reset-password'>{{'FORGOT_PASSWORD' | translate }}</a>
 	</div>
 
 </div>

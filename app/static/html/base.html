@@ -74,25 +74,25 @@
 
     <div style="display:none;" id='control-view'>
         <p>{{user.name}}</p>
-        <span ng-click="logout()">Sign-Out</span>
-        <a href="/dashboard">Dashboard</a>
+        <span ng-click="logout()">{{ 'SIGN_OUT' | translate: 'title-case' }}</span>
+        <a href="/dashboard">{{ 'DASHBOARD' | translate: 'titlecase' }}</a>
+
 
         <div class='control-toggle' id='language-toggle'>
-            <div>
-                <input type='radio' name='language' ng-class="{'selected':language=='en'}" ng-model="language" value='en' ng-change="selectLanguage('en')">
+            <!-- fake radio buttons -->
+            <div ng-click="selectLanguage('en')" ng-class="{'selected':currentLanguage=='en'}" class='control'>
+                <span class='control-status'></span>
                 <label>English</label>
             </div>
-            <div>
-                <input type='radio' name='language' ng-class="{'selected':language=='es'}" ng-model="language" value='es' ng-change="selectLanguage('es')">
-                <label>Spanish</label>
+            <div ng-click="selectLanguage('es')" ng-class="{'selected':currentLanguage=='es'}" class='control'>
+                <span class='control-status'></span>
+                <label>Español</label>
             </div>
-        </div>
 
+        </div>
     </div>
  
     <!-- main view -- decided by routes.js -->
-<!--     {{ 'hi' | translate: 'titlecase' }}
-    {{ 'PHONENUMBER' | translate}} -->
     <div id='view' ng-view></div>
  
 </body>

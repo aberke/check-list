@@ -21,6 +21,8 @@ function TranslateFilter(TranslateService) {
 		returns keyname instead
 	
 	Optionally takes parameter format - converts to this format
+
+	Use in an HTML file looks like: {{ 'KEY_NAME' | translate: 'uppercase' }}
 	*/
 
 	var convertToFormat = function(string, format) {
@@ -39,7 +41,6 @@ function TranslateFilter(TranslateService) {
 		@param {string} keyname: keyname to translate
 		@param {string} format (optional) ['uppercase', 'titlecase']: format to return translation in
 		*/
-		console.log('keyname', keyname, 'format', format)
 		var translation = (TranslateService.translate(keyname) || keyname);
 		return convertToFormat(translation, format);
 	}

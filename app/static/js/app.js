@@ -13,6 +13,7 @@
 
 
 
+
 var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'translateModule'])
 
 	.config(function($locationProvider) {

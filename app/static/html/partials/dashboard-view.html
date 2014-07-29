@@ -7,20 +7,20 @@
 
 	<div class='heading container-bar'>
 		<span class='icon logo'></span>
-		<h1 class='title'>DASHBOARD</h1>
+		<h1 class='title'>{{ 'DASHBOARD' | translate: 'titlecase' }}</h1>
 	</div>
 
 
 	<div ng-click="newList()" class='touchable list-item-container container-bar'>
 		<span class='icon add'></span>
-		<h2 class='title'>CREATE NEW LIST</h2>
+		<h2 class='title'>{{ 'CREATE_NEW_LIST' | translate: 'uppercase' }}</h2>
 	</div>
 
 	<div ng-repeat="list in lists" class='touchable list-item-container container-bar'>
 		<span ng-click="selectList(list)" class='icon house-{{$index}} house'></span>
 
 		<div class='list-item'>
-		<h2 class='title name'>{{list.name || 'UNTITLED'}}</h2>
+		<h2 class='title name'>{{list.name || 'UNTITLED' | translate: 'uppercase' }}</h2>
 		<div class='list-item-btns'>
 
 			<img class='touchable' ng-click="selectList(list)" src="/static/icon/clean.png">

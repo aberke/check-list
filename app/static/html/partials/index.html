@@ -2,15 +2,19 @@
 
 	<img src="/static/img/logo.png" class='logo'>
 
-	<h1 class='banner'>Welcome!</h1>
+	<h1 class='banner'>{{ 'WELCOME' | translate: 'titlecase' }}</h1>
 
 	<section>
 
 		<!-- <p id='welcome-copy'>CleanSlate is the new client management tool for cleaners.</p> -->
 
-		<a href="/new" class='btn short left'>GET STARTED</a>
-		<a href="/sign-in" class='btn short right'>SIGN-IN</a>
+		<a href="/new" class='btn short left'>{{ 'GET_STARTED' | translate: 'uppercase' }}</a>
+		<a href="/sign-in" class='btn short right'>{{ 'SIGN_IN' | translate: 'uppercase' }}</a>
 
 	</section>
+
+	<span ng-show="currentLanguage!='es'" ng-click="selectLanguage('es')" class='change-language'>en español</span>
+
+	<span ng-show="currentLanguage!='en'" ng-click="selectLanguage('en')" class='change-language'>in english</span>
 
 </div>
