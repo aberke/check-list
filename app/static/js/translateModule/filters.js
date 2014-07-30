@@ -41,6 +41,9 @@ function TranslateFilter(TranslateService) {
 		@param {string} keyname: keyname to translate
 		@param {string} format (optional) ['uppercase', 'titlecase']: format to return translation in
 		*/
+		// safely exist case when there's filler text that must be translated, but it's later a Number
+		if (typeof keyname != 'string') { return keyname; }
+
 		var translation = (TranslateService.translate(keyname) || keyname);
 		return convertToFormat(translation, format);
 	}

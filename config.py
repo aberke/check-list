@@ -20,11 +20,28 @@ import os
 # test.py sets environment to TESTING, heroku has environment as PRODUCTION or STAGING
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'DEVELOPMENT')
 
-DOMAIN_NAME = os.environ.get('DOMAIN_NAME', 'http://127.0.0.1:3000')
 
 HOST = os.getenv('HOST', '127.0.0.1')
 PORT = os.getenv('PORT', 3000)
 DEBUG= True if ENVIRONMENT == 'DEVELOPMENT' else True
+
+
+
+
+# - DOMAIN_NAME ----------------------------------
+
+# domain name depends on environment
+# default assumes we're in development 	-> host + port
+# staging server 						-> staging.neat-streak.com
+# production server 					-> www.neat-streak.com
+
+DOMAIN_NAME = ('http://' + HOST + ':' + str(PORT))
+if ENVIRONMENT == 'STAGING':
+	DOMAIN_NAME = 'http://staging.neat-streak.com'
+elif ENVIRONMENT == 'PRODUCTION':
+	DOMAIN_NAME = 'http://www.neat-streak.com'
+
+# ---------------------------------- DOMAIN_NAME -
 
 
 # - MONGO ----------------------------------

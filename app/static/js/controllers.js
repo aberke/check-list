@@ -441,7 +441,7 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 		/* if still need to edit list info, force them to do so
 			open up the list editing and scroll to top of the page where it is
 		*/ 
-		var successCallback = function() {
+		var successCallback = function(data) {
 			$scope.editingListInfo = false;
 			$scope.sendStatus = 'sent';
 		}
