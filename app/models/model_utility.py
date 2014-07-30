@@ -45,6 +45,9 @@ def sanitize_data(data):
 
 def stamp_last_modified(data):
 	"""
+	@param {dict} data  -- data with which to add key/value pair ('last_modified', UTC now date)
+	Returns original data with extra key/value pair ('last_modified', UTC now date)
+	
 	cleaners, lists, and rooms collections all have a last_modified field 
 	that should be updated with each insertion and update 
 	"""

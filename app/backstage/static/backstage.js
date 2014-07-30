@@ -10,6 +10,20 @@
 
 ****************************************************/
 
+var localDateFromUTCstring = function(UTCstring) {
+	/*
+	@param {string} UTCstring -- string (assumed to be UTC time) to convert to a locale aware Date object
+	Returns {Date} locale aware date object
+	*/
+	if (typeof UTCstring != 'string') { return UTCstring; }
+
+	// must append ' UTC' to end of UTCstring and then create date object -- new Date function will then be locale aware
+	var toAppend = ' UTC';
+	if (UTCstring.substr(UTCstring - toAppend.length) != toAppend) {
+		UTCstring = UTCstring + toAppend;
+	}
+	return new Date(UTCstring);
+}
 
 
 var App = angular.module('BackstageApp', [])
@@ -45,11 +59,19 @@ var App = angular.module('BackstageApp', [])
 						/* Sorting cleaners in ng-repeat by last_activity
 							where last_activity is more recent of 
 							cleaner.last_modified and 
-							most recent of their lists last_modified 
+							most recent of their lists last_modified
+
+							Want to show locale aware dates, so using localDateFromUTCstring helper function
 						*/
-						cleaner.last_active = cleaner.last_modified ? new Date(cleaner.last_modified) : new Date(2014, 6, 1);
+
+						// set cleaner.last_active as date object constructed from last_modified
+						// default to June for backwards compatibility - first few cleaners not stamped with last_modified
+						cleaner.last_active = cleaner.last_modified ? localDateFromUTCstring(cleaner.last_modified) : new Date(2014, 6, 1);
+
 						for (var j=0; j<cleaner.lists.length; j++) {
-							cleaner.lists[j].last_modified = new Date(cleaner.lists[j].last_modified);
+
+							cleaner.lists[j].last_modified = localDateFromUTCstring(cleaner.lists[j].last_modified);
+
 							if (cleaner.lists[j].last_modified > cleaner.last_active) {
 								cleaner.last_active = cleaner.lists[j].last_modified;
 							}
