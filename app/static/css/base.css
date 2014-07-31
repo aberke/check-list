@@ -44,14 +44,16 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	display: inline-block;
 	background-position: center !important;
 	border-radius: 6px;
-}
-img.logo {
-	width: 130px;
+	background-repeat: no-repeat;
 }
 .icon.logo {
 	border-radius: 50%;
-	background: url(/static/img/sl_logo_100px.png);
+	background: url(/static/icon/neatstreak_placeholder.png);
 	background-size: contain;
+}
+.icon.logo.big {
+	height: 130px;
+	width: 130px;
 }
 .icon.notes {
 	background: url(/static/icon/NOTES.png);
@@ -378,10 +380,7 @@ special case is the .heading
 /* ------- index-view ---------- */
 #index-view {
 	padding: 15px 0;
-}
-#index-view .logo {
-	display: block;
-	margin: auto;
+	text-align: center;
 }
 #index-view .banner{
 	font-size: 2.5em;

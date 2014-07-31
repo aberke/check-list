@@ -37,6 +37,11 @@
 .sigin-in .logo {
 	display: block;
 	margin: auto;
+	border-radius: 50%;
+	background: url(/static/icon/neatstreak_placeholder.png);
+	background-size: contain;
+	width: 150px;
+	height: 150px;
 }
 .sign-in .title,
 .sign-in input,
