@@ -111,6 +111,26 @@ def public(cleaner):
 	return profile
 
 
+def delete(id):
+	"""
+	1) delete all lists belonging to cleaner - delete will travel recursively: lists will handle deleting receipts, and rooms, etc
+	2) delete cleaner document itself
+	"""
+	id = sanitize_id(id)
+
+	# 0) get cleaner so have its lists
+	c = db.cleaners.find_one({ "_id": id })
+	if not c:
+		raise Exception("Cannot delete cleaner with _id {0} - no such document".format(id))
+	
+	# 1) delete all lists belonging to it
+	for l in c['lists']:
+		list.remove(l)
+	
+	# 2) delete document itself
+	db.cleaners.remove({ "_id": id })
+
+
 
 
 
