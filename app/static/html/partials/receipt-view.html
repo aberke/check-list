@@ -4,7 +4,7 @@
 	<div id="list-info" class='heading container-bar'>
 		<div class='list-main-info'>
 			<img class='icon' src='/static/icon/log.png'>
-			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 13 }}</h1>
+			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 15 }}</h1>
 			<div ng-show="!editingListInfo">
 				<p>{{list.location || 'LOCATION' | limitTo:35 | translate }}</p>
 				<p>{{(list.phonenumber | telephone) || 'PHONENUMBER' | translate }}</p>
