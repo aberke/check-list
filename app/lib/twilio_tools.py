@@ -40,6 +40,17 @@ def send_SMS(to, body):
 			raise e
 
 
+def send_welcome(to, cleaner_name):
+	"""
+	@param {int | str} to 		- phonenumber to send message to
+	@param {str} cleaner_name 	- cleaner name
+
+	Sends message: "Hi [cleaner name], Welcome to NeatStreak! [Link to NeatStreak]"
+	"""
+	message = ("Hi {0}, Welcome to NeatStreak! {1}".format(cleaner_name, DOMAIN_NAME))
+	send_SMS(to, message)
+
+
 def send_agreement(to, cleaner_name, list_id):
 	"""
 	@param {int | str} to 		- phonenumber to send message to

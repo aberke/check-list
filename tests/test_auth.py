@@ -87,11 +87,13 @@ class AuthTestCase(BaseTestCase):
 		data = self.GET_data('/auth/user')
 		self.assertEqual(data['name'], TEST_CLEANER_DATA['name'])
 
+	# GET 	/api/cleaner/validate-new-phonenumber ?phonenumber=cleaner.phonenumber&name=cleaner.name
 	def test_validate_new_phonenumber(self):
-		rv = self.app.get('/api/cleaner/validate-new-phonenumber/' + TEST_CLEANER_DATA['phonenumber'])
+		endpoint = ('/api/cleaner/validate-new-phonenumber?phonenumber=' + str(TEST_CLEANER_DATA['phonenumber']) + '&name=' + TEST_CLEANER_DATA['name'])
+		rv = self.app.get(endpoint)
 		self.assertEqual(rv.status_code, 200)
 		# POST cleaner - phonenumber will no longer be valid and should generate error
 		self.POST_cleaner()
-		rv = self.app.get('/api/cleaner/validate-new-phonenumber/' + TEST_CLEANER_DATA['phonenumber'])
+		rv = self.app.get(endpoint)
 		self.assertEqual(rv.status_code, 500)
 

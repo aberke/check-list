@@ -88,18 +88,20 @@ function NewCntl($scope, $location, APIservice) {
 	$scope.stage;
 
 	$scope.submitPhonenumber = function() {
-		// clear out old error
-		$scope.error = {};
-		// show waiting
-		$scope.waiting = true;
 		/* ensure that phonenumber is new and valid (sends SMS message via twilio)
 			if not: err
 			if so: increment stage appropriately
 		*/
-		var phonenumber = $scope.cleaner.phonenumber;
-		if (!phonenumber) {
+		// clear out old error
+		$scope.error = {};
+		// show waiting
+		$scope.waiting = true;
+
+		// ensure phonenumber and name entered
+		$scope.error.name 			= $scope.cleaner.name ? false : true;
+		$scope.error.phonenumber 	= $scope.cleaner.phonenumber ? false : true;
+		if ($scope.error.name || $scope.error.phonenumber) {
 			$scope.waiting = false;
-			$scope.error.phonenumber = true;
 			return;
 		}
 
@@ -112,7 +114,8 @@ function NewCntl($scope, $location, APIservice) {
 			$scope.error.message = message;
 			$scope.error.phonenumber = true;
 		}
-		APIservice.GET('/api/cleaner/validate-new-phonenumber/' + phonenumber).then(successCallback, errorCallback);
+		var endpoint = ('/api/cleaner/validate-new-phonenumber?phonenumber=' + $scope.cleaner.phonenumber + '&name=' + $scope.cleaner.name);
+		APIservice.GET(endpoint).then(successCallback, errorCallback);
 	}
 
 	$scope.submitPassword = function() {

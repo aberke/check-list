@@ -12,7 +12,7 @@
 #
 # 	API endpoints
 # 	-------------------------
-# GET 				/api/cleaner/validate-new-phonenumber/<phonenumber>
+# GET 				/api/cleaner/validate-new-phonenumber ?phonenumber=cleaner.phonenumber&name=cleaner.name
 # POST 				/api/cleaner
 # GET 				/api/cleaner/search ?phonenumber=phonenumber || returns all
 # GET,PUT 			/api/cleaner/<id>
@@ -104,14 +104,29 @@ def GET_cleaner_by_id(id):
 	except Exception as e:
 		return respond500(err=e, code=0)
 
-# GET 		/api/cleaner/validate-new-phonenumber/<phonenumber>
-@bp.route('/cleaner/validate-new-phonenumber/<phonenumber>')
-def GET_validate_new_phonenumber(phonenumber):
-	c = cleaner.find(phonenumber=phonenumber)
-	if c:
-		return respond500(code=5)
+# GET 		/api/cleaner/validate-new-phonenumber ?phonenumber=cleaner.phonenumber&name=cleaner.name
+@bp.route('/cleaner/validate-new-phonenumber')
+def GET_validate_new_phonenumber():
+	"""
+	Expects phonenumber and name in request arguments
+	Validates that phonenumber is new and sends welcome message via SMS
+	"""
 	try:
-		twilio_tools.send_SMS(phonenumber, "Welcome to Clean Slate!")
+		# get name from request
+		if 'name' not in request.args:
+			return respond500(code=6)
+		name = request.args['name']
+
+		# get phonenumber from request
+		if 'phonenumber' not in request.args:
+			return respond500(code=1)
+		phonenumber = request.args['phonenumber']
+
+		# insure phonenumber is new
+		if cleaner.find(phonenumber=phonenumber):
+			return respond500(code=5)
+
+		twilio_tools.send_welcome(phonenumber, name)
 		return respond200()
 	except Exception as e:
 		return respond500(err=e, code=0)
