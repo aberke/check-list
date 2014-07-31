@@ -23,10 +23,11 @@ class APITestCase(BaseTestCase):
 		self.list_id = json.loads(rv.data)['_id']
 
 	def POST_receipt(self):
-		""" Helper method to testing receipt endpoints """
+		""" Helper method to testing receipt endpoints.  SMS sent to client on each POST. """
 		if not self.list_id:
 			self.POST_list()
-		rv = self.POST_data('/api/list/' + self.list_id + '/receipt')
+		list = self.GET_data('/api/list/' + self.list_id)
+		rv = self.POST_data('/api/list/' + self.list_id + '/receipt', data=list)
 		self.assertEqual(rv.status_code, 200)
 		self.receipt_id = json.loads(rv.data)['_id']
 
@@ -329,6 +330,10 @@ class APITestCase(BaseTestCase):
 
 	# POST 		/api/list/<id>/receipt
 	def test_POST_receipt(self):
+		"""
+		POST /list/id/receipt both creates new receipt and sends link to client 
+		Expects list in payload and requires list.phonenumber and list._cleaner
+		"""
 		# list should have no receipts at first
 		self.POST_list()
 		list_data = self.GET_data('/api/list/' + self.list_id)
@@ -344,33 +349,18 @@ class APITestCase(BaseTestCase):
 		self.POST_receipt()
 		list_data = self.GET_data('/api/list/' + self.list_id)
 		self.assertEqual(2, len(list_data['receipts']))
+		self.assertTrue(self.receipt_id in list_data['receipts'])
 
 
 	# PUT 	/api/list/<list_id>/send
-	def test_PUT_send_list(self):
-		""" PUT_send_list does the same work as POST_receipt but also sends list to client
-			it expects list in payload and requires list.phonenumber and list._cleaner
+	def test_POST_send_list(self):
+		""" Sends link to /list/id/agreement to client
+			Expects list in payload and requires list.phonenumber and list._cleaner
+			Responds with 200
 		"""
-		# list should have no receipts at first
 		self.POST_list()
-		list_data = self.GET_data('/api/list/' + self.list_id)
-		self.assertTrue(('receipts' not in list_data) or not len(list_data['receipts']))
-
-
-		# after put request, receipt should be created and its _id should be in list.receipts
-		rv = self.PUT_data('/api/list/' + self.list_id + '/send', data=list_data)
-		data = json.loads(rv.data)
-		self.assertTrue('_id' in data)
-		receipt_id = data['_id']
-
-		list_data = self.GET_data('/api/list/' + self.list_id)
-		self.assertTrue('receipts' in list_data)
-		self.assertEqual([receipt_id], list_data['receipts'])
-
-		# post another receipt and receipts should have length of 2
-		self.PUT_data('/api/list/' + self.list_id + '/send', data=list_data)
-		list_data = self.GET_data('/api/list/' + self.list_id)
-		self.assertEqual(2, len(list_data['receipts']))
+		list = self.GET_data('/api/list/' + self.list_id)
+		self.POST_data('/api/list/' + self.list_id + '/send', data=list)
 
 
 
