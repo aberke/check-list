@@ -28,7 +28,7 @@ import json
 from datetime import datetime
 
 from app.lib import twilio_tools
-from app.lib.util import yellERROR, dumpJSON, respond500, respond200
+from app.lib.util import yellERROR, dumpJSON, respond500, respond200, APIexception
 from app.models import cleaner
 from .auth_utility import *
 
@@ -49,12 +49,12 @@ def send_reset_code():
 	try:
 		data = json.loads(request.data)
 		if not 'phonenumber' in data:
-			return respond500(code=1)
+			raise APIexception(code=1)
 		
 		phonenumber = data['phonenumber']
 		c = cleaner.find_one(phonenumber=phonenumber)
 		if not c:
-			return respond500(code=2)
+			raise APIexception(code=2)
 
 		if ('reset_code' in c and 'reset_code_expires' in c and (datetime.now() < c['reset_code_expires'])):
 			reset_code = c["reset_code"]
@@ -65,7 +65,7 @@ def send_reset_code():
 		twilio_tools.send_SMS(phonenumber, str("Your password reset code is: " + reset_code))
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 @bp.route('/reset-password', methods=['POST', 'PUT'])
 def POST_reset_password():
@@ -73,10 +73,10 @@ def POST_reset_password():
 		data = json.loads(request.data)
 		c = cleaner.find_one(phonenumber=data['phonenumber'])
 		if not (c and 'reset_code' in c):
-			return respond500(code=0)
+			raise APIexception(code=0)
 
 		if not ((data['reset_code'] == c["reset_code"]) and (datetime.now() < c['reset_code_expires'])):
-			return respond500(code=3)
+			raise APIexception(code=3)
 
 		# if they made it this far all is good
 		cleaner.update_password(c["_id"], data["password"], c["salt"])
@@ -84,7 +84,7 @@ def POST_reset_password():
 		login(cleaner.public(c))
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 
@@ -103,20 +103,20 @@ def POST_login():
 	try:
 		data = json.loads(request.data)
 		if not ("phonenumber" in data and "password" in data): # client-side shouldn't have allowed post
-			return respond500(code=0, err="phonenumber and password required to sign in")
+			raise APIexception(code=0, message="phonenumber and password required to sign in")
 
 		c = cleaner.find_one(phonenumber=data["phonenumber"])
 		if not c:
-			return respond500(code=2)
+			raise APIexception(code=2)
 
 		if not cleaner.password_valid(data["password"], c["salt"], c["hashed_pwd"]):
-			return respond500(code=4)
+			raise APIexception(code=4)
 
 		profile = cleaner.public(c)
 		login(profile)
 		return dumpJSON(profile)
 
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # ------------------------------------------------------- Auth routes -

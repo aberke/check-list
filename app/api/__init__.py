@@ -42,7 +42,7 @@ from flask import Blueprint, request, session, redirect
 import json
 
 import config
-from app.lib.util import yellERROR, dumpJSON, respond500, respond200
+from app.lib.util import yellERROR, dumpJSON, respond500, respond200, APIexception
 from app.lib import twilio_tools
 from app.lib.util import JSONencoder
 from app import auth
@@ -65,7 +65,7 @@ def POST_cleaner():
 		auth.login(c)
 		return dumpJSON(c)
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # PUT 	/api/cleaner/<id>
 @bp.route('/cleaner/<id>', methods=['PUT'])
@@ -75,7 +75,7 @@ def PUT_cleaner(id):
 		cleaner.update(id, data)
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 #GET 		/api/cleaner/search
@@ -94,7 +94,7 @@ def GET_cleaner_search():
 			result = cleaner.find()
 		return dumpJSON(result)
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 #GET 	/api/cleaner/<id>
 @bp.route('/cleaner/<id>', methods=['GET'])
@@ -102,7 +102,7 @@ def GET_cleaner_by_id(id):
 	try:
 		return dumpJSON(cleaner.find_one(id=id))
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # GET 		/api/cleaner/validate-new-phonenumber ?phonenumber=cleaner.phonenumber&name=cleaner.name
 @bp.route('/cleaner/validate-new-phonenumber')
@@ -114,22 +114,22 @@ def GET_validate_new_phonenumber():
 	try:
 		# get name from request
 		if 'name' not in request.args:
-			return respond500(code=6)
+			raise APIexception(code=6)
 		name = request.args['name']
 
 		# get phonenumber from request
 		if 'phonenumber' not in request.args:
-			return respond500(code=1)
+			raise APIexception(code=1)
 		phonenumber = request.args['phonenumber']
 
 		# insure phonenumber is new
 		if cleaner.find(phonenumber=phonenumber):
-			return respond500(code=5)
+			raise APIexception(code=5)
 
 		twilio_tools.send_welcome(phonenumber, name)
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 #POST 		/api/cleaner/<id>/list
 @bp.route('/cleaner/<cleaner_id>/list', methods=['POST'])
@@ -139,7 +139,7 @@ def POST_list(cleaner_id):
 		list_id = cleaner.add_list(cleaner_id, list_data=list_data)
 		return dumpJSON({ '_id': list_id })
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # GET 		/api/list/search ?[populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
@@ -161,7 +161,7 @@ def GET_list_search():
 		result = List.find(id=_id, _cleaner=_cleaner, populate_rooms=populate_rooms)
 		return dumpJSON(result)
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # GET 	/api/list/<id>	   ?[populate_cleaner=boolean]
 @bp.route('/list/<id>', methods=['GET'])
@@ -171,7 +171,7 @@ def GET_list_by_id(id):
 		result = List.find_one(id=id, populate_cleaner=populate_cleaner) # returns list 
 		return dumpJSON(result)
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # PUT 	/api/list/<id>
 @bp.route('/list/<id>', methods=['PUT'])
@@ -181,7 +181,7 @@ def PUT_list(id):
 		List.update(id, data)
 		return dumpJSON({ '_id': id })
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # DELETE 	/api/list/<id>
@@ -191,7 +191,7 @@ def DELETE_list(id):
 		List.delete(id)
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # POST,PUT 	/api/list/<id>/send
@@ -210,7 +210,7 @@ def PUT_send_list(id):
 
 		# verify phonenumber in list_data -- need it to send link to receipt to client
 		if not 'phonenumber' in list_data:
-			return respond500(code=1)
+			raise APIexception(code=1)
 		phonenumber = list_data['phonenumber']
 
 		# need to fetch cleaner for just cleaner's name in SMS message
@@ -222,7 +222,7 @@ def PUT_send_list(id):
 		
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # POST 		/api/list/<id>/receipt
@@ -245,7 +245,7 @@ def POST_receipt(list_id):
 
 		# verify phonenumber in list_data -- need it to send link to receipt to client
 		if not 'phonenumber' in list_data:
-			return respond500(code=1)
+			raise APIexception(code=1)
 		phonenumber = list_data['phonenumber']
 
 		# need to fetch cleaner for just cleaner's name in SMS message
@@ -260,7 +260,7 @@ def POST_receipt(list_id):
 		
 		return dumpJSON({'_id': receipt_id})
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # GET 		/api/receipt/<id>
@@ -269,7 +269,7 @@ def GET_receipt_by_id(id):
 	try:
 		return dumpJSON(receipt.find_one(id=id))
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # POST 		/api/list/<id>/room
@@ -280,7 +280,7 @@ def POST_room(list_id):
 		room_id = List.add_room(list_id, room_data=data)
 		return dumpJSON({ '_id': room_id })
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # PUT 		/api/room/<id>
 @bp.route('/room/<id>', methods=['PUT'])
@@ -290,7 +290,7 @@ def PUT_room(id):
 		room.update(id, data=data)
 		return dumpJSON({ '_id': id })
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 #GET 	/api/room/<id>
 @bp.route('/room/<id>', methods=['GET'])
@@ -298,7 +298,7 @@ def GET_room_by_id(id):
 	try:
 		return dumpJSON(room.find_one(id=id))
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # GET 		/api/room/search  ?[populate_tasks=boolean]&[_list=list._id | returns all]
@@ -320,7 +320,7 @@ def GET_room_search():
 		result = room.find(id=_id, _list=_list, populate_tasks=populate_tasks)
 		return dumpJSON(result)
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 # POST 		/api/room/<id>/task
 @bp.route('/room/<room_id>/task', methods=['POST'])
@@ -330,7 +330,7 @@ def POST_task(room_id):
 		id = room.add_task(room_id, data)
 		return dumpJSON({ '_id': id })
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # GET 		/api/task/search returns all
@@ -343,7 +343,7 @@ def GET_task_search():
 		result = task.find()
 		return dumpJSON(result)
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 # DELETE 	/api/task/<id>
@@ -353,7 +353,7 @@ def DELETE_task(id):
 		task.delete(id)
 		return respond200()
 	except Exception as e:
-		return respond500(err=e, code=0)
+		return respond500(e)
 
 
 

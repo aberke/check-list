@@ -16,6 +16,7 @@ from twilio import TwilioRestException
 from twilio.rest import TwilioRestClient
 
 import config
+from util import APIexception
 
 
 client 		= TwilioRestClient(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
@@ -35,7 +36,7 @@ def send_SMS(to, body):
 		client.messages.create(to=to, from_=NUMBER, body=body)
 	except TwilioRestException as e:
 		if e.code == 21211:
-			raise Exception("{0} is not a valid phonenumber".format(to))
+			raise APIexception(code=7) # Exception("{0} is not a valid phonenumber".format(to))
 		else:
 			raise e
 

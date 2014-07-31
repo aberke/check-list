@@ -56,18 +56,27 @@ class JSONEncoder(json.JSONEncoder):
 JSONencoder = JSONEncoder()
 
 
-def dumpJSON(data):
-	if not isinstance(data, str):
-		data = JSONencoder.encode(data)
-	response_headers = {'Content-Type': 'application/json'}
-	return Response(data, 200, response_headers)
+class APIexception(Exception):
+	code = 0
+	message = None
+	original_message = None
+
+	def yell(self, message):
+		print("\n************ ERROR **************\n" + str(message) + "\n************* ERROR *************\n")
+
+	def __init__(self, message='', code=0):
+		if not code in error_codes.map:
+			self.yell('Invalid error code: ' + str(code))
+			code = 0
+
+		self.code = code
+		self.original_message = message
+		self.message = error_codes.map[code]
+		Exception.__init__(self, message)
+		yellERROR("Original message: {0}\nMessage: {1}".format(self.original_message, self.message)) # yell the error for logs
 
 
-def respond200():
-	return Response(status=200)
-
-
-def respond500(code=0, err='ERROR'):
+def respond500(exception):
 	"""
 	@param {int} code: error code for which to find error string in error_codes map
 	@param {str} err: optional error message to YELL to server for logs
@@ -83,16 +92,24 @@ def respond500(code=0, err='ERROR'):
 	It it called directly when endpoint receives invalid data 
 		- Expects code in error_codes map
 	"""
-	try:
-		message = error_codes.map[code]
-		yellERROR("Original message: {0}\nReturned message: {1}".format(err, message)) # yell the error for logs
-	except Exception as e:
-		yellERROR('INCORRECT USE OF respond500\nOriginal err: {0}'.format(err))
-		message = error_codes.map[0]
+	if not isinstance(exception, APIexception):
+		exception = APIexception(message=exception.message)
 
-	data = json.dumps({ 'message': message, 'code': code })
+	data = json.dumps({ 'message': exception.message, 'code': exception.code })
 	response_headers = {'Content-Type': 'application/json'}
 	return Response(data, 500, response_headers)
+
+
+def respond200():
+	return Response(status=200)
+
+
+def dumpJSON(data):
+	if not isinstance(data, str):
+		data = JSONencoder.encode(data)
+	response_headers = {'Content-Type': 'application/json'}
+	return Response(data, 200, response_headers)
+
 
 
 def yellERROR(msg=None):
