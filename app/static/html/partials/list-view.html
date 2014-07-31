@@ -8,7 +8,7 @@
 	<div id="list-info" ng-class="{'active': editingListInfo}" class='heading container-bar touchable'>
 		<div class='list-main-info' ng-click="clickListInfo()">
 			<img class='icon house-blue'>
-			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 13 }}</h1>
+			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 15 }}</h1>
 			<div ng-show="!editingListInfo">
 				<p>{{list.location || 'LOCATION' | limitTo:35 | translate }}</p>
 				<p>{{(list.phonenumber | telephone) || 'PHONENUMBER' | translate }}</p>
