@@ -27,6 +27,7 @@ from app.database import db
 from .model_utility import stamp_last_modified, sanitize_id, sanitize_data
 import room
 import receipt
+import cleaner
 
 MUTABLE_FIELDS = ['name', 'phonenumber', 'location', 'notes', 'price',]
 DEFAULT_ROOMS = [{
@@ -49,7 +50,7 @@ DEFAULT_ROOMS = [{
 
 
 
-def find(id=None, _cleaner=None, populate_rooms=False):
+def find(id=None, _cleaner=None, populate_rooms=False, populate_cleaner=False):
 	""" TODO: populate_rooms has no test coverage """
 	query = {}
 	if id:
@@ -61,6 +62,10 @@ def find(id=None, _cleaner=None, populate_rooms=False):
 	if populate_rooms:
 		for l in lists:
 			l['rooms'] = room.find(_list=l['_id'], populate_tasks=True)
+
+	if populate_cleaner:
+		for l in lists:
+			l['cleaner'] = cleaner.find_public(id=l['_cleaner'])
 	return lists
 
 def find_one(**kwargs):

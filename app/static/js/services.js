@@ -20,7 +20,7 @@ var UtilityService = function() {
     Safari fails to make a new Date out of these without extra help
 
     @param {string} dateString   - UTC string to turn into Date object
-    Returns {Date obj}
+    Returns {Date obj} UTC date
     */
     if (!dateString || dateString instanceof Date) { return dateString; } // necessary to avoid errors when dateString is already turned into Date object
     

@@ -38,6 +38,7 @@ app.register_blueprint(backstage_blueprint, url_prefix='/backstage')
 
 
 @app.route('/receipt/<id>')
+@app.route('/list/<id>/agreement')
 def client_views(id):
 	return base()
 
@@ -57,7 +58,7 @@ def no_user_views():
 
 @app.route('/dashboard')
 @app.route('/list/<id>')
-@app.route('/list/<id>/edit')
+@app.route('/list/<id>/clean')
 def user_views(id=None):
 	""" 
 	Redirect to '/' if no user signed in

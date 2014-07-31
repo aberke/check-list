@@ -1,5 +1,8 @@
-<div class='view' id='receipt-view'>
 
+<!-- view shown when cleaner access list in clean mode
+/list/:id/agreement -->
+
+<div class='view' id='list-agreement-view'>
 
 	<div id="list-info" class='heading container-bar'>
 		<div class='list-main-info'>
@@ -13,8 +16,11 @@
 	</div>
 
 	<div id='list-title-banner'>
-		<h3>{{ 'YOUR PLACE IS NOW CLEAN' | translate: 'uppercase' }}</h3>
+		<h3>{{ 'CLEANING_AGREEMENT' | translate: 'uppercase' }}</h3>
 	</div>
+
+
+	<ng-include src="'/static/html/partials/static-list.html'"></ng-include>
 
 	<div id='list-cleaner-info'>
 		<span id='cleaner-name-number'>
@@ -22,43 +28,9 @@
 		<p>{{ list.cleaner.phonenumber | telephone }}</p>
 		</span>
 
-		<p id='last-modified'>{{ list.date | date:'shortDate' }}</p>
+		<p id='last-modified'>{{ list.last_modified | date:'shortDate' }}</p>
 	</div>
-
-	<h3 id='view-agreement' ng-click='viewAgreement()'>{{ 'VIEW AGREEMENT' | translate: 'titlecase' }}</h3>
-
-
-	<div ng-if="list.price" id='price'>
-		<span class='price-title'>{{ 'PRICE' | translate: 'uppercase' }}:</span>
-		<span class='price-amount'>${{list.price}}.00</span>
-	</div>
-
-	<div id='thank-you-container'>
-		<img width='100px' src='/static/icon/thankyou.png'>
-	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </div>
+
+

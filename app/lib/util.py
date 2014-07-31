@@ -84,16 +84,16 @@ def respond500(code=0, err='ERROR'):
 		- Expects code in error_codes map
 	"""
 	try:
-		err = error_codes.map[code]
-		yellERROR(err) # yell the new error
+		message = error_codes.map[code]
+		yellERROR("Original message: {0}\nReturned message: {1}".format(err, message)) # yell the error for logs
 	except Exception as e:
-		yellERROR('INCORRECT USE OF respond500.  Original err: {0}'.format(err))
-		err = error_codes.map[0]
+		yellERROR('INCORRECT USE OF respond500\nOriginal err: {0}'.format(err))
+		message = error_codes.map[0]
 
-	data = json.dumps({ 'message': err, 'code': code })
+	data = json.dumps({ 'message': message, 'code': code })
 	response_headers = {'Content-Type': 'application/json'}
 	return Response(data, 500, response_headers)
 
 
 def yellERROR(msg=None):
-	print("\n**************************\nERROR\n" + str(msg) + "\n**************************\n")
+	print("\n************ ERROR **************\n" + str(msg) + "\n************* ERROR *************\n")

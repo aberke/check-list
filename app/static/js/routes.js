@@ -3,7 +3,7 @@
 	Brooklyn, NYC
 
  	Author: Alexandra Berke (aberke)
- 	Written: June 2014
+ 	Written: Summer 2014
 
 
  	AngularJS app
@@ -23,6 +23,8 @@ ChecklistApp.config(function($routeProvider) {
 	};
 
 	$routeProvider
+
+		/*- cleaner views ----------------------------------------------*/
 		.when('/', {
 			templateUrl: '/static/html/partials/index.html',
 		})
@@ -50,6 +52,18 @@ ChecklistApp.config(function($routeProvider) {
 				},
 			},
 		})
+		.when('/list/:id/clean', {
+			templateUrl: '/static/html/partials/list-clean-view.html',
+			controller: ListCntl,
+			resolve: {
+				user: userOrRedirect,
+				list: function(UserFactory, $route) {
+					return UserFactory.GETlist($route.current.params.id).then(function(list) {
+						return list;
+					});
+				},
+			},
+		})
 		.when('/list/:id', {
 			templateUrl: '/static/html/partials/list-view.html',
 			controller: ListCntl,
@@ -60,20 +74,23 @@ ChecklistApp.config(function($routeProvider) {
 						return list;
 					});
 				},
-				editMode: function() { return false; },
 			},
 		})
-		.when('/list/:id/edit', {
-			templateUrl: '/static/html/partials/list-view.html',
+		/*---------------------------------------------- cleaner views -*/
+
+		/*- client views -----------------------------------------------*/
+		.when('/list/:id/agreement', {
+			templateUrl: '/static/html/partials/list-agreement-view.html',
 			controller: ListCntl,
 			resolve: {
-				user: userOrRedirect,
-				list: function(UserFactory, $route) {
-					return UserFactory.GETlist($route.current.params.id).then(function(list) {
+				list: function(APIservice, UtilityService, $route) {
+					return APIservice.GET('/api/list/' + $route.current.params.id + '?populate_cleaner=true').then(function(list) {
+						if (!list) { $location.path('/'); }
+						list.last_modified = UtilityService.dateStringToDate(list.last_modified);
 						return list;
 					});
 				},
-				editMode: function() { return true; },
+				user: function() { return null; },
 			},
 		})
 		.when('/receipt/:id', {
@@ -88,6 +105,8 @@ ChecklistApp.config(function($routeProvider) {
 				},
 			},
 		})
+		/*------------------------------------------------------- client views -*/
+
 		.otherwise({
 			redirectTo: '/'
 		});

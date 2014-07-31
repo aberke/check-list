@@ -1,10 +1,9 @@
 
+<div ng-click="clickHamburger()" class='hamburger-control'>
+	<img src="/static/icon/hamburger.png" class='hamburger'>
+</div>
 
-<div class='view' id='list-view' ng-class="{'clean-mode': mode=='clean', 'edit-mode': mode=='edit'}">
-
-	<div ng-click="clickHamburger()" class='hamburger-control'>
-		<img src="/static/icon/hamburger.png" class='hamburger'>
-	</div>
+<div class='view' id='list-view'>
 
 	<div id="list-info" ng-class="{'active': editingListInfo}" class='heading container-bar touchable'>
 		<div class='list-main-info' ng-click="clickListInfo()">
@@ -42,84 +41,79 @@
 		</div>
 	</div>
 
-	<div ng-if="mode=='clean'" id='cleaning-log-header-container'>
-	<div id='cleaning-log-header'>
-		<span id='cleaning-log-title'>{{ 'CLEANING LOG' | translate: 'uppercase' }}</span>
-		<span id='cleaning-log-date'>{{ today | date:'shortDate' }}</span>
+	<div id='list-title-banner'>
+		<h3>{{ 'CLEANING_AGREEMENT' | translate: 'uppercase' }}</h3>
 	</div>
-	</div>
-	<ng-include ng-if="mode=='clean'" src="'/static/html/partials/static-list.html'"></ng-include>
 
+	<div ng-repeat="room in list.rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
+		<div class='room-main-info'>
+			<span class="expand-btn" ng-click="clickRoom(room)">
+				<img ng-class="room.type" class='icon'>
+				<h1 ng-class="room.type" class='title'>{{room.name | translate: 'uppercase' }}</h1>
+			</span>
 
-
-	<div ng-if="mode=='edit'" id="edit-view">
-
-		<div ng-repeat="room in list.rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
-			<div class='room-main-info'>
-				<span class="expand-btn" ng-click="clickRoom(room)">
-					<img ng-class="room.type" class='icon'>
-					<h1 ng-class="room.type" class='title'>{{room.name | translate: 'uppercase' }}</h1>
-				</span>
-
-				<span class='room-count-container'>
-					<img ng-click="decrementRoomCount(room)" ng-show="room.active" class='room-count-btn' src="/static/icon/minus.png">
-					<img ng-click="incrementRoomCount(room)" ng-show="room.active" class='room-count-btn' src="/static/icon/plus.png">
-					<span ng-class="room.type" class='room-count'>{{room.count}}</span>
-				</span>
-			</div>
-
-			<div ng-show="room.active" class='room-details-container'>
-
-				<p class='select-all' ng-click="selectAllTasks(room)">{{ 'SELECT_ALL' | translate }}</p>
-				<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.tasks">
-					<span ng-show="task.selected">-</span>
-					<span ng-show="!task.selected">+</span>
-					<span>{{ task.name | translate }}</span>
-				</div>
-				<div ng-model="newCustomTask" class='task add-custom-task'>
-					<span>+</span>
-					<input ng-model="newCustomTask" type="text">
-					<button class='save-btn' ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">{{ 'SAVE' | translate: 'uppercase' }}</button>
-				</div>
-			</div>
+			<span class='room-count-container'>
+				<img ng-click="decrementRoomCount(room)" ng-show="room.active" class='room-count-btn' src="/static/icon/minus.png">
+				<img ng-click="incrementRoomCount(room)" ng-show="room.active" class='room-count-btn' src="/static/icon/plus.png">
+				<span ng-class="room.type" class='room-count'>{{room.count}}</span>
+			</span>
 		</div>
 
-		<span class='divider'></span>
+		<div ng-show="room.active" class='room-details-container'>
 
-		<div class='notes-container container-bar' ng-class="{'active': showingNotes}">
-			<div class='notes-main-info' ng-click="clickNotes()">
-				<img class='icon notes'>
-				<h1 class='title notes'>{{ 'NOTES' | translate: 'uppercase' }}</h1>
+			<p class='select-all' ng-click="selectAllTasks(room)">{{ 'SELECT_ALL' | translate }}</p>
+			<div ng-click="clickTask(room, task)" class='task' ng-class="{'selected': task.selected}" ng-repeat="task in room.tasks">
+				<span ng-show="task.selected">-</span>
+				<span ng-show="!task.selected">+</span>
+				<span>{{ task.name | translate }}</span>
 			</div>
-
-			<div ng-show="showingNotes" class='show-notes-container'>
-				<!-- if editing notes, show <textarea> and SAVE btn.  Otherwise <p> and EDIT btn. -->
-				<p ng-show="!editingNotes">{{list.notes}}</p>
-				<textarea ng-show="editingNotes" ng-model="list.notes"></textarea>
-				<div class='btn-container'>
-					<!-- only cleaner can edit notes -->
-					<button ng-click="editNotes()" ng-show="!editingNotes" class='save-btn btn'>{{ 'EDIT' | translate: 'uppercase' }}</button>
-					<button ng-click="saveNotes()" ng-show="editingNotes" class='save-btn btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>
-				</div>
+			<div ng-model="newCustomTask" class='task add-custom-task'>
+				<span>+</span>
+				<input ng-model="newCustomTask" type="text">
+				<button class='save-btn' ng-show="newCustomTask" ng-click="addCustomTask(room, newCustomTask);newCustomTask='';">{{ 'SAVE' | translate: 'uppercase' }}</button>
 			</div>
-		</div> <!-- notes-container -->
+		</div>
+	</div> <!-- ng-repeat="room in list.rooms" -->
 
-		<div class='price-container container-bar' ng-class="{ 'active': editingPrice }">
-			<div class='price-main-info'>
-				<img ng-click="editPrice()" class='icon price'>
-				<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>{{list.price || 'COST' | translate: 'uppercase' }}</h1>
-				<input class='price-input' maxlength="4" placeholder="00" ng-show="editingPrice" type='number' ng-model="list.price">
-				<button ng-click="savePrice()" ng-show="editingPrice" class='save-btn btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>
+	<span class='divider'></span>
+
+	<div class='notes-container container-bar' ng-class="{'active': showingNotes}">
+		<div class='notes-main-info' ng-click="clickNotes()">
+			<img class='icon notes'>
+			<h1 class='title notes'>{{ 'NOTES' | translate: 'uppercase' }}</h1>
+		</div>
+
+		<div ng-show="showingNotes" class='show-notes-container'>
+			<!-- if editing notes, show <textarea> and SAVE btn.  Otherwise <p> and EDIT btn. -->
+			<p ng-show="!editingNotes">{{list.notes}}</p>
+			<textarea ng-show="editingNotes" ng-model="list.notes"></textarea>
+			<div class='btn-container'>
+				<!-- only cleaner can edit notes -->
+				<button ng-click="editNotes()" ng-show="!editingNotes" class='save-btn btn'>{{ 'EDIT' | translate: 'uppercase' }}</button>
+				<button ng-click="saveNotes()" ng-show="editingNotes" class='save-btn btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>
 			</div>
-		</div> <!-- price-container -->
+		</div>
+	</div> <!-- notes-container -->
 
-	</div> <!-- edit-view -->
+	<div class='price-container container-bar' ng-class="{ 'active': editingPrice }">
+		<div class='price-main-info'>
+			<img ng-click="editPrice()" class='icon price'>
+			<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>
+				{{list.price || 'COST' | translate: 'uppercase' }}
+				<span ng-show='list.price'>.00</span>
+			</h1>
+			<input class='price-input' maxlength="4" placeholder="00" ng-show="editingPrice" type='number' ng-model="list.price">
+			<button ng-click="savePrice()" ng-show="editingPrice" class='save-btn btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>
+		</div>
+	</div> <!-- price-container -->
+
 
 	<!-- list sending UI -->
 	<div id='send-list-container'>
-		<button ng-show="mode=='clean'" ng-click="changeMode('edit')" class='btn short'>{{ 'EDIT' | translate: 'uppercase' }}</button>
 
-		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendList()" class='btn short'>{{ 'SEND' | translate: 'uppercase' }}</button>
+		<p id='last-modified'>{{ 'LAST_MODIFIED' | translate: 'titlecase' }}: {{ list.last_modified | date:'shortDate' }}</p>
+
+		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendAgreement()" class='btn short'>{{ 'SEND' | translate: 'uppercase' }}</button>
 		<p ng-show="sendStatus=='sending'" id='sent-confirmation'>{{ 'SENDING' | translate: 'uppercase' }}...</p>
 		<p ng-show="sendStatus=='sent'" id='sent-confirmation'>{{ 'SENT' | translate: 'uppercase' }}!</p>
 	</div>

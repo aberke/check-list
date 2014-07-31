@@ -14,6 +14,7 @@
 
 *********************************************************************/
 
+
 function MainCntl($scope, $window, $location, APIservice, UserFactory, TranslateService) {
 	/* This controller's scope spans over all views */
 	$scope.domain = $window.location.origin;
@@ -42,7 +43,7 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory, Translate
 	var setupGoogleAnalytics = function() {
 		// log every new page view in production
 
-		if ($scope.domain == "http://clean-slate2.herokuapp.com") {
+		if ($scope.domain == "http://www.neatstreak.com") {
 			$scope.$on('$routeChangeSuccess', function(event) {
 				console.log('pushing to google-analytics')
 				$window.ga('send', 'pageview', { page: $location.path() });
@@ -57,7 +58,6 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory, Translate
 		$scope.user = null;
 		UserFactory.GETuser().then(function(user) {
 			$scope.user = user;
-			console.log('user', user)
 		});
 	}
 	$scope.selectLanguage = function(language) {
@@ -65,7 +65,7 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory, Translate
 	}
 	var init = function() {
 		setupGoogleAnalytics();
-		$scope.$on('$routeChangeSuccess', function(event) {
+		$scope.$on('$routeChangeSuccess', function(event, current) {
 			resetUser();
 			resetControls();
 		});
@@ -225,9 +225,11 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	$scope.lists;
 
 	$scope.deleteList = function(list) {
+		console.log('deleteList', list, list.name)
 		var msg = TranslateService.translate("DELETE_LIST_CONFIRM_MSG");
 		msg += ("\n\n");
 		msg += TranslateService.translate(list.name || 'UNTITLED');
+		console.log('list.name', list.name, TranslateService.translate(list.name))
 		var confirmed = $window.confirm(msg);
 		if (!confirmed) {
 			return;
@@ -247,46 +249,33 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	$scope.newList = function() {
 		var successCallback = function(list) {
 			UserFactory.addList(list);
-			$location.path('/list/' + list._id + '/edit');
+			$location.path('/list/' + list._id);
 		}
 		APIservice.POST('/api/cleaner/' + user._id + '/list').then(successCallback);
 	}
 
 	$scope.selectList = function(list) {
-		$location.path('/list/' + list._id);
+		$location.path('/list/' + list._id + '/clean');
 	}
 	$scope.editList = function(list) {
-		$location.path('/list/' + list._id + '/edit');
+		$location.path('/list/' + list._id);
 	}
 
 	var init = function() {
 		$scope.lists = lists;
-		// turn last_modified date strings into date objects
-		for (var i=0; i<$scope.lists.length; i++) {
-			$scope.lists[i].last_modified = UtilityService.dateStringToDate($scope.lists[i].last_modified);
-		}
+		console.log('DashboardCntl lists', lists)
 	}
 	init();
 }
 
-function ListModeCntl($scope, $location) {
-	/* Always nested within list-view
-		therefore always has $scope of ListCntl as parent $scope
-			-- therefore has $scope.mode
-	*/
-	$scope.mode; // inherited from $scope of ListCntl
-	$scope.list; // inherited from $scope of ListCntl
-	
-}
 
-function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory, user, list, editMode) {
-	/* View exists in two alternative states (modes_:
-		edit-mode: collapsable rooms with editable tasks
-		clean-mode: static task list that is nearly identical to client's receipt
+function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, user) {
+	/* Controller for the following views:
+		/list/:id  			-> [cleaner] edit agreement
+		/list/:id/clean 	-> [cleaner] clean now
+		/list/:id/agreement -> [client] static agreement sent from /list/:id
+
 	*/
-	$scope.view = 'list';
-	$scope.user = user;
-	$scope.mode; // either 'edit' or 'clean'
 	$scope.list;
 	$scope.editingListInfo;
 	$scope.showingNotes;
@@ -294,11 +283,6 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 	$scope.editingPrice;
 	$scope.sendStatus; // states: undefined/null, 'sending', 'sent'
 	$scope.error;
-
-	$scope.changeMode = function(mode) {
-		var path = '/list/' + $scope.list._id + ( mode=='edit' ? '/edit' : '');
-		$location.path(path);
-	}
 
 	$scope.useCurrentLocation = function() {
 		$scope.error = {};
@@ -434,8 +418,10 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 			}
 		});
 	}
-
-	$scope.sendList = function() {
+	var send = function(APIendpoint) {
+		/*	Helper function to sendAgreement and sendReceipt
+			Does the work of making API call, UI feedback, error handling
+		*/
 		$scope.sendStatus = 'sending';
 		$scope.error = {};
 		/* if still need to edit list info, force them to do so
@@ -455,15 +441,23 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 			errorCallback('PHONENUMBER_REQUIRED_ERROR');
 			return false;
 		}
-		APIservice.PUT('/api/list/' + $scope.list._id + '/send', $scope.list).then(successCallback, errorCallback);
+		APIservice.POST(APIendpoint, $scope.list).then(successCallback, errorCallback);
 		registerPhonenumberListener();
+	}
+	$scope.sendReceipt = function() {
+		/* 	Nearly identical to sendReceipt - hits different API endpoint */
+		send('/api/list/' + $scope.list._id + '/receipt');
+	}
+	$scope.sendAgreement = function() {
+		/* 	Nearly identical to sendReceipt - hits different API endpoint */
+		send('/api/list/' + $scope.list._id + '/send');
 	}
 
 	var GETrooms = function() {
 		var successCallback = function(rooms) {
-			// initialize room.count to 0 if not set
+			// initialize room.count to 1 if not set
 			for (var i=0; i<rooms.length; i++) {
-				rooms[i].count = (rooms[i].count || 1);
+				rooms[i].count = (typeof rooms[i].count != "number") ? 1 : rooms[i].count;
 			}
 
 			$scope.list.rooms = TaskFactory.setupRoomsTasks(rooms);
@@ -476,15 +470,13 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 	
 
 	var init = function() {
-		if (editMode) { 
-			$scope.mode = 'edit';
-		} else {
-			$scope.mode = 'clean';
-		}
+
 		$scope.editingListInfo = false;
 
 		$scope.list = list;
-		$scope.list._cleaner = user._id;
+		if (user) { // in case this is a newly POSTed list
+			$scope.list._cleaner = user._id;
+		}
 		$scope.list.rooms = [];
 		GETrooms();
 
@@ -503,9 +495,13 @@ function ListCntl($scope, $location, TaskFactory, APIservice, GeolocationFactory
 	init();
 }
 
-function ReceiptCntl($scope, UtilityService, receipt) {
+function ReceiptCntl($scope, $location, UtilityService, receipt) {
 	$scope.cleaner;
 	$scope.list; // for now receipt mimicing list
+
+	$scope.viewAgreement = function() {
+		$location.path('/list/' + receipt._list + '/agreement');
+	}
 
 	var init = function() {
 		receipt.date = UtilityService.dateStringToDate(receipt.date);

@@ -88,10 +88,14 @@ var TranslateService = function() {
 	this.translateMap = translateMap;
 
 	this.translate = function(keyname) {
+		/*
+		@param {String} keyname -- keyname to look up in translate map and translate
+		Returns translation found in translateMap or (untranslated) original keyname if no translation found
+		*/
 		if (keyname in translateMap) {
 			return translateMap[keyname][currentLanguage];
 		}
-		return null;
+		return keyname;
 	}
 
 	var init = function() {

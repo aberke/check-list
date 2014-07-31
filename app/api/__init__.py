@@ -18,9 +18,9 @@
 # GET,PUT 			/api/cleaner/<id>
 # POST 				/api/cleaner/<id>/list
 #
-# GET 				/api/list/search ?[_id=list._id]populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
-# GET,PUT,DELETE 	/api/list/<id>
-# PUT 				/api/list/<list_id>/send
+# GET 				/api/list/search ?[_id=list._id]&[populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
+# GET,PUT,DELETE 	/api/list/<id>   ?[populate_cleaner=boolean] TODO: TEST coverage for populate_cleaner
+# POST,PUT 			/api/list/<list_id>/send -- sends AGREEMENT
 # POST 				/api/list/<id>/room
 #
 # GET 				/api/room/search ?[populate_tasks=boolean]&[_list=list._id | returns all]
@@ -30,7 +30,7 @@
 # GET 				/api/task/search returns all
 # DELETE 			/api/task/<id>
 
-# POST 				/api/list/<id>/receipt
+# POST 				/api/list/<id>/receipt -- sends RECEIPT
 # GET 				/api/receipt/<id>
 
 #
@@ -49,7 +49,6 @@ from app import auth
 from app.models import cleaner, list as List, room, task, receipt
 
 
-DOMAIN_NAME = config.DOMAIN_NAME
 
 bp = Blueprint('api', __name__)
 
@@ -149,12 +148,13 @@ def GET_list_search():
 	except Exception as e:
 		return respond500(err=e, code=0)
 
-# GET 	/api/list/<id>
+# GET 	/api/list/<id>	   ?[populate_cleaner=boolean]
 @bp.route('/list/<id>', methods=['GET'])
 def GET_list_by_id(id):
 	try:
-		result = List.find(id=id) # returns list 
-		return dumpJSON(result[0] if result else None)
+		populate_cleaner = request.args['populate_cleaner'] if 'populate_cleaner' in request.args else False 
+		result = List.find_one(id=id, populate_cleaner=populate_cleaner) # returns list 
+		return dumpJSON(result)
 	except Exception as e:
 		return respond500(err=e, code=0)
 
@@ -179,18 +179,46 @@ def DELETE_list(id):
 		return respond500(err=e, code=0)
 
 
-# PUT 	/api/list/<list_id>/send
-@bp.route('/list/<list_id>/send', methods=['PUT'])
-def PUT_send_list(list_id):
+# POST,PUT 	/api/list/<id>/send
+@bp.route('/list/<id>/send', methods=['PUT', 'POST'])
+def PUT_send_list(id):
 	"""
-	Note: does same work as POST_receipt + sends receipt to client via SMS 
-	
-	When a receipt is posted, the list/receipt models do the work
-	No data is posted - just list_id
-	A snapshot of the list at time of POST is saved as a receipt 
-	list.create_receipt retrieves a fully populated list and inserts the receipt
+	Sends new agreement to client via SMS
 
-	Sends link to receipt to client via SMS
+	@param 		{id} _id of list to send as agreement to client 
+	payload:	Request is made with entire list object - have _cleaner as cleaner._id
+
+	Returns 200 response
+	"""
+	try:
+		list_data = JSONencoder.load(request.data)
+
+		# verify phonenumber in list_data -- need it to send link to receipt to client
+		if not 'phonenumber' in list_data:
+			return respond500(code=1)
+		phonenumber = list_data['phonenumber']
+
+		# need to fetch cleaner for just cleaner's name in SMS message
+		cleaner_id = list_data['_cleaner'] # something went wrong with request if _cleaner not in payload
+		c = cleaner.find_one(id=cleaner_id)
+
+		# send SMS to client that has link to viewable agreement
+		twilio_tools.send_agreement(phonenumber, c['name'], id)
+		
+		return respond200()
+	except Exception as e:
+		return respond500(err=e, code=0)
+
+
+# POST 		/api/list/<id>/receipt
+@bp.route('/list/<list_id>/receipt', methods=['POST'])
+def POST_receipt(list_id):
+	"""
+	Creates receipt + sends receipt to client via SMS
+
+	A receipt is a snapshot of the list at time of POST
+	When a receipt is posted, the list/receipt models do the work
+	list.create_receipt retrieves a fully populated list and inserts the receipt
 
 	@param 		{list_id} _id of list of which to take snapshot and save as receipt 
 	payload:	Request is made with entire list object - have _cleaner as cleaner._id
@@ -213,32 +241,8 @@ def PUT_send_list(list_id):
 		receipt_id = List.create_receipt(list_id)
 
 		# send SMS to client that has link to viewable receipt
-		message = ("{0} sent you a new cleaning log: {1}/receipt/{2}".format(c['name'], DOMAIN_NAME, receipt_id))
-		twilio_tools.send_SMS(phonenumber, message)
+		twilio_tools.send_receipt(phonenumber, c['name'], receipt_id)
 		
-		return dumpJSON({'_id': receipt_id})
-	except Exception as e:
-		return respond500(err=e, code=0)
-
-
-# POST 		/api/list/<id>/receipt
-@bp.route('/list/<list_id>/receipt', methods=['POST'])
-def POST_receipt(list_id):
-	"""
-	Note: PUT_send_list does the same work + sends receipt to client via SMS 
-
-	When a receipt is posted, the list/receipt models do the work
-	No data is posted - just list_id
-	A snapshot of the list at time of POST is saved as a receipt 
-	list.create_receipt retrieves a fully populated list and inserts the receipt
-
-	@param 		{list_id} _id of list of which to take snapshot and save as receipt 
-	payload:	Request is made with entire list object - have _cleaner as cleaner._id
-
-	Returns _id of newly inserted receipt 
-	"""
-	try:
-		receipt_id = List.create_receipt(list_id)
 		return dumpJSON({'_id': receipt_id})
 	except Exception as e:
 		return respond500(err=e, code=0)

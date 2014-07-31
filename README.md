@@ -135,6 +135,14 @@ Domain names bought from and configured via namecheap.com under Ciara's account
 TODO
 ---
 
+- test coverage for populate_cleaner in GET /list/<id>
+
+- organize CSS
+
+- move hamburger-control and control to directives?
+	- pro: modularity
+	- con: extra files to request
+
 - parse URL for mongoHQ in config file
 
 - handle errors with UI feedback in your controllers errorCallback functions
@@ -144,10 +152,6 @@ TODO
 - handle default list data via google spreadsheets
 
 - host on AWS?
-
-- move hamburger-control and control to directives?
-	- pro: modularity
-	- con: extra files to request
 
 - protect API endpoints
 	- write middleware

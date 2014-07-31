@@ -1,0 +1,322 @@
+/***************************************************
+	Significance Labs
+	Brooklyn, NYC
+
+ 	Author: Alexandra Berke (aberke)
+ 	Written: Summer 2014
+
+
+ 	styles pertaining to static list, ie
+ 		receipt-view.html
+ 		static-list.html
+
+****************************************************/
+
+
+
+/* list-view -------------------*/
+
+#list-view .divider { /*white line divider*/
+	background-color: white;
+	display: block;
+	height: 2px;
+	width: 100%;
+}
+.list-main-info {
+	height: 50px;
+	color: #1b1464;
+}
+#list-info .error {
+	max-width: 200px;
+}
+#list-info label, 
+#list-info input, 
+#list-info textarea {
+	font-size: 12px;
+	vertical-align: top;
+}
+.price-input {
+	max-width: 70px;
+}
+#cleaning-log-header-container {
+	background-color: white;
+	padding: 10px 30px 20px 30px;
+}
+#cleaning-log-title,
+#cleaning-log-date {
+	width: 49%;
+	color: #54c0dd;
+	display: inline-block;
+}
+#cleaning-log-title {
+	text-align: left;
+}
+#cleaning-log-date {
+	text-align: right
+}
+#list-info {
+	border: none;
+}
+#list-info .save-btn {
+	background-color: #54C0DD;
+}
+#list-info .label-container {
+	width: 50px;
+	display: inline-block;
+	margin: 8px;
+	text-align: right;
+}
+#list-info label {
+	color: #54c0dd;
+}
+#list-info input,
+#list-info textarea {
+	border: 1px solid gray;
+	margin: 8px;
+	width: 180px;
+	border-radius: 0;
+	padding: 3px;
+}
+#list-info #location-input {
+	margin-bottom: 0;
+}
+#list-info #nearest-locations-container {
+	width: 180px;
+	margin-left: 80px;
+	font-size: 12px;
+}
+#list-info #use-current-location-btn {
+	color: #54c0dd;
+	text-decoration: underline;
+}
+#list-info .location {
+	display: block;
+	margin: 10px 0;
+	color: #54c0dd;
+}
+#list-info .save-btn {
+	display: block;
+	margin: 0 0 0 225px;
+}
+#list-title-banner {
+	color: white;
+	border-top: 3px solid white;
+	border-bottom: 3px solid white;
+	text-align: center;
+	padding: 5px;
+}
+
+.room-main-info,
+.notes-main-info,
+.price-main-info {
+	float: left;
+	width: 100%;
+}
+.room-main-info .expand-btn {
+	display: inline-block;
+}
+.room-details-container {
+	clear: both;
+	padding: 10px;
+}
+.room-count-container {
+	display: inline-block;
+	float: right;
+}
+.room-count-container .room-count-btn {
+	display: inline-block;
+	height: 30px;
+	margin: 10px 0;
+}
+.room-count-container .room-count {
+	margin: 12px 10px 0px 0px;
+	display: inline-block;
+	vertical-align: top;
+	width: 10px;
+}
+#list-view .select-all {
+	color: #1b1464;
+	/* optimize style for easy clickability */
+	display: inline-block;
+	padding: 5px 0;
+	margin: 0 0 5px 0;
+	cursor: pointer;
+}
+#list-view .task {
+	font-size: 18px;
+	padding: 2px;
+	color: #1b1464;
+}
+#list-view .task.hover,
+#list-view .task.selected {
+	background-color: #1b1464;
+	color: white;
+}
+.task.add-custom-task {
+	background-color: white;
+	color: #1b1464;
+}
+.task.add-custom-task input {
+	border: 1px solid #1b1464;	
+}
+.add-custom-task .save-btn {
+	background-color: #1b1464;
+}
+.show-notes-container {
+	clear: both;
+	padding: 10px 20px 0 20px;
+}
+.show-notes-container textarea {
+	width: 100%;
+	min-height: 80px;
+}
+.show-notes-container .btn {
+	display: inline-block;
+	height: 25px;
+}
+.show-notes-container .btn-container {
+	text-align: right;
+	margin: 5px 0 0 0;
+}
+.price-container {
+	height: 50px !important;
+}
+.price-container .title { /*since it's clickable, must be wide*/
+	min-width: 200px;
+}
+.price-main-info input,
+.price-main-info .btn {
+	margin: 10px;
+}
+.price-main-info input {
+	height: 20px;
+	padding: 2px;
+	color: #1b1464;
+	border: 1px solid #1b1464;
+}
+.price-main-info input.ng-invalid,
+.price-main-info input.error {
+	border: 3px solid red;
+}
+.price-main-info .btn {
+	float: right;
+	padding: 5px;
+}
+#send-list-container {
+	text-align: right;
+	padding: 10px;
+}
+#send-list-container #last-modified {
+	float: left;
+	color: #29abe2;
+}
+#sent-confirmation {
+	color: #29abe2;
+	display: inline-block;
+}
+
+#list-clean-view,
+#list-clean-view #send-list-container,
+#list-agreement-view {
+	background-color: white;
+}
+
+#list-clean-view #list-title-banner {
+	border-color: #a0e4f9;
+	color: #a0e4f9;
+}
+#list-agreement-view #list-title-banner,
+#receipt-view #list-title-banner {
+	border-color: #1b1464;
+	color: #1b1464;
+}
+#list-cleaner-info {
+	padding: 5px 10px 10px 10px;
+	background-color: white;
+}
+#list-agreement-view #list-cleaner-info {
+	padding-top: 0;
+}
+#list-cleaner-info #cleaner-name-number {
+	display: inline-block;
+	color: #1b1464;
+}
+#list-cleaner-info #last-modified {
+	color: #54c0dd;
+	display: inline-block;
+	float: right;
+	font-size: 12px;
+}
+
+/*- receipt-view ----------------*/
+
+#view-agreement {
+	color: #ef7625;
+	margin: 0 10px;
+	padding: 5px 0;
+	border-top: 1px solid #1b1464;
+	border-bottom: 1px solid #1b1464;
+}
+
+/*---------------- receipt-view -*/
+
+/*- static-list-partial ---------*/
+#static-list-partial {
+	background-color: white;
+	padding: 10px;
+	color: #1b1464;
+}
+#static-list-partial .room {
+	margin: 5px 0;
+}
+#static-list-partial .room-title {
+	display: block;
+	border-bottom: 1px solid #1b1464;
+	margin-top: 5px;
+}
+#static-list-partial .room-name {
+	display: inline-block;
+}
+#static-list-partial .room-count {
+	float: right;
+}
+#list-clean-view .task.custom {
+	color: #ef7625;
+}
+#static-list-partial #notes {
+	border-top: 1px solid #1b1464;
+	margin-bottom: 5px;
+}
+#static-list-partial #price,
+#receipt-view #price,
+#static-list-partial .notes-title {
+	color: #54c0dd;	
+	font-weight: bold;
+	margin: 5px 0;
+}
+#static-list-partial .price-amount,
+#receipt-view .price-amount{
+	float: right;
+}
+#thank-you-container {
+	text-align: center;
+	margin: 20px;
+}
+/*--------- static-list-partial -*/
+
+/*- receipt-view ----------------*/
+#receipt-view {
+	background-color: white;
+	color: #1b1464;
+	font-size: 14px;
+}
+#receipt-view #price {
+	margin: 5px 10px;
+}
+
+/*---------------- receipt-view -*/
+
+
+
+
+

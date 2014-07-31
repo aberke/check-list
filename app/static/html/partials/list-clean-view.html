@@ -1,0 +1,73 @@
+
+<!-- view shown when cleaner access list in clean mode
+/list/:id/clean -->
+
+<div ng-click="clickHamburger()" class='hamburger-control'>
+	<img src="/static/icon/hamburger.png" class='hamburger'>
+</div>
+
+<div class='view' id='list-clean-view'>
+
+	<div id="list-info" ng-class="{'active': editingListInfo}" class='heading container-bar touchable'>
+		<div class='list-main-info' ng-click="clickListInfo()">
+			<img class='icon house-blue'>
+			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 13 }}</h1>
+			<div ng-show="!editingListInfo">
+				<p>{{list.location || 'LOCATION' | limitTo:35 | translate }}</p>
+				<p>{{(list.phonenumber | telephone) || 'PHONENUMBER' | translate }}</p>
+			</div>
+		</div>
+		<div ng-show="editingListInfo">
+			<p class='error'>{{error.message | translate }}</p>
+			<div class='input-group'>
+				<div class='label-container'><label>{{ 'NAME' | translate: 'titlecase' }}:</label></div>
+				<input ng-model="list.name" type="text">
+			</div>
+
+			<div class='input-group'>
+				<div class='label-container'><label>{{ 'ADDRESS' | translate: 'titlecase' }}:</label></div>
+				<textarea id='location-input' ng-model="list.location"></textarea>
+				<div id='nearest-locations-container'>
+					<span ng-show="!nearestLocations" ng-click="useCurrentLocation()" id='use-current-location-btn'>{{ 'USE_CURRENT_LOCATION' | translate }}</span>
+					<span class='location' ng-click="useLocation(location)" ng-repeat="location in nearestLocations">
+					{{location}}
+					</span>
+				</div>
+			</div>
+
+			<div class='input-group'>
+				<div class='label-container'><label>{{ 'PHONE' | translate: 'titlecase' }}:</label></div>
+				<input class='phonenumber' ng-model="list.phonenumber" type="number">
+			</div>
+
+			<button ng-click="saveList()" class='save-btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>
+		</div>
+	</div>
+
+	<div id='list-title-banner'>
+		<h3>{{ 'TODAY_IM_CLEANING' | translate: 'uppercase' }}</h3>
+	</div>
+
+
+	<ng-include src="'/static/html/partials/static-list.html'"></ng-include>
+
+
+
+	<!-- list sending UI -->
+	<div id='send-list-container'>
+		<a href='/dashboard' class='btn short'>{{ 'BACK' | translate: 'uppercase' }}</a>
+
+		<button ng-show="sendStatus!='sent'&&sendStatus!='sending'" ng-click="sendReceipt()" class='btn short'>{{ 'SEND' | translate: 'uppercase' }}</button>
+		<p ng-show="sendStatus=='sending'" id='sent-confirmation'>{{ 'SENDING' | translate: 'uppercase' }}...</p>
+		<p ng-show="sendStatus=='sent'" id='sent-confirmation'>{{ 'SENT' | translate: 'uppercase' }}!</p>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+

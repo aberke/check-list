@@ -11,19 +11,18 @@
 	</div>
 	
 	<div ng-if="list.notes" id='notes'>
-		<p class='notes-title'>{{ 'NOTES' | translate: 'titlecase' }}:</p>
+		<p class='notes-title'>{{ 'NOTES' | translate: 'uppercase' }}:</p>
 		<p class='notes-content'>{{list.notes}}</p>
-	</div>
-
-	<div id='thank-you-container'>
-		<img src='/static/icon/thankyou.png'>
 	</div>
 
 	<hr class='line' />
 	
 	<div ng-if="list.price" id='price'>
-		<span class='price-title'>{{ 'PRICE' | translate: 'titlecase' }}:</span>
-		<span class='price-amount'>${{list.price}}</span>
+		<span class='price-title'>{{ 'PRICE' | translate: 'uppercase' }}:</span>
+		<span class='price-amount'>${{list.price}}.00</span>
 	</div>
+
+	<hr ng-if="list.price" class='line' />
+
 
 </div>

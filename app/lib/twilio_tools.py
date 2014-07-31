@@ -5,7 +5,7 @@
 #	Brooklyn, NYC
 #
 # 	Author: Alexandra Berke (aberke)
-# 	Written: June 2014
+# 	Written: Summer 2014
 #
 #
 #--------------------------------------------------------------------------------
@@ -18,8 +18,9 @@ from twilio.rest import TwilioRestClient
 import config
 
 
-client = TwilioRestClient(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
-NUMBER = config.TWILIO_NUMBER
+client 		= TwilioRestClient(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
+NUMBER 		= config.TWILIO_NUMBER
+DOMAIN_NAME = config.DOMAIN_NAME
 
 
 
@@ -27,6 +28,7 @@ def send_SMS(to, body):
 	""" 
 	@param {int | str} to
 	@param {str} body
+
 	Sends SMS message to 'to' number with message 'body'
 	"""
 	try:
@@ -38,25 +40,28 @@ def send_SMS(to, body):
 			raise e
 
 
-def send_booking_confirmations(cleaner, booking):
-	""" Send SMS confirmation to both cleaner and client regarding new booking 
-			cleaner and booking are both dictionaries
-			booking contains the time/duration/rate information
+def send_agreement(to, cleaner_name, list_id):
 	"""
-	# TODO - get time/duration/address/cost from booking dictionary
-	time = "July 10, 12pm"
-	duration = "3 hours"
-	client_name = "Aoife Byrne"
-	cleaner_name = cleaner['name']
-	address = "43 Midwood Street, NT 11225"
-	cost = "$70"
+	@param {int | str} to 		- phonenumber to send message to
+	@param {str} cleaner_name 	- cleaner that created agreement 
+	@param {str} list_id 		- id of list that will be viewed as agreement 
 
-	cleaner_msg = "You have a new CleanSlate appointment.\nTime: {0}\nDuration: {1}\nClient Name: {2} \nAddress: {3}.".format(time, duration, client_name, address) 
-	client_msg = "You have a confirmed CleanSlate appointment with {0}.\nTime: {1}\nDuration: {2}\nCost: {3}".format(cleaner_name, time, duration, cost)
+	Sends message: "[cleaner name] sent you a new cleaning agreement: [link]"
+	"""
+	message = ("{0} sent you a new cleaning agreement: {1}/list/{2}/agreement".format(cleaner_name, DOMAIN_NAME, list_id))
+	send_SMS(to, message)
 
-	send_SMS(cleaner['phonenumber'], cleaner_msg)
-	send_SMS(booking['phonenumber'], client_msg)
 
+def send_receipt(to, cleaner_name, receipt_id):
+	"""
+	@param {int | str} to 		- phonenumber to send message to
+	@param {str} cleaner_name 	- cleaner that created agreement 
+	@param {str} receipt_id 	- id of receipt for which to send link
+
+	Sends message: "[cleaner name] has finished cleaning your place! [link]"
+	"""
+	message = ("{0} has finished cleaning your place! {1}/receipt/{2}".format(cleaner_name, DOMAIN_NAME, receipt_id))
+	send_SMS(to, message)
 
 
 

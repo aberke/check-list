@@ -228,14 +228,17 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 
 	}
 
-	function createListsMap(lists) {
+	function setupLists(ls) {
+		lists = [];
 		listsMap = {};
 		var list;
-		for (var i=0; i<lists.length; i++) {
-			list = lists[i];
+		for (var i=0; i<ls.length; i++) {
+			list = ls[i];
+			// turn last_modified date strings into date objects
+			list.last_modified = UtilityService.dateStringToDate(list.last_modified);
+			lists.push(list);
 			listsMap[list._id] = list;
 		}
-		return listsMap;
 	}
 
 
@@ -269,8 +272,7 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 		}
 
 		APIservice.GET('/api/list/search?_cleaner=' + user._id).then(function(data) {
-			lists = data;
-			listsMap = createListsMap(lists);
+			setupLists(data);
 			deferred.resolve(lists);
 		});
 
@@ -309,7 +311,6 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 
 		var deferred = $q.defer();
 		if (user) {
-			console.log('GETuser: already have user:', typeof user, user)
 			deferred.resolve(user);
 			return deferred.promise;
 		}
