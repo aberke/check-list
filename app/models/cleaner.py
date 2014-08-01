@@ -94,6 +94,14 @@ def add_list(cleaner_id, list_data=None):
 	cleaner_id = sanitize_id(cleaner_id)
 	list_id = list.insert_new(cleaner_id, data=list_data)
 	ret = db.cleaners.update({ "_id": cleaner_id }, { "$push": {"lists": list_id }})
+
+	# Potential bad situation: Cleaner deleted but user still logged in as cleaner and able to make posts to add list
+	# avoid this situation by ensuring that 1 cleaner matched list._cleaner
+	# if error occurs, delete the newly inserted list - it should never have been created
+	if ret['nModified'] != 1:
+		list.delete(list_id)
+		raise Exception("Error when trying to add list to cleaner {0}: {1} cleaners updated".format(cleaner_id, ret['nModified']))
+	
 	return list_id
 
 def public(cleaner):
@@ -109,6 +117,26 @@ def public(cleaner):
 		profile[key] = value
 
 	return profile
+
+
+def delete(id):
+	"""
+	1) delete all lists belonging to cleaner - delete will travel recursively: lists will handle deleting receipts, and rooms, etc
+	2) delete cleaner document itself
+	"""
+	id = sanitize_id(id)
+
+	# 0) get cleaner so have its lists
+	c = db.cleaners.find_one({ "_id": id })
+	if not c:
+		raise Exception("Cannot delete cleaner with _id {0} - no such document".format(id))
+	
+	# 1) delete all lists belonging to it
+	for l in c['lists']:
+		list.delete(l)
+	
+	# 2) delete document itself
+	db.cleaners.remove({ "_id": id })
 
 
 

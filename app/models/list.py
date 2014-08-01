@@ -136,7 +136,7 @@ def create_receipt(list_id):
 def delete(id):
 	"""
 	1) notify all receipts of deletion
-	2) delete all list's room documents
+	2) delete all rooms belonging to list
 	3) delete cleaner's reference to list 
 	4) delete list document
 	"""
@@ -150,8 +150,9 @@ def delete(id):
 	# 1)
 	db.receipts.update({ "_list": id }, { "$set": {"_list": None }})
 
-	# 2) delete all its rooms
-	db.rooms.remove({ "_list": id })
+	# 2) delete all rooms belonging to it
+	for r in l['rooms']:
+		room.delete(r)
 	
 	# 3) delete _cleaner's reference to it
 	ret = db.cleaners.update({ "_id": sanitize_id(l["_cleaner"]) }, { "$pull": { "lists": id }})

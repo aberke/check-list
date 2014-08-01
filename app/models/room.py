@@ -78,18 +78,23 @@ def add_task(room_id, task_data):
 def delete(id):
 	"""
 	1) delete _list's reference to room
-	2) delete room document itself
+	2) delete all tasks belonging to room
+	3) delete room document itself
 	"""
 	id = sanitize_id(id)
 	# 0) get room document to have reference it its _list
 	r = db.rooms.find_one({ "_id": id })
 	if not r:
 		raise Exception("Cannot delete room with _id {0} - no such document".format(id))
+
 	# 1) delete _list's reference to it
 	db.lists.update({ "_id": r["_list"] }, { "$pull": { "rooms": id }})
+
+	# 2) delete all tasks belong to it
+	db.tasks.remove({ "_room": id })
 	
-	# 2) delete room document
-	db.rooms.remove({ "_id": sanitize_id(id) })
+	# 3) delete room document
+	db.rooms.remove({ "_id": id })
 	
 
 
