@@ -99,8 +99,8 @@
 		<div class='price-main-info'>
 			<img ng-click="editPrice()" class='icon price'>
 			<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>
-				{{list.price || 'COST' | translate: 'uppercase' }}
-				<span ng-show='list.price'>.00</span>
+				<!-- weird hack to avoid white space between list.price and .00: spans must be right next to eachother -->
+				<span>{{list.price || 'COST' | translate: 'uppercase' }}</span><span ng-show='list.price'>.00</span>
 			</h1>
 			<input class='price-input' maxlength="4" placeholder="00" ng-show="editingPrice" type='number' ng-model="list.price">
 			<button ng-click="savePrice()" ng-show="editingPrice" class='save-btn btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>
