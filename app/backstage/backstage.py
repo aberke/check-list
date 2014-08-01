@@ -16,7 +16,7 @@
 
 from flask import Blueprint, request, send_file
 
-from app.lib.util import dumpJSON, respond500
+from app.lib.util import dumpJSON, respond500, respond200
 from app.models import cleaner, list as List, room, task
 from app.lib.basic_auth import requires_auth
 
@@ -48,6 +48,16 @@ def GET_data_all():
 
 		return dumpJSON(all_cleaners)
 
+	except Exception as e:
+		return respond500(e)
+
+
+@bp.route('/cleaner/<id>', methods=['DELETE'])
+@requires_auth
+def DELETE_cleaner(id):
+	try:
+		cleaner.delete(id)
+		return respond200()
 	except Exception as e:
 		return respond500(e)
 

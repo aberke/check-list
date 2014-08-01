@@ -59,7 +59,19 @@ button:disabled { cursor: initial; }
 	background-color: rgba(160,228,249,0.2);
 }
 .cleaner-last-active {
+	margin: 5px 0;
+	font-size: 14px;
+}
+.cleaner h3 {
 	margin: 0;
+}
+.delete-cleaner-btn {
+	float: right;
+	color: red;
+	padding: 5px;
+}
+.delete-cleaner-btn:hover {
+	background-color: rgba(255,0,0,0.2);
 }
 
 .list {

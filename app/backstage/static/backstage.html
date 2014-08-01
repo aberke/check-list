@@ -19,6 +19,7 @@
      
      <script src="/static/js/vendor/angular.min.js"></script>
 
+    <script src="/static/js/filters.js"></script>
 
     <script src="/backstage/static/backstage.js"></script>
     
@@ -27,7 +28,7 @@
 </head>
 <body ng-controller="MainController">
 
-    <p class='error'>{{error}}</p>
+    <p class='error'>{{error.message}}</p>
 
     <div ng-if="loading" id="loading">
         <img src="/backstage/static/cleaning-footsteps.gif">
@@ -43,8 +44,11 @@
         <input type='text' placeholder='search cleaners' ng-model='search'>
 
         <div class='cleaner' ng-class="{'selected': cleaner.show}" ng-repeat="cleaner in cleaners | filter:search | orderBy: 'last_active':true">
+
+            <span ng-click="deleteCleaner(cleaner)" class='delete-cleaner-btn'>DELETE</span>
+
             <div ng-click='cleaner.show=!cleaner.show'>
-                <h3>{{cleaner.name}} | {{cleaner.phonenumber}} | {{cleaner.lists.length}} Lists</h3>
+                <h3>{{cleaner.name}} | {{cleaner.phonenumber | telephone}} | {{cleaner.lists.length}} Lists</h3>
                 <p class="cleaner-last-active">Last active: {{cleaner.last_active | date:'short' }}</p>
             </div>
 

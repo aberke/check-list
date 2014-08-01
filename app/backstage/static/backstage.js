@@ -34,13 +34,47 @@ var App = angular.module('BackstageApp', [])
 
 	})
 
+	.filter('telephone', TelephoneFilter)
 
-	.controller('MainController', function($scope, $http) {
+	.controller('MainController', function($scope, $http, $window) {
 
 		$scope.loading;
 		$scope.cleaners;
-		$scope.error;
+		$scope.error = {};
+
+		var errorCallback = function(errData) {
+			/* Always using the same errorCallback for this controller's API calls */
+			$scope.error.message = errData.message;
+		}
 		
+		$scope.deleteCleaner = function(cleaner) {
+			/* Removes cleaner from scope by splicing $scope.cleaners list 
+				only after successCallback
+			*/
+			// clear out potential old error message
+			$scope.error = {};
+
+			// show confirm dialog - ARE YOU SURE YOU WANT TO DELETE?
+			var msg = ("Are you sure you want to (FOREVER) delete cleaner:\n\n" + cleaner.name);
+			var confirmed = $window.confirm(msg);
+			if (!confirmed) {
+				return;
+			}
+
+			var index = $scope.cleaners.indexOf(cleaner);
+			var endpoint = ('/backstage/cleaner/' + cleaner._id);
+
+			var successCallback = function(data) {
+				$scope.cleaners.splice(index, 1);
+			}
+
+			$http({ 
+				method: 'DELETE', 
+				url: endpoint 
+			})
+			.success(successCallback)
+			.error(errorCallback);
+		}
 	
 
 		var init = function() {
@@ -79,7 +113,7 @@ var App = angular.module('BackstageApp', [])
 					}
 					$scope.loading = false;
 				})
-				.error(function(errData) { $scope.error = errData; });
+				.error(errorCallback);
 
 
 		}

@@ -228,11 +228,9 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 	$scope.lists;
 
 	$scope.deleteList = function(list) {
-		console.log('deleteList', list, list.name)
 		var msg = TranslateService.translate("DELETE_LIST_CONFIRM_MSG");
 		msg += ("\n\n");
 		msg += TranslateService.translate(list.name || 'UNTITLED');
-		console.log('list.name', list.name, TranslateService.translate(list.name))
 		var confirmed = $window.confirm(msg);
 		if (!confirmed) {
 			return;
