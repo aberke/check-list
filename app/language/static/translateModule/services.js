@@ -10,7 +10,9 @@
 
 ****************************************************/
 
-var TranslateService = function() {
+
+
+var TranslateService = function($http) {
 
 	/*
 	- Manager of current language {String} currentLanguage
@@ -24,10 +26,14 @@ var TranslateService = function() {
 		},
 		... for row/keyname in spreadsheet
 	}
-	translateMap is constructed in translateMap.js
+	translateMap is constructed server-side
+	Called in base.html? /translate/map?callback=translateMapCallback (at bottom)
+	It's added to prototype on callback of it loading
+	Keep it as script (rather than loading from module) so that can ensure loaded in before page renders
 	*/
 
 
+	this.translateMap;
 	var currentLanguage;
 	var browserLanguageMap = {
 		    'en': 'en',
@@ -85,15 +91,14 @@ var TranslateService = function() {
 		currentLanguage = language;
 		return language;
 	}
-	this.translateMap = translateMap;
 
 	this.translate = function(keyname) {
 		/*
 		@param {String} keyname -- keyname to look up in translate map and translate
 		Returns translation found in translateMap or (untranslated) original keyname if no translation found
 		*/
-		if (keyname in translateMap) {
-			return translateMap[keyname][currentLanguage];
+		if (keyname in this.translateMap) {
+			return this.translateMap[keyname][currentLanguage];
 		}
 		return keyname;
 	}
@@ -105,4 +110,7 @@ var TranslateService = function() {
 		currentLanguage = (detectedLanguage || 'en');
 	}
 	init();
+}
+var translateMapCallback = function(data) {
+	TranslateService.prototype.translateMap = data;
 }

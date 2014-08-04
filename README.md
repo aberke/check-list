@@ -135,6 +135,17 @@ Domain names bought from and configured via namecheap.com under Ciara's account
 TODO
 ---
 
+- Multilingual:
+
+	- Move translateMap to backend
+
+	- Get language from request headers
+		- 'en' vs 'es'
+		- default to 'en'
+		- supply language to twilio_tools
+
+
+
 - test coverage for populate_cleaner in GET /list/<id>
 
 - organize CSS

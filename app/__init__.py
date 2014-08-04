@@ -25,11 +25,15 @@ app = Flask('app')
 app.config.from_object('config')
 Compress(app)
 
+
 from api import bp as api_blueprint
 app.register_blueprint(api_blueprint, url_prefix='/api')
 
 from auth import bp as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+from language import bp as language_blueprint
+app.register_blueprint(language_blueprint, url_prefix='/language')
 
 from backstage import bp as backstage_blueprint
 app.register_blueprint(backstage_blueprint, url_prefix='/backstage')

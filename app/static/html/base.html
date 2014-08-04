@@ -29,22 +29,21 @@
      <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJxQK1oDn4U3kbDIK-epf96ckze7fuSHQ"></script>
 
+    <!-- translation module -->
+    <script src="/language/static/translateModule/module.js"></script>
+    <script src="/language/static/translateModule/services.js"></script>
+    <script src="/language/static/translateModule/filters.js"></script>
+    <!-- Keep it as script (rather than loading from translate module) so that can ensure loaded in before page renders -->
+    <script src="/language/map?callback=translateMapCallback"></script>
+    
 
     <script src="/static/js/app.js"></script>
 	<script src="/static/js/controllers.js"></script>
     <script src="/static/js/services.js"></script>
     <script src="/static/js/factories.js"></script>
     <script src="/static/js/filters.js"></script>
-
     <script src="/static/js/routes.js"></script>
 
-    <!-- translation module -->
-    <script src="/static/js/translateModule/translateMap.js"></script>
-    <script src="http://spreadsheets.google.com/feeds/list/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/od6/public/basic?alt=json-in-script&callback=GETtranslateDataCallback"></script>
-    <script src="/static/js/translateModule/translate.js"></script>
-    <script src="/static/js/translateModule/services.js"></script>
-    <script src="/static/js/translateModule/filters.js"></script>
-    
 
     <!-- using fastclick.js to prevent delay on mobile browsers -->
     <script type='application/javascript' src="/static/js/vendor/fastclick.js"></script>
