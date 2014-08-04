@@ -31,10 +31,28 @@
 
     <!-- translation module -->
     <script src="/language/static/translateModule/module.js"></script>
-    <script src="/language/static/translateModule/services.js"></script>
     <script src="/language/static/translateModule/filters.js"></script>
+    <!--     
+    Keep script ordering such that:
+        app.js comes last (creates TranslateService instance)
+            - need JSONP callbacks to have occured (defined in TranslateService file)
+        services.js comes before JSONP resources: 
+            - translateMap 
+            - languageSetting
+            Because callbacks for JSONP defined in TranslateModule/services.js
+        
+        All Javascript is executed in order it appears on page, so here's order:
+            TranslateService defined
+            translateMapCallback defined 
+                (sets TranslateService.prototype.map)
+            languageSettingCallback defined 
+                (sets TranslateService.prototype.languageSetting)
+            CheckList app (Main AngularJS app - app.js) instantiates TranslateService (must happen after callbacks!)
+    -->
+    <script src="/language/static/translateModule/services.js"></script>
     <!-- Keep it as script (rather than loading from translate module) so that can ensure loaded in before page renders -->
     <script src="/language/map?callback=translateMapCallback"></script>
+    <script src="/language/setting?callback=languageSettingCallback"></script>
     
 
     <script src="/static/js/app.js"></script>

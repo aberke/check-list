@@ -61,7 +61,7 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory, Translate
 		});
 	}
 	$scope.selectLanguage = function(language) {
-		$scope.currentLanguage = TranslateService.setCurrentLanguage(language);
+		$scope.currentLanguage = TranslateService.setLanguage(language);
 	}
 	var init = function() {
 		setupGoogleAnalytics();
@@ -72,7 +72,7 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory, Translate
 		document.getElementById('control-view').style.display = "block";
 		showingControls = false;
 
-		$scope.currentLanguage = TranslateService.getCurrentLanguage();
+		$scope.currentLanguage = TranslateService.getLanguage();
 	}
 	init();
 }

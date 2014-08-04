@@ -42,9 +42,8 @@ from flask import Blueprint, request, session, redirect
 import json
 
 import config
-from app.lib.util import yellERROR, dumpJSON, respond500, respond200, APIexception
+from app.lib.util import JSONencoder, dumpJSON, respond500, respond200, APIexception
 from app.lib import twilio_tools
-from app.lib.util import JSONencoder
 from app import auth
 from app.models import cleaner, list as List, room, task, receipt
 

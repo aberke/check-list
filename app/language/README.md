@@ -17,9 +17,11 @@ Components
 		- Calls upon the service to handle the actual translation
 	- Service sets the language and handles the actual work of translating terms
 		- ```/static/services.js```
-		- Intelligently determines the default language 
+		- Intelligently determines the default language
+			- If ***language-setting*** is stored in server session, uses that language, otherwise:
 			- Defaults to Spanish if phone set in Spanish, otherwise English
 		- Stores the current language + handles switching languages
+			- Updates server ***language-setting*** when language switched
 		- Stores the language ***map*** that is retreived from server
 		- Handles translations 
 			- Used by filter and controllers
@@ -28,6 +30,9 @@ Components
 	- ```__init__.py```
 	- translate is a blueprint registered with the larger Flask application
 	- ```/translate/map``` is the endpoint that returns formatted ***map*** in JSON
+	- ```/language/setting``` endpoints handle saving the user's ***language-setting*** in session
+		- POST ```/language/setting``` sets the ***language-setting*** in session
+		- GET ```/language/setting``` retrieves ***language-setting*** in session
 
 - ***map***
 	- ```map.py``` does the work of building + returning map
@@ -48,9 +53,6 @@ Components
 	- publicly hosted: <https://docs.google.com/a/significancelabs.org/spreadsheets/d/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/edit#gid=0>
 		- Anyone can view (AKA my application), but only specified translators can edit
 	- Contains all translation keys and terms
-
-
-
 
 
 

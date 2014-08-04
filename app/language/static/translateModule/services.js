@@ -8,6 +8,12 @@
 
  	AngularJS translateModule: service
 
+    All Javascript is executed in order it appears on page, so here's order:
+        TranslateService defined
+        translateMapCallback defined (sets TranslateService.prototype.map)
+        languageSettingCallback defined
+        CheckList app (Main AngularJS app - app.js) instantiates TranslateService (must happen after callbacks!)
+
 ****************************************************/
 
 
@@ -15,7 +21,7 @@
 var TranslateService = function($http) {
 
 	/*
-	- Manager of current language {String} currentLanguage
+	- Manager of current language {String} languageSetting
 	- Called by TranslateFilter to do the work of translation
 	- Keeps translations in translateMap:
 	{
@@ -34,7 +40,7 @@ var TranslateService = function($http) {
 
 
 	this.translateMap;
-	var currentLanguage;
+	this.languageSetting;
 	var browserLanguageMap = {
 		    'en': 'en',
 		    'en-gb': 'en',
@@ -84,12 +90,17 @@ var TranslateService = function($http) {
 		return browserLanguageMap[browserLanguage];
 	}
 
-	this.getCurrentLanguage = function() {
-		return currentLanguage;
+	this.getLanguage = function() {
+		return this.languageSetting;
 	}
-	this.setCurrentLanguage = function(language) {
-		currentLanguage = language;
-		return language;
+	this.setLanguage = function(language) {
+		this.languageSetting = language;
+
+		// remember language choice in server session
+		$http.post('/language/setting', {'language-setting': language})
+			.error(function(errData) {
+				console.log('ERROR in POST /language/setting: ', errData);
+			});
 	}
 
 	this.translate = function(keyname) {
@@ -98,18 +109,24 @@ var TranslateService = function($http) {
 		Returns translation found in translateMap or (untranslated) original keyname if no translation found
 		*/
 		if (keyname in this.translateMap) {
-			return this.translateMap[keyname][currentLanguage];
+			return this.translateMap[keyname][this.languageSetting];
 		}
 		return keyname;
 	}
 
-	var init = function() {
-		// initialize currentLanguage to whichever language user's browser uses. 
-		// defaults to english
-		var detectedLanguage = detectLanguage();
-		currentLanguage = (detectedLanguage || 'en');
+	this.init = function() {
+		/* if languageSetting isn't set (server returned null)
+			 initialize languageSetting to whichever language user's browser uses. 
+			 defaults to english 
+		*/
+		if (!this.languageSetting) {
+			this.setLanguage((detectLanguage() || 'en'));
+		}
 	}
-	init();
+	this.init();
+}
+var languageSettingCallback = function(data) {
+	TranslateService.prototype.languageSetting = data['language-setting'];
 }
 var translateMapCallback = function(data) {
 	TranslateService.prototype.translateMap = data;

@@ -2,7 +2,7 @@ check-list
 ==========
 
 Significance Labs project prototype - Checklists for house cleaners
-<http://clean-slate2.herokuapp.com/>
+<http://neat-streak.com>
 
 
 Running Locally
@@ -95,6 +95,8 @@ For Simplicity:
 Language Support
 ---
 
+See full documentation in /language/README.md
+
 - Support Spanish and English
 - All translations handled client side
 - Can easily toggle between languages in the UI
@@ -102,7 +104,7 @@ Language Support
 	- if user uses spanish, defaults to spanish
 	- otherwise defaults to english
 
-Implemention via Google Spreadsheet + AngularJS
+Implemention via Google Spreadsheet + AngularJS + language module
 - Google doc spreadsheet contains the terms we need translated
 	- JSON pulled from this document in real time
 	- <https://docs.google.com/a/significancelabs.org/spreadsheets/d/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/edit#gid=0>
@@ -115,6 +117,7 @@ Implemention via Google Spreadsheet + AngularJS
 		- example use: ```{{ 'SAVE' | translate: 'uppercase' }}```
 	- TranslateService does the actual work of translations
 		- utilized by filter and controllers
+- User's last language is stored server-side in session
 
 
 Domain Name Configuration
@@ -136,13 +139,7 @@ TODO
 ---
 
 - Multilingual:
-
-	- Move translateMap to backend
-
-	- Get language from request headers
-		- 'en' vs 'es'
-		- default to 'en'
-		- supply language to twilio_tools
+	- supply language to twilio_tools
 
 
 
