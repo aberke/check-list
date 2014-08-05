@@ -7,22 +7,6 @@ from base import *
 
 class ViewsTestCase(BaseTestCase):
 
-
-	# - Utility Methods ----------------------------------------------
-
-	def expect_view_200(self, endpoint):
-		""" Helper that gets the page and expects 200 status and content """
-		rv = self.app.get(endpoint)
-		self.assertEqual(rv.status_code, 200)
-		self.assertTrue(int(rv.headers['Content-Length']) > 500)
-
-	def expect_redirect_302(self, endpoint):
-		rv = self.app.get(endpoint)
-		self.assertEqual(rv.status_code, 302)
-
-	# ----------------------------------------------- Utility Methods -
-
-
 	def test_base(self):
 		self.expect_view_200('/')
 

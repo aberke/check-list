@@ -55,5 +55,10 @@ Components
 	- Contains all translation keys and terms
 
 
+Test Coverage
+---
 
+Unit tests are in test_language.py
+
+Still would like e2e tests for angular module
 

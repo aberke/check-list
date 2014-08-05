@@ -19,9 +19,10 @@ from flask import Blueprint, request, session
 
 from app.lib.util import dumpJSON, respond500, respond200, jsonp, APIexception, JSONencoder
 from map import get_map
+import config
 
 
-SUPPORTED_LANGUAGES = ['en', 'es']
+SUPPORTED_LANGUAGES = config.SUPPORTED_LANGUAGES
 
 
 
@@ -29,9 +30,6 @@ bp = Blueprint('language', __name__, static_folder='static')
 
 
 
-@bp.route('/')
-def view():
-	return 'language'
 
 
 #- Language Setting --------------------------------------------------
@@ -39,8 +37,8 @@ def view():
 def POST_setting():
     try:
         data = JSONencoder.load(request.data)
-        if not 'language-setting' in data and data['language-setting'] in SUPPORTED_LANGUAGES:
-            raise APIexception("POST /language/setting expects 'language-setting' in payload as 'en' or 'es'")
+        if not ('language-setting' in data and data['language-setting'] in SUPPORTED_LANGUAGES):
+            raise APIexception("POST /language/setting expects 'language-setting' in payload with value in SUPPORTED_LANGUAGES")
         
         session['language-setting'] = data['language-setting']
         return respond200()
@@ -58,8 +56,8 @@ def GET_language_setting():
         return respond500(e)
 
 
-@bp.route('/setting/clear', methods=['DELETE', 'POST', 'GET', 'PUT'])
-def clear_setting():
+@bp.route('/setting', methods=['DELETE'])
+def DELETE_language_setting():
     """
     Clear the language setting from the session - not actually used by module
     """
@@ -75,11 +73,23 @@ def clear_setting():
 @bp.route('/map')
 @jsonp
 def GET_map():
-	try:
-		data = get_map()
-		return dumpJSON(data)
-	except Exception as e:
-		return respond500(e)
+    """
+    Returns the formatted language map.
+    Data pulled from google spreadsheet and then formatted as
+    {
+        keyname: {
+          en: "english translation",
+          es: "spanish translation",
+          ... for column/language in spreadsheet
+        },
+    ... for row/keyname in spreadsheet
+    }
+    """
+    try:
+        data = get_map()
+        return dumpJSON(data)
+    except Exception as e:
+        return respond500(e)
 
 
 

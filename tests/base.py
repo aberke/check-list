@@ -57,6 +57,16 @@ class BaseTestCase(unittest.TestCase):
 		for test_key in keys:
 			self.assertEqual(test_data[test_key], response_data[test_key])
 
+	def expect_view_200(self, endpoint):
+		""" Helper that gets the page and expects 200 status and content """
+		rv = self.app.get(endpoint)
+		self.assertEqual(rv.status_code, 200)
+		self.assertTrue(int(rv.headers['Content-Length']) > 500)
+
+	def expect_redirect_302(self, endpoint):
+		rv = self.app.get(endpoint)
+		self.assertEqual(rv.status_code, 302)
+
 	def GET_basic_auth_protected(self, endpoint):
 		""" requires_auth decorator in lib/basic_auth verifies that request made with BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD
 			or sends 401
