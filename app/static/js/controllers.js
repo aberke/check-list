@@ -499,9 +499,18 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 function ReceiptCntl($scope, $location, UtilityService, receipt) {
 	$scope.cleaner;
 	$scope.list; // for now receipt mimicing list
+	$scope.feedback = {};
+	$scope.feedback_sent = receipt.feedback_sent;
 
 	$scope.viewAgreement = function() {
 		$location.path('/list/' + receipt._list + '/agreement');
+	}
+	$scope.sendFeedback = function() {
+
+		var successCallback = function(data) {
+			$scope.feedback_sent = true;
+		}
+		successCallback();
 	}
 
 	var init = function() {

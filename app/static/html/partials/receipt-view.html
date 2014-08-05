@@ -33,8 +33,15 @@
 		<span class='price-amount'>${{list.price}}.00</span>
 	</div>
 
-	<div id='thank-you-container'>
+	<div ng-show="feedback_sent" id='thank-you-container'>
 		<img width='100px' src='/static/icon/thankyou.png'>
+	</div>
+
+	<div ng-show="!feedback_sent">
+		<div id='leave-feedback-header'>
+			<span class='icon feedback'></span>
+			<h2 class='title feedback'>Leave Feedback</h2>
+		</div>
 	</div>
 
 
