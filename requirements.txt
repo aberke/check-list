@@ -12,3 +12,4 @@ python-dateutil==2.2
 six==1.7.3
 twilio==3.6.6
 wsgiref==0.1.2
+requests==2.3.0
