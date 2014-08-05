@@ -63,9 +63,7 @@ def send_agreement(to, cleaner_name, list_id):
 
 	Sends message: "[cleaner name] sent you a new cleaning agreement: [link]"
 	"""
-	message = language.translate("SEND_AGREEMENT_MESSAGE_SMS")
-	message+= " {1}/list/{2}/agreement"
-	message = message.format(cleaner_name, DOMAIN_NAME, list_id)
+	message = ("{0} sent you a new cleaning agreement: {1}/list/{2}/agreement".format(cleaner_name, DOMAIN_NAME, list_id))
 	send_SMS(to, message)
 
 
@@ -77,9 +75,7 @@ def send_receipt(to, cleaner_name, receipt_id):
 
 	Sends message: "[cleaner name] has finished cleaning your place! [link]"
 	"""
-	message = language.translate("SEND_RECEIPT_MESSAGE_SMS")
-	message+= "\n{1}/receipt/{2}"
-	message = message.format(cleaner_name, DOMAIN_NAME, receipt_id)
+	message = ("{0} has finished cleaning your place! {1}/receipt/{2}".format(cleaner_name, DOMAIN_NAME, receipt_id))
 	send_SMS(to, message)
 
 
