@@ -101,6 +101,7 @@ var TranslateService = function($http) {
 			.error(function(errData) {
 				console.log('ERROR in POST /language/setting: ', errData);
 			});
+		return this.languageSetting;
 	}
 
 	this.translate = function(keyname) {

@@ -98,18 +98,16 @@ Language Support
 See full documentation in /language/README.md
 
 - Support Spanish and English
-- All translations handled client side
 - Can easily toggle between languages in the UI
-- Device/browser language detected 
-	- if user uses spanish, defaults to spanish
-	- otherwise defaults to english
+- Device/browser language detected  and used as default language
 
-Implemention via Google Spreadsheet + AngularJS + language module
+***Implemention via Google Spreadsheet + AngularJS + language package***
+
 - Google doc spreadsheet contains the terms we need translated
-	- JSON pulled from this document in real time
+	- JSON pulled from this document at each server restart
 	- <https://docs.google.com/a/significancelabs.org/spreadsheets/d/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/edit#gid=0>
-- Separate AngularJS module handles all translations
-	- See translateModule
+
+- Separate AngularJS ***translateModule*** handles all client-side translations
 	- translate filter used in HTML to handle all copy
 		- filter syntax: ```{{ 'KEYNAME' | translate: 'format' }}```
 			- ```'KEYNAME'``` is the keyname (column A of spreadsheet) that maps to the translations
@@ -117,7 +115,11 @@ Implemention via Google Spreadsheet + AngularJS + language module
 		- example use: ```{{ 'SAVE' | translate: 'uppercase' }}```
 	- TranslateService does the actual work of translations
 		- utilized by filter and controllers
-- User's last language is stored server-side in session
+		- interfaces with the language blueprint
+
+- language package is a Flask blueprint
+	- User's last language is stored in session
+	- Constructs map of translations from Google Doc spreadsheet
 
 
 Domain Name Configuration
@@ -138,12 +140,8 @@ Domain names bought from and configured via namecheap.com under Ciara's account
 TODO
 ---
 
-- Multilingual:
-	- supply language to twilio_tools
-
-
-
 - test coverage for populate_cleaner in GET /list/<id>
+- test coverage for translate method in /language/__init__.py
 
 - organize CSS
 
@@ -159,15 +157,10 @@ TODO
 
 - handle default list data via google spreadsheets
 
-- host on AWS?
-
 - protect API endpoints
 	- write middleware
 
 - limit Google API key to only my IPs?
-
-
-- set cache TTL to 0 for /auth/user ?
 
 - store session in database?
 	- if scale number of servers

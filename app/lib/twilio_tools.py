@@ -17,6 +17,7 @@ from twilio.rest import TwilioRestClient
 
 import config
 from util import APIexception
+from app import language
 
 
 client 		= TwilioRestClient(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
@@ -36,7 +37,7 @@ def send_SMS(to, body):
 		client.messages.create(to=to, from_=NUMBER, body=body)
 	except TwilioRestException as e:
 		if e.code == 21211:
-			raise APIexception(code=7) # Exception("{0} is not a valid phonenumber".format(to))
+			raise APIexception(code=7)
 		else:
 			raise e
 
@@ -46,9 +47,11 @@ def send_welcome(to, cleaner_name):
 	@param {int | str} to 		- phonenumber to send message to
 	@param {str} cleaner_name 	- cleaner name
 
-	Sends message: "Hi [cleaner name], Welcome to NeatStreak! [Link to NeatStreak]"
+	Sends message: "Hi [cleaner name]\nWelcome to NeatStreak! [Link to NeatStreak]"
 	"""
-	message = ("Hi {0}, Welcome to NeatStreak! {1}".format(cleaner_name, DOMAIN_NAME))
+	message = language.translate("SEND_WELCOME_MESSAGE_SMS")
+	message += "\n{1}"
+	message = message.format(cleaner_name, DOMAIN_NAME)
 	send_SMS(to, message)
 
 
@@ -60,7 +63,9 @@ def send_agreement(to, cleaner_name, list_id):
 
 	Sends message: "[cleaner name] sent you a new cleaning agreement: [link]"
 	"""
-	message = ("{0} sent you a new cleaning agreement: {1}/list/{2}/agreement".format(cleaner_name, DOMAIN_NAME, list_id))
+	message = language.translate("SEND_AGREEMENT_MESSAGE_SMS")
+	message+= " {1}/list/{2}/agreement"
+	message = message.format(cleaner_name, DOMAIN_NAME, list_id)
 	send_SMS(to, message)
 
 
@@ -72,7 +77,9 @@ def send_receipt(to, cleaner_name, receipt_id):
 
 	Sends message: "[cleaner name] has finished cleaning your place! [link]"
 	"""
-	message = ("{0} has finished cleaning your place! {1}/receipt/{2}".format(cleaner_name, DOMAIN_NAME, receipt_id))
+	message = language.translate("SEND_RECEIPT_MESSAGE_SMS")
+	message+= "\n{1}/receipt/{2}"
+	message = message.format(cleaner_name, DOMAIN_NAME, receipt_id)
 	send_SMS(to, message)
 
 

@@ -45,7 +45,6 @@ GOOGLE_API_REQUEST_URL = 'http://spreadsheets.google.com/feeds/list/{0}/od6/publ
 
 
 
-
 # map of translations kept in "cache"
 map = {}
 
@@ -64,20 +63,23 @@ def build_map():
 		raise APIexception(message='Error retrieving translate google spreadsheet')
 
 	# parse translate data json into map form
-	try:
-		data = r.json()
 
-		entry_list = data['feed']['entry']
-		entry = None
-		keyname = None
-		content = None
-		translation_array = None
-		translation_partition = None
+	data = r.json()
 
-		for i in range(len(entry_list)):
+	entry_list = data['feed']['entry']
+	entry = None
+	keyname = None
+	content = None
+	translation_array = None
+	translation_partition = None
+
+	for i in range(len(entry_list)):
+		# will add { keyname: translations } to map after building translations dictionary
+		translations = {} # of form {'en': translation, 'es':translation,..}
+
+		try:
 			entry = entry_list[i]
 			keyname = entry['title']['$t']
-			map[keyname] = {}
 
 			# content of form "en: phone, es: phonenumber abbr. in spanish"
 			content = entry['content']['$t']
@@ -87,12 +89,15 @@ def build_map():
 				translation_partition = re.split(r': *', translation_array[a])
 				language = translation_partition[0]
 				translation = translation_partition[1]
-				map[keyname][language] = translation
+				translations[language] = translation
+		
+		except Exception as e:
+			yellERROR('Error parsing translation map item: \n' + e.message + '\n' + str(entry))
+			continue
 
-		return map
-	except Exception as e:
-		yellERROR(msg=e.message)
-		raise APIexception('Error parsing translate google spreadsheet')
+		map[keyname] = translations
+
+	return map
 
 
 
