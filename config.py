@@ -82,6 +82,7 @@ GOOGLE_API_KEY 				= "AIzaSyCJxQK1oDn4U3kbDIK-epf96ckze7fuSHQ"
 
 # language module:
 SUPPORTED_LANGUAGES 		= ['en', 'es']
+DEFAULT_LANGUAGE 			= 'en'
 GOOGLE_API_TRANSLATE_SPREADSHEET_KEY = '1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c'
 
 # AWS_ACCESS_KEY_ID			= os.environ['AWS_ACCESS_KEY_ID']

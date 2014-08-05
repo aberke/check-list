@@ -53,6 +53,14 @@ Components
 	- publicly hosted: <https://docs.google.com/a/significancelabs.org/spreadsheets/d/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/edit#gid=0>
 		- Anyone can view (AKA my application), but only specified translators can edit
 	- Contains all translation keys and terms
+	- See spreadsheet notes for ***rules***
+
+
+Spreadsheet Rules
+---
+- The following items will prevent the item from being parsed into the translations map
+	- commas ```,```
+	- colons ```:```
 
 
 Test Coverage
