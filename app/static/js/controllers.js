@@ -338,6 +338,9 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 	$scope.clickListInfo = function() {
 		$scope.editingListInfo ? $scope.saveList() : $scope.editingListInfo = true;
 	}
+	$scope.clickFeedback = function() {
+		$scope.showingFeedback = !$scope.showingFeedback;
+	}
 	$scope.clickNotes = function() {
 		$scope.showingNotes = !$scope.showingNotes;
 		if (!$scope.list.notes) { // show textarea
@@ -479,6 +482,17 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 			$scope.list._cleaner = user._id;
 		}
 		$scope.list.rooms = [];
+		$scope.list.feedbacks = [{
+			date: new Date(),
+			rating: 1,
+			why: 'why why why why why',
+			request: 'Please, request yo oweoir jweorij woeirj oiwejr ',
+		},{
+			date: new Date(),
+			rating: 1,
+			why: 'why why why why why',
+			request: 'Please, request yo oweoir jweorij woeirj oiwejr ',
+		}];
 		GETrooms();
 
 		$scope.today = new Date(); // for cleaning log title
@@ -506,9 +520,18 @@ function ReceiptCntl($scope, $location, UtilityService, receipt) {
 		$location.path('/list/' + receipt._list + '/agreement');
 	}
 	$scope.sendFeedback = function() {
+		$scope.sending = true;
+		$scope.error = {};
+
+		var errorCallback = function(message) {
+			$scope.sending = false;
+			$scope.error.message = message;
+		}
 
 		var successCallback = function(data) {
+			$scope.sending = false;
 			$scope.feedback_sent = true;
+			console.log('feedback_sent: ', $scope.feedback)
 		}
 		successCallback();
 	}

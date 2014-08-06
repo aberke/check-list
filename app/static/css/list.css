@@ -105,7 +105,7 @@
 	text-align: center;
 	padding: 5px;
 }
-
+.main-info,
 .room-main-info,
 .notes-main-info,
 .price-main-info {
@@ -162,6 +162,77 @@
 .add-custom-task .save-btn {
 	background-color: #1b1464;
 }
+
+/*- feedback -----------------*/
+
+.container-bar.feedback-container {
+	background-color: #a0e4f9;
+}
+.feedback-container .main-info {
+	padding-bottom: 10px;
+}
+.show-feedback-container {
+	clear: both;
+	margin: 10px;
+	background-color: white;
+}
+.feedback-item {
+	padding: 5px 0;
+	margin: 0 5px;
+	border-bottom: 1px solid #a0e4f9;
+}
+.feedback-item:last-child {
+	border-bottom: none;
+}
+.feedback-info {
+	max-width: 180px;
+	display: inline-block;
+	font-size: 13px;
+	margin: 0 5px;
+}
+.feedback-info .date {
+	color: #54c0dd;
+}
+.feedback-info .why {
+	color: #1b1464;
+}
+.feedback-info .request {
+	color: #ef7625;
+}
+.icon.feedback-rating-1 {
+	background: url(/static/icon/feedback/feedback_1.png);
+}
+.icon.feedback-rating-2 {
+	background: url(/static/icon/feedback/feedback_2.png);
+}
+.icon.feedback-rating-3 {
+	background: url(/static/icon/feedback/feedback_3.png);
+}
+.icon.feedback-rating-4 {
+	background: url(/static/icon/feedback/feedback_4.png);
+}
+.icon.feedback-delete-btn {
+	float: right;
+	background: url(/static/icon/feedback/feedback_delete.png);
+}
+.icon.feedback-rating,
+.icon.feedback-delete-btn {
+	width: 30px;
+	height: 30px;
+	background-size: contain;
+	margin: 0;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+}
+.icon.feedback-rating {
+	border: 2px solid transparent; /*so that the sizing doesn't shift when border is added on select*/
+}
+.icon.feedback-rating.selected {
+	border: 2px solid #1b1464;
+}
+
+/*----------------- feedback -*/
+
 .show-notes-container {
 	clear: both;
 	padding: 10px 20px 0 20px;
@@ -202,11 +273,11 @@
 	float: right;
 	padding: 5px;
 }
-#send-list-container {
+#send-btn-container {
 	text-align: right;
 	padding: 10px;
 }
-#send-list-container #last-modified {
+#send-btn-container #last-modified {
 	float: left;
 	color: #29abe2;
 }
@@ -216,7 +287,7 @@
 }
 
 #list-clean-view,
-#list-clean-view #send-list-container,
+#list-clean-view #send-btn-container,
 #list-agreement-view {
 	background-color: white;
 }
@@ -312,6 +383,28 @@
 }
 #receipt-view #price {
 	margin: 5px 10px;
+}
+#leave-feedback-header {
+	margin: 5px 0;
+	background-color: #a0e4f9;
+}
+#leave-feedback-header .title {
+	color: #1b1464;
+}
+#receipt-view #feedback-container {
+	padding: 10px;
+	background-color: white;
+}
+#receipt-view .feedback-prompt {
+	color: #ef7625;
+}
+#receipt-view #feedback-icon-container {
+	margin: 5px 0;
+}
+#receipt-view #feedback-container textarea {
+	width: 100%;
+	box-sizing: border-box;
+	min-height: 50px;
 }
 
 /*---------------- receipt-view -*/
