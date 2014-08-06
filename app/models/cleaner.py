@@ -95,18 +95,12 @@ def add_list(cleaner_id, list_data=None):
 	list_id = list.insert_new(cleaner_id, data=list_data)
 	ret = db.cleaners.update({ "_id": cleaner_id }, { "$push": {"lists": list_id }})
 
-	print('**************---------------')
-	print('cleaner_id', cleaner_id)
-	print('list_id', list_id)
-	print('add_list ret:', ret)
-	print('**************---------------')
-
 	# Potential bad situation: Cleaner deleted but user still logged in as cleaner and able to make posts to add list
 	# avoid this situation by ensuring that 1 cleaner matched list._cleaner
 	# if error occurs, delete the newly inserted list - it should never have been created
-	if ret['nModified'] != 1:
+	if not ret['updatedExisting']:
 		list.delete(list_id)
-		raise Exception("Error when trying to add list to cleaner {0}: {1} cleaners updated".format(cleaner_id, ret['nModified']))
+		raise Exception("Error when trying to add list to cleaner {0}: {1}".format(cleaner_id, str(ret)))
 	
 	return list_id
 
