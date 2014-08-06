@@ -79,6 +79,21 @@ def send_receipt(to, cleaner_name, receipt_id):
 	send_SMS(to, message)
 
 
+def send_feedback_notification(to, cleaner_name, list_id):
+	"""
+	@param {int | str} to 		- phonenumber to send message to
+	@param {str} cleaner_name 	- cleaner that created agreement 
+	@param {str} list_id 		- id of list that will be viewed as agreement 
+
+	Sends message: "Hi [cleaner name] You have new feedback: [link]"
+	"""
+	message = language.translate("SEND_FEEDBACK_NOTIFICATION_SMS")
+	message += "\n{1}/list/{2}"
+	message = message.format(cleaner_name, DOMAIN_NAME, list_id)
+	send_SMS(to, message)
+
+
+
 
 
 

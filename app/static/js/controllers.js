@@ -510,11 +510,11 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 	init();
 }
 
-function ReceiptCntl($scope, $location, UtilityService, receipt) {
+function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
 	$scope.cleaner;
 	$scope.list; // for now receipt mimicing list
-	$scope.feedback = {};
-	$scope.feedback_sent = receipt.feedback_sent;
+	$scope.feedback;
+	$scope.feedback_sent;
 
 	$scope.viewAgreement = function() {
 		$location.path('/list/' + receipt._list + '/agreement');
@@ -522,6 +522,7 @@ function ReceiptCntl($scope, $location, UtilityService, receipt) {
 	$scope.sendFeedback = function() {
 		$scope.sending = true;
 		$scope.error = {};
+		console.log('sending feedback: ', $scope.feedback)
 
 		var errorCallback = function(message) {
 			$scope.sending = false;
@@ -531,15 +532,16 @@ function ReceiptCntl($scope, $location, UtilityService, receipt) {
 		var successCallback = function(data) {
 			$scope.sending = false;
 			$scope.feedback_sent = true;
-			console.log('feedback_sent: ', $scope.feedback)
+			console.log('feedback_sent: ', data)
 		}
-		successCallback();
+		APIservice.POST('/api/list/' + receipt._list + '/feedback', $scope.feedback).then(successCallback, errorCallback);
 	}
 
 	var init = function() {
 		receipt.date = UtilityService.dateStringToDate(receipt.date);
 		$scope.cleaner = receipt.cleaner;
 		$scope.list = receipt;
+		$scope.feedback = { _receipt: receipt._id, };
 
 
 		console.log('list', $scope.list)

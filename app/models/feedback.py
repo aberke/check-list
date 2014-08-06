@@ -31,35 +31,22 @@ import receipt
 
 
 
-def find(id=None):
+def find(id=None, _list=None):
 	query = {}
 	if id:
 		query['_id'] = sanitize_id(id)
-	feedbacks = [f for f in db.receipts.find(query)]
+	if _list:
+		query['_list'] = sanitize_id(_list)
+	feedbacks = [f for f in db.feedbacks.find(query)]
 	return feedbacks
+
 
 def find_one(**kwargs):
 	f = find(**kwargs)
 	return r[f] if r else None
 
-def insert_new(cleaner_id, data=None):
-	"""
-	@param {ObjectId} cleaner_id
-	Returns _id of newly inserted list 
-	"""
-	data = sanitize_data(data) if data else {}
-	data["_cleaner"] = cleaner_id
-	data["rooms"] = []
-	data = stamp_last_modified(data)
-	list_id = db.lists.insert(data)
 
-	# TODO - BETTER SOLUTION
-	for room in DEFAULT_ROOMS:
-		add_room(list_id, room.copy())
-
-	return list_id
-
-def create(list_id, data):
+def insert_new(list_id, data):
 	"""
 	@param {ObjectId} list_id
 	Returns _id of newly inserted feedback
@@ -69,6 +56,22 @@ def create(list_id, data):
 	data['date'] = date_now()
 	
 	# insert into database
-	feedback_id = db.feedbackss.insert(data)
+	feedback_id = db.feedbacks.insert(data)
 	return feedback_id
 
+
+def delete(id):
+	"""
+	1) delete _list's reference to feedback
+	2) delete feedback document itself
+	"""
+	id = sanitize_id(id)
+	# 0) get feedback document to have reference it its _list
+	f = db.feedbacks.find_one({ "_id": id })
+	if not f:
+		raise Exception("Cannot delete feedback with _id {0} - no such document".format(id))
+	# 1) delete _list's reference to it
+	db.lists.update({ "_id": f["_list"] }, { "$pull": { "feedbacks": id }})
+	
+	# 2) delete feedback document
+	db.feedbacks.remove({ "_id": id })

@@ -19,7 +19,6 @@ class APITestCase(BaseTestCase):
 	def POST_list(self):
 		""" Helper method to post the list and keep returned list id as self.list_id """
 		rv = self.POST_data('/api/cleaner/{0}/list'.format(self.cleaner['_id']), data=TEST_LIST_DATA)
-		self.assertEqual(rv.status_code, 200)
 		self.list_id = json.loads(rv.data)['_id']
 
 	def POST_receipt(self):
@@ -28,8 +27,15 @@ class APITestCase(BaseTestCase):
 			self.POST_list()
 		list = self.GET_data('/api/list/' + self.list_id)
 		rv = self.POST_data('/api/list/' + self.list_id + '/receipt', data=list)
-		self.assertEqual(rv.status_code, 200)
 		self.receipt_id = json.loads(rv.data)['_id']
+
+	def POST_feedback(self):
+		if not self.list_id:
+			self.POST_list()
+		rv = self.POST_data('/api/list/' + self.list_id + '/feedback', data=TEST_FEEDBACK_DATA)
+		data = json.loads(rv.data)
+		self.feedback_id = data['_id']
+		return data
 
 
 	def POST_room(self):
@@ -361,6 +367,81 @@ class APITestCase(BaseTestCase):
 		self.POST_list()
 		list = self.GET_data('/api/list/' + self.list_id)
 		self.POST_data('/api/list/' + self.list_id + '/send', data=list)
+
+
+	# GET 	/api/feedback/search
+	def test_GET_feedback_search(self):
+		"""
+		Currently just returns all feedbacks 
+		"""
+		# initially no feedback documents should exist
+		data = self.GET_data('/api/feedback/search')
+		self.assertEqual([], data)
+
+		# POST 5 feedbacks, insure 5 exist and all match expected data with date and id
+		for i in range(5):
+			self.POST_feedback()
+			data = self.GET_data('/api/feedback/search')
+			self.assertEqual(i + 1, len(data))
+			self.assertDataMatch(TEST_FEEDBACK_DATA, data[i])
+			self.validate_date(data[i])
+			self.assertEqual(self.feedback_id, data[i]['_id'])
+
+
+	# POST 	/api/list/<list_id>/feedback
+	def test_POST_feedback(self):
+		"""
+		Responds with data { _id: feedback_id }
+
+		Iteratively POST 3 feedbacks and insure 
+			- list has expected number of feedbacks 
+			- last posted feedback has expected data with expected _id and valid date and
+		"""
+		# initially, a list should have no feedbacks
+		self.POST_list()
+		list = self.GET_data('/api/list/' + self.list_id)
+		self.assertEqual([], list['feedbacks'])
+
+		for i in range(3):
+			self.POST_feedback()
+			list = self.GET_data('/api/list/' + self.list_id)
+			self.assertEqual(i + 1, len(list['feedbacks']))
+			self.assertDataMatch(TEST_FEEDBACK_DATA, list['feedbacks'][i])
+			self.assertEqual(self.feedback_id, list['feedbacks'][i]['_id'])
+			self.assertEqual(self.list_id, list['feedbacks'][i]['_list'])
+			self.validate_date(list['feedbacks'][0])
+
+
+	# DELETE 	/api/feedback/<id>
+	def test_DELETE_feedback(self):
+		"""
+		Deletes feedback document + removes feedback from list.feedbacks
+		Responds with 200
+
+		1) POST 4 feedbacks 
+		2) incrementally delete each
+			- insure there are the amount expected in database
+			- insure there are the amount expected in list.feedbacks
+		"""
+		# 1
+		feedback_ids = []
+		for i in range(4):
+			data = self.POST_feedback()
+			feedback_ids.append(data['_id'])
+		# 2
+		for i in range(len(feedback_ids)):
+			feedback_id = feedback_ids[i]
+			self.DELETE('/api/feedback/' + feedback_id)
+
+			data = self.GET_data('/api/feedback/search')
+			self.assertEqual(len(feedback_ids) - i - 1, len(data))
+			
+			list = self.GET_data('/api/list/' + self.list_id)
+			self.assertEqual(len(feedback_ids) - i - 1, len(list['feedbacks']))
+
+
+
+
 
 
 

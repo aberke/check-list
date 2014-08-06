@@ -34,6 +34,12 @@ TEST_TASK_DATA = {
 	'selected': 'true',
 	'default': 'true',
 }
+TEST_FEEDBACK_DATA = {
+	'_receipt': '53e25b38b81c82e74e6ef334', # some ObjectId
+	'rating': 1,
+	'why': 'TEST-FEEDBACK-DATA-WHY',
+	'request': 'TEST-FEEDBACK-DATA-REQUEST',
+}
 
 
 class BaseTestCase(unittest.TestCase):
@@ -113,6 +119,12 @@ class BaseTestCase(unittest.TestCase):
 
 	def logout(self):
 		return self.app.post('/auth/logout', follow_redirects=True)
+
+	def validate_date(self, data):
+		""" Same as validate_last_modified but looking for 'date' field instead """
+		self.assertTrue('date' in data)
+		now = datetime.now()
+		self.assertTrue(dateutil.parser.parse(data['date']) > now)
 
 	def validate_last_modified(self, data):
 		""" Asserts that data has a 'last_modified' field and that date is before now """
