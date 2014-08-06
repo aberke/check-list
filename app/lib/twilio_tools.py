@@ -47,7 +47,7 @@ def send_welcome(to, cleaner_name):
 	@param {int | str} to 		- phonenumber to send message to
 	@param {str} cleaner_name 	- cleaner name
 
-	Sends message: "Hi [cleaner name]\nWelcome to NeatStreak! [Link to NeatStreak]"
+	Sends message: "Hi [cleaner name] Welcome to NeatStreak! [Link to NeatStreak]"
 	"""
 	message = language.translate("SEND_WELCOME_MESSAGE_SMS")
 	message += "\n{1}"
