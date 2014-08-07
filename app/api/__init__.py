@@ -18,7 +18,7 @@
 # GET,PUT 			/api/cleaner/<id>
 # POST 				/api/cleaner/<id>/list
 #
-# GET 				/api/list/search ?[_id=list._id]&[populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
+# GET 				/api/list/search ?[_id=list._id]&[populate_rooms=boolean]&[_cleaner=cleaner._id] | returns all
 # GET,PUT,DELETE 	/api/list/<id>   ?[populate_cleaner=boolean] TODO: TEST coverage for populate_cleaner
 # POST,PUT 			/api/list/<list_id>/send -- sends AGREEMENT
 # POST 				/api/list/<id>/room
@@ -32,8 +32,10 @@
 
 # POST 				/api/list/<id>/receipt -- sends RECEIPT
 # GET 				/api/receipt/<id>
-
 #
+# POST 				/api/list/<id>/feedback
+# GET 				/api/feedback/search  -- returns all
+# DELETE 			/api/feedback/<id>
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
@@ -45,7 +47,7 @@ import config
 from app.lib.util import JSONencoder, dumpJSON, respond500, respond200, APIexception
 from app.lib import twilio_tools
 from app import auth
-from app.models import cleaner, list as List, room, task, receipt
+from app.models import cleaner, list as List, room, task, receipt, feedback
 
 
 
@@ -141,21 +143,22 @@ def POST_list(cleaner_id):
 		return respond500(e)
 
 
-# GET 		/api/list/search ?[populate_rooms=boolean]&[_cleaner=cleaner._id | returns all]
+# GET 		/api/list/search ? [_id=list._id]&[populate_rooms=boolean]&[_cleaner=cleaner._id]&[populate_feedbacks=boolean] | returns all
 @bp.route('/list/search', methods=['GET'])
 def GET_list_search():
 	""" 
-	Returns List []
+	Returns List [] of found lists 
 	Parameters:
-		_id 			-> search by id 
-		_cleaner  		-> search by cleaner
-		populate_rooms  -> populate rooms list which will also populate tasks list 
+		_id 				-> search by id 
+		_cleaner  			-> search by cleaner
+		populate_rooms  	-> populate rooms list which will also populate tasks list
 	searches all if no parameters
+	populates feedback
 	"""
 	try:
 		_id 			= request.args['_id'] if '_id' in request.args else None 
 		_cleaner 		= request.args['_cleaner'] if '_cleaner' in request.args else None 
-		populate_rooms	= request.args['populate_rooms'] if 'populate_rooms' in request.args else None 
+		populate_rooms	= request.args['populate_rooms'] if 'populate_rooms' in request.args else None
 		
 		result = List.find(id=_id, _cleaner=_cleaner, populate_rooms=populate_rooms)
 		return dumpJSON(result)
@@ -222,6 +225,55 @@ def PUT_send_list(id):
 		return respond200()
 	except Exception as e:
 		return respond500(e)
+
+
+# POST 		/api/list/<id>/feedback
+@bp.route('/list/<list_id>/feedback', methods=['POST'])
+def POST_feedback(list_id):
+	"""
+	@param 		{list_id} _id of list that is owner of feedback
+	payload:	feedback data 
+
+	Sends notification via SMS to cleaner that feedback has been sent with link to list 
+	Returns _id of newly inserted feedback
+	"""
+	try:
+		feedback_data = JSONencoder.load(request.data)
+		feedback_id = List.add_feedback(list_id, feedback_data)
+
+		# get list and cleaner so that can send SMS
+		l = List.find_one(id=list_id)
+		c = cleaner.find_one(id=l['_cleaner'])
+		twilio_tools.send_feedback_notification(c['phonenumber'], c['name'], list_id)
+		
+		return dumpJSON({ '_id': feedback_id })
+	except Exception as e:
+		return respond500(e)
+
+
+# GET 		/api/feedback/search
+@bp.route('/feedback/search', methods=['GET'])
+def GET_feedback_search():
+	"""
+	Returns all feedback documents
+	"""
+	try:
+		feedbacks = feedback.find()
+		return dumpJSON(feedbacks)
+	except Exception as e:
+		return respond500(e)
+
+
+# DELETE 	/api/feedback/<id>
+@bp.route('/feedback/<id>', methods=['DELETE'])
+def DELETE_feedback(id):
+	try:
+		feedback.delete(id)
+		return respond200()
+	except Exception as e:
+		return respond500(e)
+
+
 
 
 # POST 		/api/list/<id>/receipt

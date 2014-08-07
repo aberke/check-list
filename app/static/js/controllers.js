@@ -270,7 +270,7 @@ function DashboardCntl($scope, $window, $location, APIservice, UtilityService, U
 }
 
 
-function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, user) {
+function ListCntl($scope, $window, APIservice, TranslateService, TaskFactory, GeolocationFactory, list, user) {
 	/* Controller for the following views:
 		/list/:id  			-> [cleaner] edit agreement
 		/list/:id/clean 	-> [cleaner] clean now
@@ -311,7 +311,6 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 			$scope.editingListInfo = true;
 		}
 		var successCallback = function(data) {
-			console.log('successCallback', data)
 			$scope.list._id = ($scope.list._id || data._id);
 		}
 		APIservice.PUT('/api/list/' + $scope.list._id, $scope.list).then(successCallback, errorCallback);
@@ -320,9 +319,8 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 		var errorCallback = function(message) {
 			$scope.error.message = message;
 		}
-		var successCallback = function(data) {
-			console.log('successCallback', data)
-		}
+		var successCallback = function(data) {};
+
 		APIservice.PUT('/api/room/' + room._id, room).then(successCallback, errorCallback);
 	}
 	$scope.incrementRoomCount = function(room) {
@@ -334,9 +332,27 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 		saveRoomCount(room);
 	}
 
-
 	$scope.clickListInfo = function() {
 		$scope.editingListInfo ? $scope.saveList() : $scope.editingListInfo = true;
+	}
+	$scope.deleteFeedback = function(feedback) {
+		$scope.error = {};
+
+		var msg = TranslateService.translate('DELETE_FEEDBACK_CONFIRM_MSG');
+		if (!$window.confirm(msg)) {
+			return;
+		}
+
+		var errorCallback = function(message) {
+			$scope.error.message = message;
+		}
+		var successCallback = function(data) {};
+		
+		APIservice.DELETE('/api/feedback/' + feedback._id).then(successCallback, errorCallback);
+		
+		// remove the feedback from the list.feedbacks list
+		var index = $scope.list.feedbacks.indexOf(feedback);
+		$scope.list.feedbacks.splice(index, 1);
 	}
 	$scope.clickNotes = function() {
 		$scope.showingNotes = !$scope.showingNotes;
@@ -388,7 +404,6 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 		var successCallback = function(data) {
 			// this is saved to the correct place in scope
 			task._id = data._id;
-			console.log('successCallback for saveTask. list:', $scope.list)
 		}
 		var errorCallback = function(message) {
 			console.log('ERROR', message, 'TODO: HANDLE');
@@ -398,9 +413,7 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 	var deleteTask = function(task) {
 		if (!task._id) { return; }
 		// UI feedback already handled by clickTask -- looks unselected
-		var successCallback = function(data) {
-			console.log('successCallback to delete', data)
-		}
+		var successCallback = function(data) {};
 		var errorCallback = function(message) {
 			console.log('ERROR', message, 'TODO: HANDLE');
 		}
@@ -478,7 +491,6 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 		if (user) { // in case this is a newly POSTed list
 			$scope.list._cleaner = user._id;
 		}
-		$scope.list.rooms = [];
 		GETrooms();
 
 		$scope.today = new Date(); // for cleaning log title
@@ -496,18 +508,36 @@ function ListCntl($scope, TaskFactory, APIservice, GeolocationFactory, list, use
 	init();
 }
 
-function ReceiptCntl($scope, $location, UtilityService, receipt) {
+function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
 	$scope.cleaner;
 	$scope.list; // for now receipt mimicing list
+	$scope.feedback;
+	$scope.feedback_sent;
 
 	$scope.viewAgreement = function() {
 		$location.path('/list/' + receipt._list + '/agreement');
+	}
+	$scope.sendFeedback = function() {
+		$scope.sending = true;
+		$scope.error = {};
+
+		var errorCallback = function(message) {
+			$scope.sending = false;
+			$scope.error.message = message;
+		}
+
+		var successCallback = function(data) {
+			$scope.sending = false;
+			$scope.feedback_sent = true;
+		}
+		APIservice.POST('/api/list/' + receipt._list + '/feedback', $scope.feedback).then(successCallback, errorCallback);
 	}
 
 	var init = function() {
 		receipt.date = UtilityService.dateStringToDate(receipt.date);
 		$scope.cleaner = receipt.cleaner;
 		$scope.list = receipt;
+		$scope.feedback = { _receipt: receipt._id, };
 
 
 		console.log('list', $scope.list)

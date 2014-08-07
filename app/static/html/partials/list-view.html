@@ -77,6 +77,28 @@
 
 	<span class='divider'></span>
 
+	<div class='feedback-container container-bar' ng-class="{'active': !hidingFeedback}">
+		<div class='main-info' ng-click="hidingFeedback=!hidingFeedback">
+			<img class='icon feedback'>
+			<h1 class='title feedback'>{{ 'FEEDBACK' | translate: 'uppercase' }}</h1>
+		</div>
+
+		<div class='show-feedback-container' ng-show="!hidingFeedback">
+
+			<p class='error'>{{error.message | translate }}</p>
+
+			<div class='feedback-item' ng-repeat="feedback in list.feedbacks">
+				<span class='icon feedback-rating feedback-rating-{{feedback.rating}}'></span>
+				<div class='feedback-info'>
+					<p class='date'>{{ feedback.date | date: 'shortDate' }}
+					<p class='why'>{{feedback.why}}</p>
+					<p class='request'>{{feedback.request}}</p>
+				</div>
+				<span ng-click="deleteFeedback(feedback)" class='icon feedback-delete-btn'></span>
+			</div>
+		</div>
+	</div> <!-- feedback-container -->
+
 	<div class='notes-container container-bar' ng-class="{'active': showingNotes}">
 		<div class='notes-main-info' ng-click="clickNotes()">
 			<img class='icon notes'>
@@ -109,7 +131,7 @@
 
 
 	<!-- list sending UI -->
-	<div id='send-list-container'>
+	<div id='send-btn-container'>
 
 		<p id='last-modified'>{{ 'LAST_MODIFIED' | translate: 'titlecase' }}: {{ list.last_modified | date:'shortDate' }}</p>
 

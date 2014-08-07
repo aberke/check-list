@@ -55,6 +55,9 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	height: 130px;
 	width: 130px;
 }
+.icon.feedback {
+	background: url(/static/icon/FEEDBACK.png);
+}
 .icon.notes {
 	background: url(/static/icon/NOTES.png);
 }
@@ -233,6 +236,7 @@ img.hamburger {
 .living-room,
 .etc,
 .title.living-room,
+.title.feedback,
 .title.etc {
 	color: #54c0dd;
 }

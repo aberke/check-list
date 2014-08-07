@@ -18,6 +18,7 @@
 #	notes		{String}
 #	price		{Integer} -- Integer not enforced server side
 #	receipts 	[{ObjectId}] - array of ObjectId's of receipts
+#	feedbacks 	[{ObjectId}] - array of ObjectId's of feedbacks
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************
@@ -28,6 +29,7 @@ from .model_utility import stamp_last_modified, sanitize_id, sanitize_data
 import room
 import receipt
 import cleaner
+import feedback
 
 MUTABLE_FIELDS = ['name', 'phonenumber', 'location', 'notes', 'price',]
 DEFAULT_ROOMS = [{
@@ -50,14 +52,20 @@ DEFAULT_ROOMS = [{
 
 
 
-def find(id=None, _cleaner=None, populate_rooms=False, populate_cleaner=False):
-	""" TODO: populate_rooms has no test coverage """
+def find(id=None, _cleaner=None, populate_rooms=False, populate_cleaner=False, populate_feedbacks=True):
+	""" TODO: populate_rooms has no test coverage 
+	Populates feedbacks list as default (acts as if feedbacks in embedded documents)
+	"""
 	query = {}
 	if id:
 		query['_id'] = sanitize_id(id)
-	elif _cleaner:
+	if _cleaner:
 		query['_cleaner'] = sanitize_id(_cleaner)
 	lists = [l for l in db.lists.find(query)]
+
+	if populate_feedbacks:
+		for l in lists:
+			l['feedbacks'] = feedback.find(_list=l['_id'])
 
 	if populate_rooms:
 		for l in lists:
@@ -107,10 +115,16 @@ def update(id, data):
 def add_room(list_id, room_data=None):
 	room_data = room_data if room_data else {}
 	list_id = sanitize_id(list_id)
-	room_data['_list'] = list_id
 	room_id = room.insert_new(list_id, room_data)
 	ret = db.lists.update({ "_id": list_id }, { "$push": {"rooms": room_id }})
 	return room_id
+
+
+def add_feedback(list_id, feedback_data):
+	list_id = sanitize_id(list_id)
+	feedback_id = feedback.insert_new(list_id, feedback_data)
+	ret = db.lists.update({ "_id": list_id }, { "$push": {"feedbacks": feedback_id }})
+	return feedback_id
 
 
 def create_receipt(list_id):
@@ -137,8 +151,9 @@ def delete(id):
 	"""
 	1) notify all receipts of deletion
 	2) delete all rooms belonging to list
-	3) delete cleaner's reference to list 
-	4) delete list document
+	3) delete all feedbacks belonging to list 
+	4) delete cleaner's reference to list 
+	5) delete list document
 	"""
 	id = sanitize_id(id)
 
@@ -153,11 +168,14 @@ def delete(id):
 	# 2) delete all rooms belonging to it
 	for r in l['rooms']:
 		room.delete(r)
+
+	# 3) delete all rooms belonging to it
+	db.feedbacks.remove()
 	
-	# 3) delete _cleaner's reference to it
+	# 4) delete _cleaner's reference to it
 	ret = db.cleaners.update({ "_id": sanitize_id(l["_cleaner"]) }, { "$pull": { "lists": id }})
 	
-	# 4) delete list document
+	# 5) delete list document
 	db.lists.remove({ "_id": id })
 
 

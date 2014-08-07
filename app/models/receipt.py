@@ -50,7 +50,7 @@ from app.database import db
 from .model_utility import sanitize_id
 import cleaner
 
-#TODO - TEST THAT DELETING LIST MARKS _LIST AS null
+
 
 def find(id=None):
 	query = {}
@@ -93,17 +93,3 @@ def create(list):
 	# insert into database
 	receipt_id = db.receipts.insert(receipt_data)
 	return receipt_id
-
-
-	# receipt_data = { 
-	# 				'_cleaner': list['_cleaner'],
-	# 				'_list': list['_id'],
-	# 			}
-	# receipt_data['phonenumber'] = list['phonenumber'] if 'phonenumber' in list else None
-	# receipt_data['location'] = list['location'] if 'location' in list else None
-	# receipt_data['notes'] = list['notes'] if 'notes' in list else None
-	# receipt_data['price'] = list['price'] if 'price' in list else None
-	# receipt_data['rooms'] = []
-
-	# for room in list:
-	# 	receipt_data['rooms'].push([])
