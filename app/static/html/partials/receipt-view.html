@@ -62,8 +62,8 @@
 			<div id='send-btn-container'>
 
 				<p class='error'>{{error.message | translate }}</p>
-				<p ng-show="sendStatus=='sending'" id='sent-confirmation'>{{ 'SENDING' | translate: 'uppercase' }}...</p>
-				<button ng-disabled="!(feedback.rating&&feedback.why&&feedback.request)" ng-click="sendFeedback()" class='btn short'>Thanks!</button>
+				<p ng-show="sending" id='sent-confirmation'>{{ 'SENDING' | translate: 'uppercase' }}...</p>
+				<button ng-show="!sending" ng-disabled="!(feedback.rating&&feedback.why&&feedback.request)" ng-click="sendFeedback()" class='btn short'>Thanks!</button>
 			</div>
 
 		</div>

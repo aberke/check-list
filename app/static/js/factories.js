@@ -236,6 +236,13 @@ var UserFactory = function($http, $q, $window, APIservice, UtilityService) {
 			list = ls[i];
 			// turn last_modified date strings into date objects
 			list.last_modified = UtilityService.dateStringToDate(list.last_modified);
+			
+			// turn feedback.date into date objects for each feedback in list.feedbacks
+			for (var f=0; f<list.feedbacks.length; f++) {
+				var feedback = list.feedbacks[f];
+				feedback.date = UtilityService.dateStringToDate(feedback.date);
+			}
+
 			lists.push(list);
 			listsMap[list._id] = list;
 		}

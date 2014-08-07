@@ -77,13 +77,16 @@
 
 	<span class='divider'></span>
 
-	<div class='feedback-container container-bar' ng-class="{'active': showingFeedback}">
-		<div class='main-info' ng-click="clickFeedback()">
+	<div class='feedback-container container-bar' ng-class="{'active': !hidingFeedback}">
+		<div class='main-info' ng-click="hidingFeedback=!hidingFeedback">
 			<img class='icon feedback'>
 			<h1 class='title feedback'>{{ 'FEEDBACK' | translate: 'uppercase' }}</h1>
 		</div>
 
-		<div class='show-feedback-container' ng-show="showingFeedback">
+		<div class='show-feedback-container' ng-show="!hidingFeedback">
+
+			<p class='error'>{{error.message | translate }}</p>
+
 			<div class='feedback-item' ng-repeat="feedback in list.feedbacks">
 				<span class='icon feedback-rating feedback-rating-{{feedback.rating}}'></span>
 				<div class='feedback-info'>
@@ -91,7 +94,7 @@
 					<p class='why'>{{feedback.why}}</p>
 					<p class='request'>{{feedback.request}}</p>
 				</div>
-				<span ng-click="deleteFeedback()" class='icon feedback-delete-btn'></span>
+				<span ng-click="deleteFeedback(feedback)" class='icon feedback-delete-btn'></span>
 			</div>
 		</div>
 	</div> <!-- feedback-container -->
