@@ -33,8 +33,41 @@
 		<span class='price-amount'>${{list.price}}.00</span>
 	</div>
 
-	<div id='thank-you-container'>
+	<div ng-show="feedback_sent" id='thank-you-container'>
 		<img width='100px' src='/static/icon/thankyou.png'>
+	</div>
+
+	<div ng-show="!feedback_sent">
+		<div class='container-bar' id='leave-feedback-header'>
+			<span class='icon feedback'></span>
+			<h2 class='title feedback'>Leave Feedback</h2>
+		</div>
+
+		<div id='feedback-container'>
+
+			<h2 class='feedback-prompt'>How did I do today?</h2>
+			<div id='feedback-icon-container'>
+				<span ng-click='feedback.rating=1' ng-class="{'selected': feedback.rating==1}" class='icon feedback-rating feedback-rating-1'></span>
+				<span ng-click='feedback.rating=2' ng-class="{'selected': feedback.rating==2}" class='icon feedback-rating feedback-rating-2'></span>
+				<span ng-click='feedback.rating=3' ng-class="{'selected': feedback.rating==3}" class='icon feedback-rating feedback-rating-3'></span>
+				<span ng-click='feedback.rating=4' ng-class="{'selected': feedback.rating==4}" class='icon feedback-rating feedback-rating-4'></span>
+			</div>
+
+			<h2 class='feedback-prompt'>Why?</h2>
+			<textarea ng-model="feedback.why"></textarea>
+
+			<h2 class='feedback-prompt'>Next time...</h2>
+			<textarea ng-model="feedback.request" placeholder="Please,"></textarea>
+
+			<div id='send-btn-container'>
+
+				<p class='error'>{{error.message | translate }}</p>
+				<p ng-show="sending" id='sent-confirmation'>{{ 'SENDING' | translate: 'uppercase' }}...</p>
+				<button ng-show="!sending" ng-disabled="!(feedback.rating&&feedback.why&&feedback.request)" ng-click="sendFeedback()" class='btn short'>Thanks!</button>
+			</div>
+
+		</div>
+
 	</div>
 
 
