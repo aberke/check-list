@@ -522,6 +522,11 @@ function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
 		$scope.sending = true;
 		$scope.error = {};
 
+		// if feedback.request just says 'Please ', then get rid of it
+		if ($scope.feedback.request.match("Please") && $scope.feedback.request.length < 8) {
+			$scope.feedback.request = null;
+		}
+
 		var errorCallback = function(message) {
 			$scope.sending = false;
 			$scope.error.message = message;
@@ -532,6 +537,13 @@ function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
 			$scope.feedback_sent = true;
 		}
 		APIservice.POST('/api/list/' + receipt._list + '/feedback', $scope.feedback).then(successCallback, errorCallback);
+	}
+
+	$scope.requestOnFocus = function() {
+		// make sure to start each request off with 'Please '
+		if (!$scope.feedback.request) {
+			$scope.feedback.request = "Please ";
+		}
 	}
 
 	var init = function() {
