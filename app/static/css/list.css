@@ -194,6 +194,10 @@
 	font-size: 13px;
 	margin: 0 5px;
 }
+.feedback-info .prompt {
+	font-weight: 600;
+	font-size: 14px;
+}
 .feedback-info .date {
 	color: #54c0dd;
 }

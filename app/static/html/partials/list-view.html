@@ -91,8 +91,14 @@
 				<span class='icon feedback-rating feedback-rating-{{feedback.rating}}'></span>
 				<div class='feedback-info'>
 					<p class='date'>{{ feedback.date | date: 'shortDate' }}
-					<p class='why'>{{feedback.why}}</p>
-					<p class='request'>{{feedback.request}}</p>
+					<p class='why'>
+						<span class='prompt'>{{ 'WHY' | translate }}</span> 
+						{{feedback.why}}
+					</p>
+					<p class='request'>
+						<span class='prompt'>{{ 'NEXT TIME' | translate }}...</span>
+						{{feedback.request}}
+					</p>
 				</div>
 				<span ng-click="deleteFeedback(feedback)" class='icon feedback-delete-btn'></span>
 			</div>
