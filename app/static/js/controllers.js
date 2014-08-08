@@ -444,6 +444,7 @@ function ListCntl($scope, $window, APIservice, TranslateService, TaskFactory, Ge
 		var successCallback = function(data) {
 			$scope.editingListInfo = false;
 			$scope.sendStatus = 'sent';
+			console.log(data); // for demoing - want id of receipt
 		}
 		var errorCallback = function(message) {
 			$scope.editingListInfo = true;
