@@ -7,7 +7,7 @@
 
 	<div id="list-info" ng-class="{'active': editingListInfo}" class='heading container-bar touchable'>
 		<div class='list-main-info' ng-click="clickListInfo()">
-			<img class='icon house-blue'>
+			<span class='icon house'></span>
 			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 15 }}</h1>
 			<div ng-show="!editingListInfo">
 				<p>{{list.location || 'LOCATION' | limitTo:35 | translate }}</p>
@@ -48,7 +48,7 @@
 	<div ng-repeat="room in list.rooms" ng-class="{'active': room.active}" class='touchable room-container container-bar'>
 		<div class='room-main-info'>
 			<span class="expand-btn" ng-click="clickRoom(room)">
-				<img ng-class="room.type" class='icon'>
+				<span ng-class="room.type" class='icon'></span>
 				<h1 ng-class="room.type" class='title'>{{room.name | translate: 'uppercase' }}</h1>
 			</span>
 
@@ -79,7 +79,7 @@
 
 	<div ng-show="list.feedbacks" class='feedback-container container-bar' ng-class="{'active': !hidingFeedback}">
 		<div class='main-info' ng-click="hidingFeedback=!hidingFeedback">
-			<img class='icon feedback'>
+			<span class='icon feedback'></span>
 			<h1 class='title feedback'>{{ 'FEEDBACK' | translate: 'uppercase' }}</h1>
 		</div>
 
@@ -101,7 +101,7 @@
 
 	<div class='notes-container container-bar' ng-class="{'active': showingNotes}">
 		<div class='notes-main-info' ng-click="clickNotes()">
-			<img class='icon notes'>
+			<span class='icon notes'></span>
 			<h1 class='title notes'>{{ 'NOTES' | translate: 'uppercase' }}</h1>
 		</div>
 
@@ -119,7 +119,7 @@
 
 	<div class='price-container container-bar' ng-class="{ 'active': editingPrice }">
 		<div class='price-main-info'>
-			<img ng-click="editPrice()" class='icon price'>
+			<span ng-click="editPrice()" class='icon price'></span>
 			<h1 ng-click="editPrice()" ng-show="!editingPrice" class='title price'>
 				<!-- weird hack to avoid white space between list.price and .00: spans must be right next to eachother -->
 				<span>{{list.price || 'COST' | translate: 'uppercase' }}</span><span ng-show='list.price'>.00</span>

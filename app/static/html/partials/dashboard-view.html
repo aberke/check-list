@@ -17,7 +17,7 @@
 	</div>
 
 	<div ng-repeat="list in lists" class='touchable list-item-container container-bar'>
-		<span ng-click="selectList(list)" class='icon house-{{$index}} house'></span>
+		<span ng-click="selectList(list)" class='icon house-{{$index%4}} house'></span>
 
 		<div class='list-item'>
 		<h2 class='title name'>{{list.name || 'UNTITLED' | translate: 'uppercase' | limitTo:15 }}</h2>

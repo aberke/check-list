@@ -11,7 +11,7 @@
 ****************************************************/
 
 /* - colors ------------- */
-.blue-1 { color: #a0e4f9; }
+.blue-1 { color: #b6e2e9; }
 .blue-2 { color: #54c0dd; }
 .blue-3 { color: #29abe2; }
 .orange { color: #ef7625; }
@@ -27,7 +27,7 @@
 html,body, #view, .view {
 	margin: 0;
 	padding: 0;
-	background-color: #a0e4f9;
+	background-color: #b6e2e9;
 	height: 100%;
 }
 a, button, .touchable { cursor: pointer; }
@@ -43,15 +43,17 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 	height: 50px;
 	display: inline-block;
 	background-position: center !important;
-	border-radius: 6px;
+	background-size: cover !important;
+	border-radius: 50%;
 	background-repeat: no-repeat;
 }
 .icon.logo {
 	border-radius: 50%;
-	background: url(/static/icon/neatstreak_placeholder.png);
+	background: url(/static/icon/neatstreak-logo.png);
 	background-size: contain;
 }
 .icon.logo.big {
+	background: url(/static/icon/neatstreak-logo-200px.png);
 	height: 130px;
 	width: 130px;
 }
@@ -82,25 +84,18 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 .icon.kitchen {
 	background: url(/static/icon/KITCHEN.png);
 }
-.icon.house-blue{
-	background: url(/static/icon/house/house-blue2.png);
+.icon.house-0 {
+	background: url(/static/icon/house/house1.png);
 }
 .icon.house,
-.icon.house-1,
-.icon.house-5 {
-	background: url(/static/icon/house/house-blue3.png);
-}
-.icon.house-orange,
-.icon.house-2,
-.icon.house-6 {
-	background: url(/static/icon/house/house-orange.png);
+.icon.house-1 {
+	background: url(/static/icon/house/house2.png);
 } 
-.icon.house-0,
-.icon.house-4 {
-	background: url(/static/icon/house/house-purple.png);
+.icon.house-2 {
+	background: url(/static/icon/house/house3.png);
 }
 .icon.house-3 {
-	background: url(/static/icon/house/house-blue2.png);
+	background: url(/static/icon/house/house4.png);
 }
 
 
@@ -108,10 +103,10 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 .btn {
 	cursor: pointer;
 	box-sizing: content-box;
-	border-radius: 10px;
+	border-radius: 5px;
 	text-align: center;
 	font-size: 15px;
-	padding: 10px;
+	padding: 1px 5px;
 	width: 300px;
 	border-width: 3px;
 	border-style: solid;
@@ -147,7 +142,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .btn {
-	color: #a0e4f9;
+	color: #b6e2e9;
 	background-color: #29abe2;
 	border-color: #29abe2;
 	display: inline-block;
@@ -168,14 +163,14 @@ a.btn {
 }
 .next .btn {
 	width: 100px;
-	border-color: #a0e4f9;
+	border-color: #b6e2e9;
 	text-align: center;
 }
 
-.textarea,input ::-webkit-input-placeholder { color: #a0e4f9; }
-.textarea,input :-moz-placeholder { color: #a0e4f9; }
-.textarea,input ::-moz-placeholder { color: #a0e4f9; }
-.textarea,input :-ms-input-placeholder { color: #a0e4f9; }
+.textarea,input ::-webkit-input-placeholder { color: #b6e2e9; }
+.textarea,input :-moz-placeholder { color: #b6e2e9; }
+.textarea,input ::-moz-placeholder { color: #b6e2e9; }
+.textarea,input :-ms-input-placeholder { color: #b6e2e9; }
 
 
 
@@ -196,7 +191,7 @@ input.ng-invalid {
 /*.action-bubble {
 	border: 4px solid #29abe2;
 	border-radius: 50%;
-	background-color: #a0e4f9;
+	background-color: #b6e2e9;
 	width: 100px;
 	height: 100px;
 	color: white;
@@ -228,32 +223,7 @@ img.hamburger {
 	height: 25px;
 }
 
-/*- titles --------------------*/
-.title.bedroom,
-.bedroom {
-	color: #1b1464;
-}
-.living-room,
-.etc,
-.title.living-room,
-.title.feedback,
-.title.etc {
-	color: #54c0dd;
-}
-.bathroom,
-.title.bathroom  {
-	color: #29abe2;
-}
-.kitchen,
-.title.kitchen  {
-	color: #ef7625;
-}
-.title.notes {
-	color: #ef7625;
-}
-.title.price {
-	color: #1b1464;
-}
+ 
 
 /* - control-view ---------------- */
 
@@ -262,7 +232,7 @@ img.hamburger {
 	z-index: 1;
 	right: 0;
 	width: 150px;
-	background-color: #29abe2;
+	background-color: #56c0dc;
 	height: 100%;
 }
 #control-view > * {
@@ -342,6 +312,7 @@ special case is the .heading
 }
 .container-bar .title {
 	margin: 12px 0 0 0;
+	color: #1b1464;
 }
 .container-bar .title,
 .container-bar .name,

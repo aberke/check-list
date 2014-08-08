@@ -16,6 +16,10 @@
 
 /* list-view -------------------*/
 
+#list-view .heading .name {
+	color: #29abe2;
+}
+
 #list-view .divider { /*white line divider*/
 	background-color: white;
 	display: block;
@@ -166,7 +170,7 @@
 /*- feedback -----------------*/
 
 .container-bar.feedback-container {
-	background-color: #a0e4f9;
+	background-color: #b6e2e9;
 }
 .feedback-container .main-info {
 	padding-bottom: 10px;
@@ -179,7 +183,7 @@
 .feedback-item {
 	padding: 5px 0;
 	margin: 0 5px;
-	border-bottom: 1px solid #a0e4f9;
+	border-bottom: 1px solid #b6e2e9;
 }
 .feedback-item:last-child {
 	border-bottom: none;
@@ -241,10 +245,6 @@
 	width: 100%;
 	min-height: 80px;
 }
-.show-notes-container .btn {
-	display: inline-block;
-	height: 25px;
-}
 .show-notes-container .btn-container {
 	text-align: right;
 	margin: 5px 0 0 0;
@@ -271,7 +271,6 @@
 }
 .price-main-info .btn {
 	float: right;
-	padding: 5px;
 }
 #send-btn-container {
 	text-align: right;
@@ -293,8 +292,8 @@
 }
 
 #list-clean-view #list-title-banner {
-	border-color: #a0e4f9;
-	color: #a0e4f9;
+	border-color: #b6e2e9;
+	color: #b6e2e9;
 }
 #list-agreement-view #list-title-banner,
 #receipt-view #list-title-banner {
@@ -386,7 +385,7 @@
 }
 #leave-feedback-header {
 	margin: 5px 0;
-	background-color: #a0e4f9;
+	background-color: #b6e2e9;
 }
 #leave-feedback-header .title {
 	color: #1b1464;
