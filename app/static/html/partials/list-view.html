@@ -91,11 +91,11 @@
 				<span class='icon feedback-rating feedback-rating-{{feedback.rating}}'></span>
 				<div class='feedback-info'>
 					<p class='date'>{{ feedback.date | date: 'shortDate' }}
-					<p class='why'>
+					<p ng-show="feedback.why" class='why'>
 						<span class='prompt'>{{ 'WHY' | translate }}</span> 
 						{{feedback.why}}
 					</p>
-					<p class='request'>
+					<p ng-show="feedback.request" class='request'>
 						<span class='prompt'>{{ 'NEXT TIME' | translate }}...</span>
 						{{feedback.request}}
 					</p>
