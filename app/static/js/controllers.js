@@ -509,11 +509,12 @@ function ListCntl($scope, $window, APIservice, TranslateService, TaskFactory, Ge
 	init();
 }
 
-function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
+function ReceiptCntl($scope, $location, UtilityService, APIservice, TranslateService, receipt) {
 	$scope.cleaner;
 	$scope.list; // for now receipt mimicing list
 	$scope.feedback;
 	$scope.feedback_sent;
+	var feedbackPrefix = (TranslateService.translate('FEEDBACK PREFIX') + " ");
 
 	$scope.viewAgreement = function() {
 		$location.path('/list/' + receipt._list + '/agreement');
@@ -523,7 +524,7 @@ function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
 		$scope.error = {};
 
 		// if feedback.request just says 'Please ', then get rid of it
-		if ($scope.feedback.request.match("Please") && $scope.feedback.request.length < 8) {
+		if ($scope.feedback.request.match(feedbackPrefix)) {
 			$scope.feedback.request = null;
 		}
 
@@ -539,18 +540,14 @@ function ReceiptCntl($scope, $location, UtilityService, APIservice, receipt) {
 		APIservice.POST('/api/list/' + receipt._list + '/feedback', $scope.feedback).then(successCallback, errorCallback);
 	}
 
-	$scope.requestOnFocus = function() {
-		// make sure to start each request off with 'Please '
-		if (!$scope.feedback.request) {
-			$scope.feedback.request = "Please ";
-		}
-	}
-
 	var init = function() {
 		receipt.date = UtilityService.dateStringToDate(receipt.date);
 		$scope.cleaner = receipt.cleaner;
 		$scope.list = receipt;
-		$scope.feedback = { _receipt: receipt._id, };
+		$scope.feedback = { 
+			_receipt: receipt._id, 
+			request: feedbackPrefix,
+		};
 
 
 		console.log('list', $scope.list)

@@ -84,18 +84,18 @@ h1,h2,h3,h4,h5,p,li,a, td, th, span, label {
 .icon.kitchen {
 	background: url(/static/icon/KITCHEN.png);
 }
-.icon.house-0 {
-	background: url(/static/icon/house/house1.png);
-}
 .icon.house,
-.icon.house-1 {
-	background: url(/static/icon/house/house2.png);
+.icon.house-0 {
+	background: url(/static/icon/house/house-0.png);
 } 
+.icon.house-1 {
+	background: url(/static/icon/house/house-1.png);
+}
 .icon.house-2 {
-	background: url(/static/icon/house/house3.png);
+	background: url(/static/icon/house/house-2.png);
 }
 .icon.house-3 {
-	background: url(/static/icon/house/house4.png);
+	background: url(/static/icon/house/house-3.png);
 }
 
 
