@@ -19,7 +19,8 @@
      
      <script src="/static/js/vendor/angular.min.js"></script>
 
-    <script src="/static/js/filters.js"></script>
+    <!-- Custom module for phonenumber filter and directive -->
+    <script src="/static/phonenumberModule/module.js"></script>
 
     <script src="/backstage/static/backstage.js"></script>
     
@@ -48,7 +49,7 @@
             <span ng-click="deleteCleaner(cleaner)" class='delete-cleaner-btn'>DELETE</span>
 
             <div ng-click='cleaner.show=!cleaner.show'>
-                <h3>{{cleaner.name}} | {{cleaner.phonenumber | telephone}} | {{cleaner.lists.length}} Lists</h3>
+                <h3>{{cleaner.name}} | {{cleaner.phonenumber | phonenumber}} | {{cleaner.lists.length}} Lists</h3>
                 <p class="cleaner-last-active">Last active: {{cleaner.last_active | date:'short' }}</p>
             </div>
 

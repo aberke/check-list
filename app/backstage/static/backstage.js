@@ -26,15 +26,13 @@ var localDateFromUTCstring = function(UTCstring) {
 }
 
 
-var App = angular.module('BackstageApp', [])
+var App = angular.module('BackstageApp', ['phonenumberModule'])
 
 	.config(function($locationProvider) {
 
 		$locationProvider.html5Mode(true);
 
 	})
-
-	.filter('telephone', TelephoneFilter)
 
 	.controller('MainController', function($scope, $http, $window) {
 
