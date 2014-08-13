@@ -7,7 +7,7 @@
 			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 15 }}</h1>
 			<div ng-show="!editingListInfo">
 				<p>{{ list.location }}</p>
-				<p>{{(list.phonenumber | telephone) || 'PHONENUMBER' | translate }}</p>
+				<p>{{(list.phonenumber | phonenumber) || 'PHONENUMBER' | translate }}</p>
 			</div>
 		</div>
 	</div>
@@ -19,7 +19,7 @@
 	<div id='list-cleaner-info'>
 		<span id='cleaner-name-number'>
 		<h3>{{list.cleaner.name}}</h3>
-		<p>{{ list.cleaner.phonenumber | telephone }}</p>
+		<p>{{ list.cleaner.phonenumber | phonenumber }}</p>
 		</span>
 
 		<p id='last-modified'>{{ list.date | date:'shortDate' }}</p>

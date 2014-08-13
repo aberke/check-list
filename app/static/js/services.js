@@ -3,7 +3,7 @@
 	Brooklyn, NYC
 
  	Author: Alexandra Berke (aberke)
- 	Written: June 2014
+ 	Written: Summer 2014
 
 
  	AngularJS app
@@ -47,11 +47,6 @@ var UtilityService = function() {
     }
     return false;
   }
-
-}
-
-
-var FormService = function() {
 
 }
 

@@ -13,7 +13,7 @@
 
 
 
-var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'translateModule'])
+var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'translateModule', 'phonenumberModule'])
 
 	.config(function($locationProvider) {
 
@@ -32,9 +32,6 @@ var ChecklistApp = angular.module('ChecklistApp', ['ngRoute', 'translateModule']
 		$provide.factory('TaskFactory', TaskFactory);
 		$provide.factory('UserFactory', UserFactory);
 		$provide.factory('GeolocationFactory', GeolocationFactory);
-
-		// register filters
-		$filterProvider.register('telephone', TelephoneFilter);
 
 	});
 

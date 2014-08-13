@@ -11,7 +11,7 @@
 			<h1 class='name'>{{list.name || 'NEW_CLIENT' | translate | limitTo: 15 }}</h1>
 			<div ng-show="!editingListInfo">
 				<p>{{list.location || 'LOCATION' | limitTo:35 | translate }}</p>
-				<p>{{(list.phonenumber | telephone) || 'PHONENUMBER' | translate }}</p>
+				<p>{{(list.phonenumber | phonenumber) || 'PHONENUMBER' | translate }}</p>
 			</div>
 		</div>
 		<div ng-show="editingListInfo">
@@ -34,7 +34,8 @@
 
 			<div class='input-group'>
 				<div class='label-container'><label>{{ 'PHONE' | translate: 'titlecase' }}:</label></div>
-				<input class='phonenumber' ng-model="list.phonenumber" type="number">
+
+    			<phonenumber-directive ng-class="{'error':error.phonenumber}" model='list.phonenumber'></phonenumber-directive>
 			</div>
 
 			<button ng-click="saveList()" class='save-btn'>{{ 'SAVE' | translate: 'uppercase' }}</button>

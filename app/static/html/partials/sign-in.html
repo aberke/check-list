@@ -4,8 +4,8 @@
 	
 	<p class='error'>{{ error.message | translate }}</p>
 
-	<!-- number input for phonenumber to bring up correct keyboard on mobile devices -->
-	<input ng-model="cleaner.phonenumber" type='number' class='phonenumber' placeholder="{{ 'PHONENUMBER' | translate: 'titlecase' }}" >
+	<phonenumber-directive ng-class="{'error':error.phonenumber}" placeholder="'PHONENUMBER'" model='cleaner.phonenumber'></phonenumber-directive>
+	
 	<input ng-model="cleaner.password" ng-class="{'error':error.password}" type='password' placeholder="{{ 'PASSWORD' | translate: 'titlecase' }}" >
 	<button ng-click="login()" ng-disabled="!(cleaner.phonenumber&&cleaner.password)" class='btn'>{{ 'SIGN_IN' | translate: 'uppercase' }}</button>
 

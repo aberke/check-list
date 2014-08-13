@@ -100,6 +100,7 @@ function NewCntl($scope, $location, APIservice) {
 		// ensure phonenumber and name entered
 		$scope.error.name 			= $scope.cleaner.name ? false : true;
 		$scope.error.phonenumber 	= $scope.cleaner.phonenumber ? false : true;
+		
 		if ($scope.error.name || $scope.error.phonenumber) {
 			$scope.waiting = false;
 			return;
@@ -133,7 +134,7 @@ function NewCntl($scope, $location, APIservice) {
 			$scope.error.message = 'INVALID_PASSWORD_CONFIRM_ERROR';
 			$scope.error.confirmPassword = true;
 		}
-		if ($scope.error.phonenumber||$scope.error.password||$scope.error.confirmPassword) {
+		if ($scope.error.password||$scope.error.confirmPassword) {
 			console.log('error', $scope.error)
 			return false;
 		}
@@ -311,6 +312,7 @@ function ListCntl($scope, $window, APIservice, TranslateService, TaskFactory, Ge
 			$scope.editingListInfo = true;
 		}
 		var successCallback = function(data) {
+			console.log('successCallback', data)
 			$scope.list._id = ($scope.list._id || data._id);
 		}
 		APIservice.PUT('/api/list/' + $scope.list._id, $scope.list).then(successCallback, errorCallback);
@@ -496,13 +498,6 @@ function ListCntl($scope, $window, APIservice, TranslateService, TaskFactory, Ge
 
 		$scope.today = new Date(); // for cleaning log title
 
-
-		/* backwards compatibility:
-			phonenumbers stored as strings need be converted to integers
-		*/
-		if ($scope.list.phonenumber) {
-			$scope.list.phonenumber = Number($scope.list.phonenumber);
-		}
 
 		console.log('list', $scope.list)
 	}

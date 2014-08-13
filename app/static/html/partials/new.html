@@ -6,7 +6,9 @@
 	<p class='error'>{{ error.message | translate }}</p>
 
     <input ng-model="cleaner.name" type='text' placeholder="{{ 'WHAT_IS_YOUR_NAME' | translate }}" >
-    <input ng-model="cleaner.phonenumber" ng-class="{'error':error.phonenumber}" type='number' class='phonenumber' placeholder="{{ 'WHAT_IS_YOUR_PHONENUMBER' | translate }}" >
+
+    <phonenumber-directive ng-class="{'error':error.phonenumber}" placeholder="'WHAT_IS_YOUR_PHONENUMBER'" model='cleaner.phonenumber'></phonenumber-directive>
+    
     <button ng-show='!waiting' ng-click="submitPhonenumber()" ng-disabled="!(cleaner.name&&cleaner.phonenumber)" class='btn'>{{ 'NEXT' | translate: 'uppercase' }}</button>
     <p ng-show='waiting'>{{ 'VERIFYING_PHONENUMBER' | translate }}...</p>
 
