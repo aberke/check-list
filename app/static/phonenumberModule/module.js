@@ -58,6 +58,13 @@ var phonenumberModule = angular.module('phonenumberModule', [])
 			prompt: {String} text to keep in placeholder when no numeric input entered
 		*/
 
+
+		// ** android browsers do not handle reformatting what is entered in input field
+		// find out if this device is an android once and never reformat inputValue if so
+		var ua = navigator.userAgent.toLowerCase();
+		var isAndroid = ua.indexOf("android") > -1;
+
+
 		function link(scope, element, attributes) {
 
 			// scope.inputValue is the value of input element used in template
@@ -68,6 +75,11 @@ var phonenumberModule = angular.module('phonenumberModule', [])
 				value = String(value);
 				var number = value.replace(/[^0-9]+/g, '');
 				scope.phonenumberModel = number;
+
+				// see **note above
+				if (isAndroid) { return; }
+
+				// reformat content entered in input field
 				scope.inputValue = $filter('phonenumber')(number);
 			});
 		}
