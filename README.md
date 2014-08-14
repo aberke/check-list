@@ -1,14 +1,18 @@
+
+<img width="200px" src="http://www.neat-streak.com/static/icon/neatstreak-logo-200px.png" alt="logo" align="right" />
+
 check-list
 ==========
 
 Significance Labs project prototype - Checklists for house cleaners
+
 <http://neat-streak.com>
 
 
 Running Locally
 ---
 
-* Clone repo 
+* Clone/fork repo 
 
 ```
 $ git clone https://github.com/aberke/check-list.git
@@ -150,8 +154,6 @@ TODO
 	- con: extra files to request
 
 - parse URL for mongoHQ in config file
-
-- handle errors with UI feedback in your controllers errorCallback functions
 
 - handle default room data
 
