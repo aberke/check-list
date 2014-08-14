@@ -365,6 +365,13 @@ special case is the .heading
 	display: block;
 	margin: 10px auto;
 }
+@media (min-width: 500px) {
+	#index-view .logo.big {
+		width: 200px;
+		height: 200px;
+		margin-top: 30px;
+	}
+}
 /* ---------------- index-view - */
 
 

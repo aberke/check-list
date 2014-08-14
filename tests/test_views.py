@@ -47,3 +47,8 @@ class ViewsTestCase(BaseTestCase):
 		self.expect_view_200('/list/2/clean')
 
 
+	def test_help_page(self):
+		self.expect_view_200('/help/')
+
+
+

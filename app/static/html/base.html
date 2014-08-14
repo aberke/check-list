@@ -93,8 +93,10 @@
 
     <div style="display:none;" id='control-view'>
         <p>{{user.name}}</p>
-        <span ng-click="logout()">{{ 'SIGN_OUT' | translate: 'title-case' }}</span>
+        <span ng-click="logout()">{{ 'SIGN_OUT' | translate: 'titlecase' }}</span>
         <a href="/dashboard">{{ 'DASHBOARD' | translate: 'titlecase' }}</a>
+        <!-- force full request - help is its own blueprint + set of files -->
+        <a target="_self" href="/help">{{ 'HELP' | translate: 'titlecase' }}</a>
 
 
         <div class='control-toggle' id='language-toggle'>

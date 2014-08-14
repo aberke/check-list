@@ -43,9 +43,8 @@ function MainCntl($scope, $window, $location, APIservice, UserFactory, Translate
 	var setupGoogleAnalytics = function() {
 		// log every new page view in production
 
-		if ($scope.domain == "http://www.neatstreak.com") {
+		if ($scope.domain == "http://www.neat-streak.com") {
 			$scope.$on('$routeChangeSuccess', function(event) {
-				console.log('pushing to google-analytics')
 				$window.ga('send', 'pageview', { page: $location.path() });
 			});
 		}

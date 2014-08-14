@@ -11,6 +11,9 @@
 #	Base file of help module
 # 	/help/__init__.py
 #
+# 	The help pages static files were authored by intern Marc Andre using tool:
+# 		http://neat-streak.helpdocsonline.com/
+#
 #
 #--------------------------------------------------------------------------------
 #*********************************************************************************

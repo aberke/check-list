@@ -149,10 +149,6 @@ TODO
 
 - organize CSS
 
-- move hamburger-control and control to directives?
-	- pro: modularity
-	- con: extra files to request
-
 - parse URL for mongoHQ in config file
 
 - handle default room data
