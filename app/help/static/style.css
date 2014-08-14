@@ -11,8 +11,8 @@ margin-right: 0px;
 margin-bottom: 20px;}
 
 /*controls the height and width of the images*/
-img { width: 300px;
-      height: 370px; 
+img { width: 250px;
+      /*height: 370px; */
       border: 0px; }
 
 ul { text-align: center; }
@@ -141,8 +141,8 @@ display:block}
  float:none
 }
 }
-@media only screen 
-and (min-device-width : 320px) 
+@media only screen
+and (min-device-width : 320px)
 and (max-device-width : 480px) {
 .columns .left-col,
 .columns .right-col{
