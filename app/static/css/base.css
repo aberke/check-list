@@ -375,31 +375,23 @@ special case is the .heading
 /* ---------------- index-view - */
 
 
-
-
-/* - style-guide ---------------- */
-
-/* need space between everything */
-#style-guide >* {
-	margin: 30px;
+/*---------------- about-help-container -*/
+#about-help-container {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	margin: 0;
+	text-align: center;
+	background-color: #29abe2;
+}
+#about-help-link-container {
+	display: inline-block;
+	margin: 10px auto;
+}
+#about-help-link-container,
+#about-help-link-container a {
+	color: #b6e2e9;
+	text-decoration: none;
 }
 
-#style-guide #colors{
-	background-color: white;
-	padding: 10px;
-}
-#style-guide #colors span{
-	padding: 5px;
-	font-weight: bold;
-	font-size: 16px;
-}
-
-
-
-
-
-/* ---------------- style-guide - */
-
-
-
-
+/*- about-help-container ----------------*/

@@ -32,16 +32,9 @@
 	color: #29abe2;
 	max-width: 250px;
 	margin: auto;
-	padding: 15px 0;
 }
-.sigin-in .logo {
-	display: block;
-	margin: auto;
-	border-radius: 50%;
-	background: url(/static/icon/neatstreak_placeholder.png);
-	background-size: contain;
-	width: 150px;
-	height: 150px;
+.sign-in .logo {
+	margin-top: 15px;
 }
 .sign-in .title,
 .sign-in input,

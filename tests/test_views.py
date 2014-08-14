@@ -51,4 +51,8 @@ class ViewsTestCase(BaseTestCase):
 		self.expect_view_200('/help/')
 
 
+	def test_info_page(self):
+		self.expect_view_200('/info/')
+
+
 
