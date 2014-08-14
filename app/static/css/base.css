@@ -198,6 +198,7 @@ input.ng-invalid {
 	bottom: 0;
 	width: 100%;
 	font-size: 12px;
+	clear: both;
 }
 
 .hamburger-control {
@@ -360,19 +361,9 @@ special case is the .heading
 	color: #1b1464;
 	margin: 2em auto;
 }
-@media (min-width: 500px) {
-	#index-view .btn.left {
-		float: left;
-	}
-	#index-view .btn.right {
-		float: right;
-	}
-}
-@media (max-width: 499px) {
-	#index-view .btn {
-		display: block;
-		margin: 10px auto;
-	}
+#index-view .btn {
+	display: block;
+	margin: 10px auto;
 }
 /* ---------------- index-view - */
 
