@@ -32,6 +32,9 @@ app.register_blueprint(api_blueprint, url_prefix='/api')
 from auth import bp as auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+from help import bp as help_blueprint
+app.register_blueprint(help_blueprint, url_prefix='/help')
+
 from language import bp as language_blueprint
 app.register_blueprint(language_blueprint, url_prefix='/language')
 
