@@ -8,6 +8,8 @@ Significance Labs project prototype - Checklists for house cleaners
 
 <http://neat-streak.com>
 
+[Watch our 1 minute demo video](http://www.neat-streak.com/info/)
+
 
 Running Locally
 ---
@@ -30,7 +32,7 @@ $ source venv/bin/activate
 * Install dependencies: ```$ pip install -r requirements.txt``` (may need to run with sudo)
 * Make sure you have mongodb installed ```$ brew install mongodb```
 * Make sure mongodb is started ```$ mongod```
-* Set necessary environment variables, or obtain environment variable file from Alex and run ```$ source env.sh```
+* Set necessary environment variables (see **Environment Variables** section below)
 * Run server ```$ python main.py``` and visit <http://127.0.0.1:3000>
 
 
@@ -41,16 +43,51 @@ Running The Tests
 * From the base directory ```$ python run_tests.py```
 
 
-Analytics
+Environment Variables
 ---
 
-<https://www.google.com/analytics/web/?authuser=2#report/visitors-overview/a52152670w85170631p88292434/>
+The following environment variables must be set in order for the project to run.
+* TWILIO_ACCOUNT_SID
+* TWILIO_AUTH_TOKEN
+* DOMAIN_NAME
+* BASIC_AUTH_USERNAME
+* BASIC_AUTH_PASSWORD
+
+You can either obtain the ```env.sh``` file from Alex (aberke) OR create your own:
+
+1. Create a [Twilio](https://www.twilio.com/) account and load it up with a dollar or two
+  * We need to send a few SMS messsages and each costs a fraction of a cent
+  * From your account, obtain your TWILIO ACCOUNT SID and TWILIO AUTH TOKEN
+2. Put the following in ```env.sh```
+```
+export TWILIO_ACCOUNT_SID="YOUR TWILIO ACCOUNT SID"
+export TWILIO_AUTH_TOKEN="YOUR TWILIO ACCOUNT TOKEN"
+
+export DOMAIN_NAME="http://127.0.0.1:3000"
+
+export BASIC_AUTH_USERNAME=""
+export BASIC_AUTH_PASSWORD=""
+```
+
+Make sure ```env.sh``` is in the base directory and run ```$ source env.sh```
+
+
+Admin and Analytics
+---
+
+There's an admin tool to view all the active users
+* Navigate to [/backstage/](http://www.neat-streak.com/backstage/)
+* Protected with HTTP Basic Auth
+  * Credentials set in env.sh ```BASIC_AUTH_USERNAME``` and ```BASIC_AUTH_PASSWORD```
+  * Play with it when running locally or get credentials for www.neat-streak.com from Alex (aberke)
+
+Ask Alex (aberke) for access to our [Google Analytics](https://www.google.com/analytics/web/?authuser=2#report/visitors-overview/a52152670w85170631p88292434/)
+
 
 Work Flow
 ---
 
 Branches: 
-- ```working``` branch 	- where work gets done
 - ```master``` branch  	- where all outstanding working branches get merged in to
 - ```staging``` branch 	- Merges in Master branch when ready to push new features to staging server
 - ```production``` branch - Merges in staging when and pushed to production server
@@ -139,6 +176,30 @@ Domain Name Configuration
 
 Domain names bought from and configured via namecheap.com under Ciara's account
 
+
+Database
+---
+
+* All data stored in mongodb
+* Clear out the database with the methods defined in ```/app/database.py```
+
+
+Authors
+---
+[This project came out of Significance Labs.](http://significancelabs.org/)
+
+**Hacker:** Alexandra Berke (aberke)
+**Designer:** Gaia Orain
+**Fellow:** Ciara Byrne
+
+
+
+Develop
+---
+
+Please contribute via pull requests OR
+
+Get access from one of the authors to the [document with all the info](https://docs.google.com/a/significancelabs.org/document/d/1cTDj2I45l5fA3-1YsgciUx5xUHsXfN75iQRGc4TlzSI/edit)
 
 
 TODO
