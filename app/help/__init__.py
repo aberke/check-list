@@ -33,9 +33,9 @@ def index():
 def create_an_account():
 	return send_file('help/static/create-an-account.html')
 
-@bp.route('/menu/')
+@bp.route('/use-menu/')
 def menu():
-	return send_file('help/static/menu.html')
+	return send_file('help/static/use-menu.html')
 
 @bp.route('/create-a-new-list/')
 def create_a_new_list():
@@ -45,9 +45,9 @@ def create_a_new_list():
 def finished():
 	return send_file('help/static/finished.html')
 
-@bp.route('/process/')
+@bp.route('/process-feedback/')
 def process():
-	return send_file('help/static/process.html')
+	return send_file('help/static/process-feedback.html')
 
 @bp.route('/delete-a-list/')
 def delete_a_list():

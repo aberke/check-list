@@ -47,8 +47,16 @@ class ViewsTestCase(BaseTestCase):
 		self.expect_view_200('/list/2/clean')
 
 
-	def test_help_page(self):
+	def test_help_pages(self):
 		self.expect_view_200('/help/')
+		self.expect_view_200('/help/create-an-account/')
+		self.expect_view_200('/help/use-menu/')
+		self.expect_view_200('/help/create-a-new-list/')
+		self.expect_view_200('/help/finished/')
+		self.expect_view_200('/help/process-feedback/')
+		self.expect_view_200('/help/delete-a-list/')
+		self.expect_view_200('/help/sign-into-your-account/')
+		self.expect_view_200('/help/reset-your-password/')
 
 
 	def test_info_page(self):
