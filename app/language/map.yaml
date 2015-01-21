@@ -50,6 +50,9 @@ FEEDBACK:
 WE_WILL_SEND_RESET_CODE:
   en: we will send a reset code
   es: le enviaremos un código de restablecimiento
+SEND_WELCOME_MESSAGE_SMS:
+  en: Welcome {0} to NeatStreak {1}
+  es: bienvenida a http://Neat-streak.com
 FORGOT_PASSWORD:
   en: forgot password
   es: has olvidado tu contraseña
