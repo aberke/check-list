@@ -37,10 +37,10 @@
 #*********************************************************************************
 
 #import requests
-
+import config
 import os
 import yaml
-
+from collections import defaultdict
 
 # Google documentation for accessing spreadsheet data:
 # https://developers.google.com/gdata/samples/spreadsheet_sample
@@ -49,9 +49,9 @@ import yaml
 # GOOGLE_API_REQUEST_URL = 'http://spreadsheets.google.com/feeds/list/{0}/od6/public/basic?alt={1}'.format(KEY, FORMAT)
 
 
-
+Tree = lambda: defaultdict(Tree)
 # map of translations kept in "cache"
-map = {}
+map = Tree()
 
 def get_map():
 	if map:
@@ -60,15 +60,16 @@ def get_map():
 
 def build_map():
 	# re-initialize map
-	map = {}
+	map = Tree()
 	script_dir = os.path.dirname(__file__)
-	rel_path = "./map.yaml"
-	map_path = os.path.join(script_dir, rel_path)
-	yaml_string = open(map_path)
-
-	map = yaml.load(yaml_string)
-
-	yaml_string.close()
+	for lang in config.SUPPORTED_LANGUAGES:
+		rel_path = "./translations/{0}.yaml".format(lang)
+		translation_path = os.path.join(script_dir, rel_path)
+		yaml_string = open(translation_path)
+		lang_map = yaml.load(yaml_string)
+		yaml_string.close()
+		for key,value in lang_map.iteritems():
+			map[key][lang]=value
 	# # get translate data from spreadsheet as json
 	# r = requests.get(GOOGLE_API_REQUEST_URL)
 	# if not (r.status_code == 200 or r.status_code == '200'):
