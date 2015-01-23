@@ -13,7 +13,7 @@
 	</div>
 
 	<div id='list-title-banner'>
-		<h3>{{ 'YOUR PLACE IS NOW CLEAN' | translate: 'uppercase' }}</h3>
+		<h3>{{ 'YOUR_PLACE_IS_NOW_CLEAN' | translate: 'uppercase' }}</h3>
 	</div>
 
 	<div id='list-cleaner-info'>
@@ -25,7 +25,7 @@
 		<p id='last-modified'>{{ list.date | date:'shortDate' }}</p>
 	</div>
 
-	<h3 id='view-agreement' ng-click='viewAgreement()'>{{ 'VIEW AGREEMENT' | translate: 'titlecase' }}</h3>
+	<h3 id='view-agreement' ng-click='viewAgreement()'>{{ 'VIEW_AGREEMENT' | translate: 'titlecase' }}</h3>
 
 
 	<div ng-if="list.price" id='price'>
@@ -40,12 +40,12 @@
 	<div ng-show="!feedback_sent">
 		<div class='container-bar' id='leave-feedback-header'>
 			<span class='icon feedback'></span>
-			<h2 class='title feedback'>{{ 'LEAVE FEEDBACK' | translate: 'titlecase' }}</h2>
+			<h2 class='title feedback'>{{ 'LEAVE_FEEDBACK' | translate: 'titlecase' }}</h2>
 		</div>
 
 		<div id='feedback-container'>
 
-			<h2 class='feedback-prompt'>{{ 'FEEDBACK PROMPT' | translate }}</h2>
+			<h2 class='feedback-prompt'>{{ 'FEEDBACK_PROMPT' | translate }}</h2>
 			<div id='feedback-icon-container'>
 				<span ng-click='feedback.rating=1' ng-class="{'selected': feedback.rating==1}" class='icon feedback-rating feedback-rating-1'></span>
 				<span ng-click='feedback.rating=2' ng-class="{'selected': feedback.rating==2}" class='icon feedback-rating feedback-rating-2'></span>
@@ -56,7 +56,7 @@
 			<h2 class='feedback-prompt'>{{ 'WHY' | translate }}</h2>
 			<textarea ng-model="feedback.why"></textarea>
 
-			<h2 class='feedback-prompt'>{{ 'NEXT TIME' | translate }}...</h2>
+			<h2 class='feedback-prompt'>{{ 'NEXT_TIME' | translate }}...</h2>
 			<textarea ng-model="feedback.request"></textarea>
 
 			<div id='send-btn-container'>
