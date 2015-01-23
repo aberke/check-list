@@ -1,13 +1,13 @@
 
 from base import *
 from app.models import cleaner # need to user cleaner.find to get otherwise unaccessible fields like reset-code and salt
-
+import vcr
 
 class AuthTestCase(BaseTestCase):
 	"""
-	Test the sign-in flow and logouts 
+	Test the sign-in flow and logouts
 	"""
-
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_reset_password(self):
 		""" 2 step process:
 				POST,PUT /send-reset-code which sets temporary reset_code in cleaner model and sends via SMS to cleaner
@@ -43,7 +43,7 @@ class AuthTestCase(BaseTestCase):
 		)
 		self.assertEqual(rv.status_code, 200)
 
-		
+
 
 	def test_login_logout(self):
 		# get user should return null
@@ -88,6 +88,7 @@ class AuthTestCase(BaseTestCase):
 		self.assertEqual(data['name'], TEST_CLEANER_DATA['name'])
 
 	# GET 	/api/cleaner/validate-new-phonenumber ?phonenumber=cleaner.phonenumber&name=cleaner.name
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_validate_new_phonenumber(self):
 		endpoint = ('/api/cleaner/validate-new-phonenumber?phonenumber=' + str(TEST_CLEANER_DATA['phonenumber']) + '&name=' + TEST_CLEANER_DATA['name'])
 		rv = self.app.get(endpoint)

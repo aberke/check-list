@@ -14,3 +14,4 @@ twilio==3.6.6
 wsgiref==0.1.2
 requests==2.3.0
 PyYAML==3.11
+vcrpy==1.2.0
