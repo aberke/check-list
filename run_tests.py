@@ -1,6 +1,5 @@
 
 import unittest
-import vcr
 
 testmodules = [
     'tests.test_backstage',
