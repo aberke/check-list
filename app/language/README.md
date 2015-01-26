@@ -23,7 +23,7 @@ Components
 		- Stores the current language + handles switching languages
 			- Updates server ***language-setting*** when language switched
 		- Stores the language ***map*** that is retreived from server
-		- Handles translations 
+		- Handles translations
 			- Used by filter and controllers
 
 - translate endpoints
@@ -47,20 +47,9 @@ Components
 		... for row/keyname in spreadsheet
 	}
 	```
-	- all translation data comes from google doc spreadsheet
-
-- Spreadsheet
-	- publicly hosted: <https://docs.google.com/a/significancelabs.org/spreadsheets/d/1O2VvGGMeIEeugPa-TBBk7sKt4Kstdw31bphQ5jDp71c/edit#gid=0>
-		- Anyone can view (AKA my application), but only specified translators can edit
-	- Contains all translation keys and terms
-	- See spreadsheet notes for ***rules***
-
-
-Spreadsheet Rules
----
-- The following items will prevent the item from being parsed into the translations map
-	- commas ```,```
-	- colons ```:```
+	- all translation data comes from two yaml files, named by their two letter
+		language abbreviation and the "yaml" extension.
+	- YAML: double quote all strings. All of them, even if YAML specification says we don't need to. This makes life easier, especially across potential encoding issues.
 
 
 Test Coverage
