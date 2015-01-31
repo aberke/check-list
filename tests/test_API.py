@@ -1,13 +1,12 @@
 
 from base import *
-
-
+import vcr
 
 class APITestCase(BaseTestCase):
 	"""
 	POST_cleaner implicitely tested
 	"""
-	cleaner = None 
+	cleaner = None
 	list_id = None
 	room_id = None
 
@@ -21,6 +20,7 @@ class APITestCase(BaseTestCase):
 		rv = self.POST_data('/api/cleaner/{0}/list'.format(self.cleaner['_id']), data=TEST_LIST_DATA)
 		self.list_id = json.loads(rv.data)['_id']
 
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def POST_receipt(self):
 		""" Helper method to testing receipt endpoints.  SMS sent to client on each POST. """
 		if not self.list_id:
@@ -29,6 +29,7 @@ class APITestCase(BaseTestCase):
 		rv = self.POST_data('/api/list/' + self.list_id + '/receipt', data=list)
 		self.receipt_id = json.loads(rv.data)['_id']
 
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def POST_feedback(self):
 		if not self.list_id:
 			self.POST_list()
@@ -37,7 +38,7 @@ class APITestCase(BaseTestCase):
 		self.feedback_id = data['_id']
 		return data
 
-
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def POST_room(self):
 		""" Helper method to post list, then room and keep returned room id as self.room_id """
 		if not self.list_id:
@@ -56,9 +57,9 @@ class APITestCase(BaseTestCase):
 			self.POST_room()
 		rv = self.POST_data('/api/room/' + self.room_id + '/task', data=task_data)
 		self.assertEqual(rv.status_code, 200)
-		return json.loads(rv.data)['_id']		
+		return json.loads(rv.data)['_id']
 
-
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_PUT_cleaner(self):
 		NEW_CLEANER_DATA = {
 			'name': 'NEW-NAME',
@@ -91,10 +92,10 @@ class APITestCase(BaseTestCase):
 		c = self.GET_data('/api/cleaner/' + '53bed5c2b81c823ab1ee66a4')
 		self.assertEqual(None, c)
 
-
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_POST_list(self):
-		""" POST_list main functionality implicitely tested by other tests 
-				verify list added to cleaner's lists 
+		""" POST_list main functionality implicitely tested by other tests
+				verify list added to cleaner's lists
 		"""
 		# cleaner's lists should originally be empty
 		data = self.GET_data('/api/cleaner/' + self.cleaner['_id'])
@@ -132,7 +133,7 @@ class APITestCase(BaseTestCase):
 		data = self.GET_data('/api/list/' + self.list_id)
 		self.assertEqual(self.list_id, data['_id'])
 
-
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_PUT_list(self):
 		self.POST_list()
 		self.PUT_data('/api/list/' + self.list_id, TEST_LIST_DATA)
@@ -176,7 +177,7 @@ class APITestCase(BaseTestCase):
 
 
 	def test_POST_room(self):
-		""" POST_room main functionality implicitely tested by other tests 
+		""" POST_room main functionality implicitely tested by other tests
 				verify list added to list's rooms
 		"""
 		self.POST_list()
@@ -192,8 +193,8 @@ class APITestCase(BaseTestCase):
 	def test_PUT_room(self):
 		"""
 		1) POST_room
-		2) update room data with just count and name 
-		3) ensure room still has originally posted data other than count and name 
+		2) update room data with just count and name
+		3) ensure room still has originally posted data other than count and name
 		4) ensure count and name updated
 		"""
 		# 1)
@@ -280,7 +281,7 @@ class APITestCase(BaseTestCase):
 
 	# GET 		/api/task/search 	returns all
 	def test_GET_task_search(self):
-		""" 
+		"""
 		Returns List [] of all tasks
 		"""
 		data = self.GET_data('/api/task/search')
@@ -293,9 +294,10 @@ class APITestCase(BaseTestCase):
 
 
 	# GET 		/api/receipt/<id>
+
 	def test_GET_receipt_by_id(self):
 		"""
-		verify that posted receipt has the same data as list and 
+		verify that posted receipt has the same data as list and
 		verify receipt fills in public cleaner
 		verify that when list is deleted, receipt not deleted by _list marked as null
 		"""
@@ -306,7 +308,7 @@ class APITestCase(BaseTestCase):
 
 		self.assertEqual(list_data['_id'], receipt_data['_list'])
 		self.assertDataMatch(list_data, receipt_data, ['_cleaner', 'phonenumber', 'notes', 'price','location'])
-		
+
 		self.assertTrue('date' in receipt_data)
 		self.assertTrue(dateutil.parser.parse(receipt_data['date']) > datetime.now())
 
@@ -335,9 +337,10 @@ class APITestCase(BaseTestCase):
 
 
 	# POST 		/api/list/<id>/receipt
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_POST_receipt(self):
 		"""
-		POST /list/id/receipt both creates new receipt and sends link to client 
+		POST /list/id/receipt both creates new receipt and sends link to client
 		Expects list in payload and requires list.phonenumber and list._cleaner
 		"""
 		# list should have no receipts at first
@@ -359,6 +362,7 @@ class APITestCase(BaseTestCase):
 
 
 	# PUT 	/api/list/<list_id>/send
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_POST_send_list(self):
 		""" Sends link to /list/id/agreement to client
 			Expects list in payload and requires list.phonenumber and list._cleaner
@@ -372,7 +376,7 @@ class APITestCase(BaseTestCase):
 	# GET 	/api/feedback/search
 	def test_GET_feedback_search(self):
 		"""
-		Currently just returns all feedbacks 
+		Currently just returns all feedbacks
 		"""
 		# initially no feedback documents should exist
 		data = self.GET_data('/api/feedback/search')
@@ -389,12 +393,13 @@ class APITestCase(BaseTestCase):
 
 
 	# POST 	/api/list/<list_id>/feedback
+	@vcr.use_cassette('tests/vcr_cassettes/twilio.yaml')
 	def test_POST_feedback(self):
 		"""
 		Responds with data { _id: feedback_id }
 
-		Iteratively POST 3 feedbacks and insure 
-			- list has expected number of feedbacks 
+		Iteratively POST 3 feedbacks and insure
+			- list has expected number of feedbacks
 			- last posted feedback has expected data with expected _id and valid date and
 		"""
 		# initially, a list should have no feedbacks
@@ -418,7 +423,7 @@ class APITestCase(BaseTestCase):
 		Deletes feedback document + removes feedback from list.feedbacks
 		Responds with 200
 
-		1) POST 4 feedbacks 
+		1) POST 4 feedbacks
 		2) incrementally delete each
 			- insure there are the amount expected in database
 			- insure there are the amount expected in list.feedbacks
@@ -435,16 +440,6 @@ class APITestCase(BaseTestCase):
 
 			data = self.GET_data('/api/feedback/search')
 			self.assertEqual(len(feedback_ids) - i - 1, len(data))
-			
+
 			list = self.GET_data('/api/list/' + self.list_id)
 			self.assertEqual(len(feedback_ids) - i - 1, len(list['feedbacks']))
-
-
-
-
-
-
-
-
-
-

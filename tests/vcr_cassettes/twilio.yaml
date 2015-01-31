@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: Body=TEST-NAME+has+finished+cleaning+your+place%21+http%3A%2F%2F127.0.0.1%3A3000%2Freceipt%2F54c2adb2df9dfbae6ff62faa&To=6178348458&From=%2B18777130491
+    headers:
+      accept: [application/json]
+      accept-charset: [utf-8]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [twilio-python/3.6.6 (Python 2.7.9)]
+    method: POST
+    uri: https://api.twilio.com:443/2010-04-01/Accounts/ACfe08bc02cc35943bf5d332a86e3526a8/Messages.json
+  response:
+    body: {string: !!python/unicode '{"code": 20003, "detail": "Your AccountSid or
+        AuthToken was incorrect.", "message": "Authentication Error - No credentials
+        provided", "more_info": "https://www.twilio.com/docs/errors/20003", "status":
+        401}'}
+    headers:
+      connection: [keep-alive]
+      content-length: ['205']
+      content-type: [application/json; charset=utf-8]
+      date: ['Fri, 23 Jan 2015 20:23:15 GMT']
+      www-authenticate: [Basic realm="Twilio API"]
+      x-powered-by: [AT-5000]
+      x-shenanigans: [none]
+    status: {code: 401, message: UNAUTHORIZED}
+- request:
+    body: Body=TEST-NAME+has+finished+cleaning+your+place%21+http%3A%2F%2F127.0.0.1%3A3000%2Freceipt%2F54c2adb2df9dfbae6ff62faa&To=6178348458&From=%2B18777130491
+    headers:
+      accept: [application/json]
+      accept-charset: [utf-8]
+      accept-encoding: ['gzip, deflate']
+      authorization: [Basic QUNmZTA4YmMwMmNjMzU5NDNiZjVkMzMyYTg2ZTM1MjZhODoyNzRiM2ZiZTM0YjE4NDJlNWM5NWJhY2Y0NTZhYzVjYw==]
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [twilio-python/3.6.6 (Python 2.7.9)]
+    method: POST
+    uri: https://api.twilio.com:443/2010-04-01/Accounts/ACfe08bc02cc35943bf5d332a86e3526a8/Messages.json
+  response:
+    body: {string: !!python/unicode '{"sid": "SMc346288ee4204c84883599a35029d08f",
+        "date_created": "Fri, 23 Jan 2015 20:23:15 +0000", "date_updated": "Fri, 23
+        Jan 2015 20:23:15 +0000", "date_sent": null, "account_sid": "ACfe08bc02cc35943bf5d332a86e3526a8",
+        "to": "+16178348458", "from": "+18777130491", "body": "TEST-NAME has finished
+        cleaning your place! http://127.0.0.1:3000/receipt/54c2adb2df9dfbae6ff62faa",
+        "status": "queued", "num_segments": "1", "num_media": "0", "direction": "outbound-api",
+        "api_version": "2010-04-01", "price": null, "price_unit": "USD", "error_code":
+        null, "error_message": null, "uri": "/2010-04-01/Accounts/ACfe08bc02cc35943bf5d332a86e3526a8/Messages/SMc346288ee4204c84883599a35029d08f.json",
+        "subresource_uris": {"media": "/2010-04-01/Accounts/ACfe08bc02cc35943bf5d332a86e3526a8/Messages/SMc346288ee4204c84883599a35029d08f/Media.json"}}'}
+    headers:
+      connection: [keep-alive]
+      content-length: ['831']
+      content-type: [application/json; charset=utf-8]
+      date: ['Fri, 23 Jan 2015 20:23:15 GMT']
+      x-powered-by: [AT-5000]
+      x-shenanigans: [none]
+    status: {code: 201, message: CREATED}
+version: 1

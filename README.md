@@ -14,7 +14,7 @@ Significance Labs project prototype - Checklists for house cleaners
 Running Locally
 ---
 
-* Clone/fork repo 
+* Clone/fork repo
 
 ```
 $ git clone https://github.com/aberke/check-list.git
@@ -62,7 +62,7 @@ You can either obtain the ```env.sh``` file from Alex (aberke) OR create your ow
 ```
 export TWILIO_ACCOUNT_SID="YOUR TWILIO ACCOUNT SID"
 export TWILIO_AUTH_TOKEN="YOUR TWILIO ACCOUNT TOKEN"
-
+export TWILIO_NUMBER="+18777130491"
 export DOMAIN_NAME="http://127.0.0.1:3000"
 
 export BASIC_AUTH_USERNAME=""
@@ -87,7 +87,7 @@ Ask Alex (aberke) for access to our [Google Analytics](https://www.google.com/an
 Work Flow
 ---
 
-Branches: 
+Branches:
 - ```master``` branch  	- where all outstanding working branches get merged in to
 - ```staging``` branch 	- Merges in Master branch when ready to push new features to staging server
 - ```production``` branch - Merges in staging when and pushed to production server
@@ -109,10 +109,10 @@ For Simplicity:
 ```
 # commands:
 #————————————
-# git push origin [branchName] 
+# git push origin [branchName]
 #	-> pushes to github [branchName]
-# git push staging	     
-#	-> pushes staging branch to staging(remote) (which merges into remote’s master) 
+# git push staging
+#	-> pushes staging branch to staging(remote) (which merges into remote’s master)
 # git push production
 #	-> push staging branch to staging(remote) (which merges into remote’s master)
 
@@ -224,7 +224,7 @@ TODO
 - store session in database?
 	- if scale number of servers
 
-	
+
 
 
 

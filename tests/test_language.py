@@ -8,9 +8,9 @@ SUPPORTED_LANGUAGES = config.SUPPORTED_LANGUAGES
 
 class LanguageTestCase(BaseTestCase):
 	"""
-	Tests for the language module 
+	Tests for the language module
 	module has a blueprint with endpoints that interface with the client side translate service
-	tests insure that 
+	tests insure that
 		static assets are accessible: (client side angularJS module)
 		server side endpoints and module work
 	"""
@@ -42,17 +42,17 @@ class LanguageTestCase(BaseTestCase):
 
 	def test_language_setting(self):
 		"""
-		These are the endpoints that the angularJS service interfaces with for handling current language 
+		These are the endpoints that the angularJS service interfaces with for handling current language
 		language-setting is stored in session
 
-		POST 	/language/setting 
+		POST 	/language/setting
 		GET  	/language/setting
 		DELETE  /language/setting/clear
 		"""
 		# when first GET language-setting, should be null
 		data = self.GET_data('/language/setting')
 		self.assertEqual(None, data['language-setting'])
-		
+
 		# setting language setting to invalid value should return error
 		rv = self.app.post('/language/setting', data=json.dumps({'language-setting': 'INVALID-LANGUAGE'}))
 		self.assertEqual(rv.status_code, 500)
