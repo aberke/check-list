@@ -72,8 +72,8 @@ BASIC_AUTH_PASSWORD			= os.getenv('BASIC_AUTH_PASSWORD', '')
 
 
 TWILIO_ACCOUNT_SID			= os.environ['TWILIO_ACCOUNT_SID']
-TWILIO_AUTH_TOKEN			  = os.environ['TWILIO_AUTH_TOKEN']
-TWILIO_NUMBER 				  = os.environ['TWILIO_NUMBER']
+TWILIO_AUTH_TOKEN			= os.environ['TWILIO_AUTH_TOKEN']
+TWILIO_NUMBER 				= os.getenv('TWILIO_NUMBER', '+18777130491')
 
 # language module:
 SUPPORTED_LANGUAGES 		= ['en', 'es']
